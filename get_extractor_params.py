@@ -148,8 +148,8 @@ def get_hayashi_parameters(seed_length: int, entropy_rate: float,
     Hayashi is a seeded extractor that takes two differing length, independent,
     strings of bits to produce some error-perfect random bits.
     The seed_length must be in na_set.
-    The second input source must be Santha-Vazirani. Namely, all input bits
-    have the same min-entropy rate.
+    The second input source must be a block min-entropy source with equal entropy
+    per block.
     This function defines the input size and output size for this seeded
     extractor.
 
