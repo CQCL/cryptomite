@@ -25,8 +25,8 @@ class Hayashi:
         Calculate the input size and output size for this seeded extractor.
     
         The seed_length must be in :py:func:`~.na_set`.
-        The second input source must be Santha-Vazirani. Namely, all input bits
-        have the same :term:`min-entropy` rate.
+        The second input source must be a block min-entropy source, as defined
+        by :term:`block-min-entropy`.
 
         Parameters:
             seed_length : int
@@ -50,7 +50,7 @@ class Hayashi:
                 The length parameter for the output from the extractor.
         """
 
-        seed_length = na_set(seed_length-2) + 2
+        seed_length = na_set(seed_length)
         c = 2
         while log2(c-1) + (-(seed_length/2) * (1 + c * (entropy_rate - 1))
                         ) <= error:

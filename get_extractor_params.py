@@ -168,7 +168,7 @@ def get_hayashi_parameters(seed_length: int, entropy_rate: float,
         int: The length parameter for the output from the extractor.
     """
 
-    seed_length = na_set(seed_length-2) + 2
+    seed_length = na_set(seed_length)
     c = 2
     while log2(c-1) + (-(seed_length/2) * (1 + c * (entropy_rate - 1))
                        ) <= error:
