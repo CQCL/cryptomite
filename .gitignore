@@ -1,2 +1,19 @@
-build
-*/extlib/__pycache__
+# `extlib/version.py` is generated automatically by setuptools-scm
+extlib/version.py
+
+# development files
+*.egg-info/
+.coverage
+.ipynb_checkpoints/
+__pycache__/
+build/
+dist/
+htmlcov/
+
+# ignore the built documentation
+docs/_*
+!docs/_static/
+
+# ignore scikit-build stuff
+_skbuild/
+*/*.so
