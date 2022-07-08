@@ -1,0 +1,59 @@
+language: python
+
+sudo: false
+
+matrix:
+  include:
+    - os: linux
+      compiler: gcc
+      addons: &gcc49
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9', 'gcc-4.9']
+      env:
+        - CXX='g++-4.9'
+        - CC='gcc-4.9'
+      python: 2.7
+    - os: linux
+      compiler: gcc
+      addons: &gcc49
+        apt:
+          sources: ['ubuntu-toolchain-r-test']
+          packages: ['g++-4.9', 'gcc-4.9']
+      env:
+        - CXX='g++-4.9'
+        - CC='gcc-4.9'
+      python: 3.4
+    - os: osx
+      osx_image: xcode7.3
+      compiler: gcc
+      sudo: required
+      language: generic
+
+install:
+  - |
+    if [[ "${TRAVIS_OS_NAME}" == "osx" ]]; then
+        # manually install python on osx
+        brew update
+        brew install python3
+        brew reinstall gcc
+        virtualenv venv
+        source venv/bin/activate
+        pip install -r requirements.txt --upgrade
+    fi
+  - pip install -r requirements.txt --upgrade
+  - python --version
+
+script:
+  - mkdir build
+  - cd build
+  - cmake ..
+  - make
+  - ls
+# - python -c 'import example'
+  - cd ..
+  - pep8 --ignore E501 test.py
+# - PYTHONPATH=build pytest -vv test.py
+
+notifications:
+  email: false
