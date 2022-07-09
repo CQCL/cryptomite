@@ -17,3 +17,5 @@ docs/_*
 # ignore scikit-build stuff
 _skbuild/
 */*.so
+extlib/lib
+extlib/include
