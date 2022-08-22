@@ -2,7 +2,6 @@
 This is a module.
 """
 from __future__ import annotations
-from this import s
 
 __all__ = ["Trevisan"]
 
@@ -46,7 +45,7 @@ class Trevisan:
         Returns
         -------
             list of bool
-                The output bits from the extractor.s
+                The output bits from the extractor.
         """
         self.ext.load_source(source, seed)
 
