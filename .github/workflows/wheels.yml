@@ -1,0 +1,114 @@
+name: wheels
+on:
+  push:
+    branches:
+      - 'wheel/**'
+jobs:
+  build_linux_wheels:
+    name: build linux wheels
+    runs-on: ubuntu-20.04
+    env:
+      PY_VERS: cp38-cp38 cp39-cp39 cp310-cp310
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up container
+      run: |
+        docker create --name linux_build -i -v /:/host quay.io/pypa/manylinux2014_x86_64:latest /bin/bash
+        docker cp . linux_build:/extlib/
+    - name: run build
+      run: |
+        docker start linux_build
+        docker exec -e PY_VERS="${PY_VERS}" linux_build /bin/bash -c "/extlib/.github/workflows/linuxbuildwheels"
+        mkdir wheelhouse
+        docker cp linux_build:/extlib/audited/. wheelhouse/
+    - uses: actions/upload-artifact@v2
+      with:
+        name: linux_wheels
+        path: wheelhouse/
+  build_macos_wheels:
+    name: build macos wheels
+    runs-on: macos-11
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: build wheel (3.8)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: build wheel (3.9)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: build wheel (3.10)
+      run: .github/workflows/macosbuildwheel
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos_wheels
+        path: wheelhouse/
+#  build_macos_m1_wheels:
+#    name: build macos m1 wheels
+#    runs-on: [self-hosted, macos, M1]
+#    defaults:
+#      run:
+#        shell: "/usr/bin/arch -arch arm64e /bin/bash {0}"
+#    steps:
+#    - uses: actions/checkout@v2
+#    - name: build wheel (3.8)
+#      run: |
+#        eval "$(pyenv init -)"
+#        pyenv shell tket-3.8
+#        .github/workflows/macosbuildwheel
+#    - name: build wheel (3.9)
+#      run: |
+#        eval "$(pyenv init -)"
+#        pyenv shell tket-3.9
+#        .github/workflows/macosbuildwheel
+#    - name: build wheel (3.10)
+#      run: |
+#        eval "$(pyenv init -)"
+#        pyenv shell tket-3.10
+#        .github/workflows/macosbuildwheel
+#    - uses: actions/upload-artifact@v2
+#      with:
+#        name: macos_m1_wheels
+#        path: wheelhouse/
+  build_windows_wheels:
+    name: build windows wheels
+    runs-on: windows-2019
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: build wheel (3.8)
+      run: |
+        python -m pip install -U pip wheel scikit-build
+        python setup.py bdist_wheel -d "${{ github.workspace }}/wheelhouse"
+    - name: set up python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: build wheel (3.9)
+      run: |
+        python -m pip install -U pip wheel scikit-build
+        python setup.py bdist_wheel -d "${{ github.workspace }}/wheelhouse"
+    - name: set up python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: build wheel (3.10)
+      run: |
+        python -m pip install -U pip wheel scikit-build
+        python setup.py bdist_wheel -d "${{ github.workspace }}/wheelhouse"
+    - uses: actions/upload-artifact@v2
+      with:
+        name: windows_wheels
+        path: wheelhouse/

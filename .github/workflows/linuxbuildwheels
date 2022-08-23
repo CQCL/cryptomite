@@ -1,0 +1,16 @@
+#!/bin/bash
+
+set -evu
+
+cd /extlib
+mkdir wheelhouse
+mkdir audited
+
+for pyX in $PY_VERS
+do
+    cd /extlib
+    export PYEX=/opt/python/${pyX}/bin/python
+    ${PYEX} -m pip install -U pip wheel scikit-build
+    ${PYEX} setup.py bdist_wheel -d "tmpwheel_${pyX}"
+    auditwheel repair "tmpwheel_${pyX}/extlib-"*".whl" -w "audited/"
+done
