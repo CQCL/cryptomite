@@ -1,5 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
+#include <ntt.cpp>
 #include <trevisan.cpp>
 
 
@@ -7,9 +8,9 @@ namespace py = pybind11;
 
 // PYBIND11_MAKE_OPAQUE(std::vector<int>);
 
-PYBIND11_MODULE(_trevisan, m) {
+PYBIND11_MODULE(_extlib, m) {
     // optional module docstring
-    m.doc() = "C++ Implementation of Trevisan Extractor";
+    m.doc() = "C++ Implementation of Randomness Extractors";
 
     py::class_<TrevisanConfig>(m, "TrevisanConfig")
         .def(py::init<int, int, double>())
@@ -23,4 +24,8 @@ PYBIND11_MODULE(_trevisan, m) {
         .def("get_seed_length", &Trevisan::get_seed_length)
         .def("load_source", &Trevisan::load_source)
         .def("extract_bit", &Trevisan::extract_bit);
+
+    py::class_<NTT>(m, "NTT")
+        .def(py::init<int>())
+        .def("ntt", &NTT::ntt);
 }

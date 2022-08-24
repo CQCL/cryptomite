@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ["Trevisan"]
 
-from extlib import _trevisan
+from extlib import _extlib
 
 class Trevisan:
     """Trevisan extractor"""
@@ -28,8 +28,8 @@ class Trevisan:
             max_eps : float
                 The total worst case error.
         """
-        self.config = _trevisan.TrevisanConfig(n, k, max_eps)
-        self.ext = _trevisan.Trevisan(self.config)
+        self.config = _extlib.TrevisanConfig(n, k, max_eps)
+        self.ext = _extlib.Trevisan(self.config)
 
     def extract(self, source: list[bool], seed: list[bool]) -> list[bool]:
         """

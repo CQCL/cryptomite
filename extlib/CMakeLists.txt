@@ -7,10 +7,10 @@ FetchContent_Declare(
   URL_HASH SHA256=c6160321dc98e6e1184cc791fbeadd2907bb4a0ce0e447f2ea4ff8ab56550913
 )
 FetchContent_MakeAvailable(pybind11)
-pybind11_add_module(_trevisan MODULE pytrevisan.cpp)
+pybind11_add_module(_extlib MODULE pyextlib.cpp)
 
-target_link_libraries(_trevisan PUBLIC trevisan)
+target_link_libraries(_extlib PUBLIC trevisan)
 
-install(TARGETS _trevisan DESTINATION .)
+install(TARGETS _extlib DESTINATION .)
 
 set(ignoreMe "${SKBUILD}")
