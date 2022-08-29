@@ -28,4 +28,6 @@ PYBIND11_MODULE(_extlib, m) {
     py::class_<NTT>(m, "NTT")
         .def(py::init<int>())
         .def("ntt", &NTT::ntt);
+
+    m.def("mul_vec", &mul_vec);
 }

@@ -6,7 +6,49 @@ from __future__ import annotations
 from typing import Tuple, List
 from math import sqrt
 
+from extlib._extlib import NTT, mul_vec
+
 __all__ = ["is_prime", "prime_facto", "na_set"]
+
+
+def log_2(n):
+    """ Take the base 2 logarithm of an integer. """
+    x = 0
+    while n > 0:
+        n >>= 1
+        x += 1
+    return x
+
+
+def conv(l: int, source1: list[int], source2: list[int]) -> list[int]:
+    """
+    Perform a cyclic convolution of size 2^l.
+
+    Parameters
+    ----------
+        l : int
+            log_2 of the size of the convolution
+        source1: list[int]
+            first vector
+        source2: list[int]
+            second vector
+
+    Returns
+    -------
+        list[int] : The convolved output.
+    """
+    L = 1 << l
+    print(len(source1), len(source2), L)
+    assert len(source1) == len(source2) == L
+    ntt = NTT(l)
+    ntt_source1 = ntt.ntt(source1, False)
+    ntt_source2 = ntt.ntt(source2, False)
+    P = (3 << 30) + 1
+    mul_source_slow = [(x * y) % P for x, y in zip(ntt_source1, ntt_source2)]
+    mul_source = mul_vec(ntt_source1, ntt_source2)
+    assert mul_source_slow == mul_source
+    conv_output = ntt.ntt(mul_source, True)
+    return conv_output
 
 
 def is_prime(n: int) -> bool:

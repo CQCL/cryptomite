@@ -4,8 +4,7 @@ strings of bits to produce some error-perfect random bits.
 """
 from __future__ import annotations
 
-from math import floor, log2
-from extlib.utils import na_set
+from extlib.utils import conv, log_2, na_set
 
 __all__ = ["Dodis"]
 
@@ -15,8 +14,21 @@ class Dodis:
     def __init__(self):
         """Create a Dodis Extractor"""
 
-    def extract(self) -> list[bool]:
+    def extract(self,
+                n: int,
+                m: int,
+                source1: list[bool],
+                source2: list[bool]) -> list[bool]:
         """Extract randomness"""
+        assert len(source1) == len(source2) == n
+        assert n >= m
+        l = log_2(2 * n - 2)
+        L = 1 << l
+        source1 = source1[0:1] + source1[1:][::-1] + [0] * (L - n)
+        source2 = source2 + [0] * (L - len(source2))
+        conv_output = conv(l, source1, source2)
+        output = [(conv_output[i] + conv_output[i + n]) & 1 for i in range(m)]
+        return output
 
     @classmethod
     def calc_params(input_length1: int, input_length2: int, entropy1: int,

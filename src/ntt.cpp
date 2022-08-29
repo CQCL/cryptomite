@@ -29,6 +29,14 @@ uint32_t mul(uint32_t a, uint32_t b) {
     return n % P;
 }
 
+std::vector<uint32_t> mul_vec(std::vector<uint32_t> a, std::vector<uint32_t> b) {
+    std::vector<uint32_t> c(a.size());
+    for (uint32_t i = 0; i < a.size(); i++) {
+        c[i] = mul(a[i], b[i]);
+    }
+    return c;
+}
+
 /**
  * Modular exponentiation: a^e mod P
  */
