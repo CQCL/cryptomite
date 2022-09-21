@@ -7,6 +7,7 @@ __all__ = ["Trevisan"]
 
 from extlib import _extlib
 
+
 class Trevisan:
     """Trevisan extractor"""
     def __init__(self, n: int, k: float, max_eps: float):
@@ -37,15 +38,15 @@ class Trevisan:
 
         Parameters
         ----------
-            source : list of bool
-                The input bits.
-            seed : list of bool
-                The seed bits.
+        source : list of bool
+            The input bits.
+        seed : list of bool
+            The seed bits.
 
         Returns
         -------
-            list of bool
-                The output bits from the extractor.
+        list of bool
+            The output bits from the extractor.
         """
         self.ext.load_source(source, seed)
 

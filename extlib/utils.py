@@ -3,12 +3,15 @@ This is a module.
 """
 from __future__ import annotations
 
-from typing import Tuple, List
+from typing import Literal, Union
 from math import sqrt
 
 from extlib._extlib import NTT, mul_vec
 
 __all__ = ["is_prime", "prime_facto", "na_set"]
+
+
+BitT = Union[Literal[0], Literal[1]]
 
 
 def log_2(n):
@@ -71,7 +74,7 @@ def is_prime(n: int) -> bool:
     return True
 
 
-def prime_facto(n: int) -> Tuple[List[int], List[int]]:
+def prime_facto(n: int) -> tuple[list[int], list[int]]:
     """
     Defines the factors of the prime numbers used.
     It is required for the later function: na_set.

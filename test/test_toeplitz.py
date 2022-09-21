@@ -33,4 +33,4 @@ toeplitz_testcases = [
 
 @pytest.mark.parametrize("n,m,x,y,z", toeplitz_testcases)
 def test_toeplitz(n, m, x, y, z):
-    assert Toeplitz().extract(n, m, x, y) == z
+    assert Toeplitz(n, m).extract(x, y) == z

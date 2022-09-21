@@ -35,4 +35,4 @@ dodis_testcases = [
 
 @pytest.mark.parametrize("n,m,x,y,z", dodis_testcases)
 def test_dodis(n, m, x, y, z):
-    assert Dodis().extract(n, m, x, y) == z
+    assert Dodis(n, m).extract(x, y) == z
