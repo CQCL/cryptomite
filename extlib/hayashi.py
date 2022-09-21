@@ -18,12 +18,12 @@ class Hayashi:
     def extract(self) -> list[bool]:
         """Extract randomness"""
 
-    @classmethod
+    @staticmethod
     def calc_parameters(seed_length: int, entropy_rate: float,
-                           error: int, q_proof: bool) -> tuple:
+                        error: int, q_proof: bool) -> tuple:
         """
         Calculate the input size and output size for this seeded extractor.
-    
+
         The seed_length must be in :py:func:`~.na_set`.
         The second input source must be a block min-entropy source, as defined
         by :term:`block-min-entropy`.
@@ -52,8 +52,8 @@ class Hayashi:
 
         seed_length = na_set(seed_length)
         c = 2
-        while log2(c-1) + (-(seed_length/2) * (1 + c * (entropy_rate - 1))
-                        ) <= error:
+        while (log2(c-1)
+               - seed_length / 2 * (1 + c * (entropy_rate - 1))) <= error:
             c += 1
         c -= 1
         output_length = (c - 1) * seed_length

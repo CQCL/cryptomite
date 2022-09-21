@@ -3,8 +3,9 @@ Toeplitz is a seeded extractor that takes two differing length,
 independent, strings of bits to produce some error-perfect random bits.
 """
 from __future__ import annotations
+from typing import cast
 
-from extlib.utils import BitT, conv, log_2
+from extlib.utils import BitT, BitsT, conv, log_2
 
 __all__ = ["Toeplitz"]
 
@@ -23,9 +24,7 @@ class Toeplitz:
         """
         self.n, self.m = n, m
 
-    def extract(self,
-                input1: list[BitT],
-                input2: list[BitT]) -> list[BitT]:
+    def extract(self, input1: BitsT, input2: BitsT) -> BitsT:
         """ Extract randomness.
 
         Parameters
@@ -46,13 +45,14 @@ class Toeplitz:
         assert n >= m
         l = log_2(2 * n)
         L = 1 << l
+        input1, input2 = list(input1), list(input2)
         input1 = input1 + [0] * (L - n)
         input2 = input2[:m] + [0] * (L - (m + n - 1)) + input2[m:]
         conv_output = conv(l, input1, input2)
-        output = [x & 1 for x in conv_output[:m]]
+        output: BitsT = [cast(BitT, x & 1) for x in conv_output[:m]]
         return output
 
-    @classmethod
+    @staticmethod
     def from_params(
             seed_length: int,
             input_length: int,

@@ -4,9 +4,10 @@ strings of bits to produce some error-perfect random bits.
 """
 from __future__ import annotations
 
-from math import floor
+from math import floor, log2
+from typing import cast
 
-from extlib.utils import BitT, conv, log_2, na_set
+from extlib.utils import BitsT, conv, log_2, na_set
 
 __all__ = ["Dodis"]
 
@@ -25,9 +26,7 @@ class Dodis:
         """
         self.n, self.m = n, m
 
-    def extract(self,
-                input1: list[BitT],
-                input2: list[BitT]) -> list[BitT]:
+    def extract(self, input1: BitsT, input2: BitsT) -> BitsT:
         """ Extract randomness.
 
         Parameters
@@ -47,13 +46,15 @@ class Dodis:
         assert n >= m
         l = log_2(2 * n - 2)
         L = 1 << l
+        input1, input2 = list(input1), list(input2)
         input1 = input1[0:1] + input1[1:][::-1] + [0] * (L - n)
         input2 = input2 + [0] * (L - len(input2))
         conv_output = conv(l, input1, input2)
-        output = [(conv_output[i] + conv_output[i + n]) & 1 for i in range(m)]
+        output: BitsT = cast(BitsT, [
+            (conv_output[i] + conv_output[i + n]) & 1 for i in range(m)])
         return output
 
-    @classmethod
+    @staticmethod
     def from_params(
             input_length1: int,
             input_length2: int,
@@ -98,7 +99,7 @@ class Dodis:
         output_length = floor(entropy1 + entropy2 - input_length + 1 + 2 * error)
         if q_proof:
             output_length = floor(0.2 * (entropy1 + entropy2 - input_length)
-                                  + 8 * error + 9 - 4 * log_2(3))
+                                  + 8 * error + 9 - 4 * log2(3))
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters.')
         return Dodis(n=input_length, m=output_length)

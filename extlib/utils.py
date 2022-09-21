@@ -3,7 +3,7 @@ This is a module.
 """
 from __future__ import annotations
 
-from typing import Literal, Union
+from typing import Literal, Sequence
 from math import sqrt
 
 from extlib._extlib import NTT, mul_vec
@@ -11,10 +11,11 @@ from extlib._extlib import NTT, mul_vec
 __all__ = ["is_prime", "prime_facto", "na_set"]
 
 
-BitT = Union[Literal[0], Literal[1]]
+BitT = Literal[0, 1]
+BitsT = Sequence[BitT]
 
 
-def log_2(n):
+def log_2(n: int) -> int:
     """ Take the base 2 logarithm of an integer. """
     x = 0
     while n > 0:
@@ -23,7 +24,7 @@ def log_2(n):
     return x
 
 
-def conv(l: int, source1: list[int], source2: list[int]) -> list[int]:
+def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
     """
     Perform a cyclic convolution of size 2^l.
 
@@ -31,9 +32,9 @@ def conv(l: int, source1: list[int], source2: list[int]) -> list[int]:
     ----------
         l : int
             log_2 of the size of the convolution
-        source1: list[int]
+        source1: list of int
             first vector
-        source2: list[int]
+        source2: list of int
             second vector
 
     Returns
