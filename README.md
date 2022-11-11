@@ -18,3 +18,14 @@ seed_bits = [randint(0, 1) for _ in range(ext.ext.get_seed_length())]
 
 output_bits = ext.extract(input_bits, seed_bits)
 ```
+
+## Documentation
+
+To build the docs, run
+
+```bash
+cd docs
+pip install -r requirements.txt
+make clean
+make html
+```
