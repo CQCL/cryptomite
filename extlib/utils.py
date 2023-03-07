@@ -3,12 +3,12 @@ This is a module.
 """
 from __future__ import annotations
 
-from typing import Literal, Sequence
 from math import sqrt
+from typing import Literal, Sequence
 
 from extlib._extlib import NTT, mul_vec
 
-__all__ = ["is_prime", "prime_facto", "na_set"]
+__all__ = ['is_prime', 'prime_facto', 'na_set']
 
 
 BitT = Literal[0, 1]

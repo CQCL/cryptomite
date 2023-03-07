@@ -1,4 +1,4 @@
 
-__all__ = ["dodis", "toeplitz", "trevisan"]
+__all__ = ['dodis', 'toeplitz', 'trevisan']
 
 from extlib import dodis, toeplitz, trevisan

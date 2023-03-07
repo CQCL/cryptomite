@@ -3,11 +3,12 @@ Toeplitz is a seeded extractor that takes two differing length,
 independent, strings of bits to produce some error-perfect random bits.
 """
 from __future__ import annotations
+
 from typing import cast
 
 from extlib.utils import BitT, BitsT, conv, log_2
 
-__all__ = ["Toeplitz"]
+__all__ = ['Toeplitz']
 
 
 class Toeplitz:
@@ -18,9 +19,9 @@ class Toeplitz:
         Parameters
         ----------
         n : int
-            The input size, also the number of columns in the Toeplitz matrix.
+            The input size (the number of columns in the matrix).
         m : int
-            The output size, also the number of rows in the Toeplitz matrix.
+            The output size (the number of rows in the matrix).
         """
         self.n, self.m = n, m
 
@@ -59,12 +60,12 @@ class Toeplitz:
             entropy: int,
             error: int) -> Toeplitz:
         """
-        Calculate the input size and output size for this seeded extractor.
+        Calculate the input size and output size for this extractor.
 
         The entropy input is a lower bound on the min-entropy of the
         related input string.
-        This function defines the input size and output size for this seeded
-        extractor.
+        This function defines the input size and output size for this
+        seeded extractor.
 
         Parameters
         ----------

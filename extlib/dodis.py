@@ -9,7 +9,7 @@ from typing import cast
 
 from extlib.utils import BitsT, conv, log_2, na_set
 
-__all__ = ["Dodis"]
+__all__ = ['Dodis']
 
 
 class Dodis:
@@ -67,8 +67,8 @@ class Dodis:
         extractor.
 
         The input_length -1 must be in :py:func:`~.na_set`.
-        The entropy inputs are a lower bound on the :term:`min-entropy` of the
-        related input string.
+        The entropy inputs are a lower bound on the :term:`min-entropy`
+        of the related input string.
 
         Parameters
         ----------
@@ -96,7 +96,8 @@ class Dodis:
         input_length = na_set(min(input_length1, input_length2) - 1) + 1
         entropy1 -= input_length1 - input_length
         entropy2 -= input_length2 - input_length
-        output_length = floor(entropy1 + entropy2 - input_length + 1 + 2 * error)
+        output_length = floor(
+            entropy1 + entropy2 - input_length + 1 + 2 * error)
         if q_proof:
             output_length = floor(0.2 * (entropy1 + entropy2 - input_length)
                                   + 8 * error + 9 - 4 * log2(3))

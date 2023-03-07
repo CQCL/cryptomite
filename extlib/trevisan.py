@@ -3,7 +3,7 @@ This is a module.
 """
 from __future__ import annotations
 
-__all__ = ["Trevisan"]
+__all__ = ['Trevisan']
 
 from extlib import _extlib
 
@@ -13,12 +13,12 @@ class Trevisan:
     def __init__(self, n: int, k: float, max_eps: float):
         """Create a Trevisan Extractor.
 
-        The extractor accepts `n` input bits of min-entropy `k` and `d` seed
-        bits and outputs `m` bits with total worst case error of `max_eps`.
-        The parameters for the weak designs and 1-bit extractors are computed
-        from `n`, `k`, and `max_eps`. To use the Trevisan extractor, provide
-        `n`, `k` and `max_eps` and call the method `get_seed_length()`
-        to get the required seed length.
+        The extractor accepts `n` input bits of min-entropy `k` and `d`
+        seed bits and outputs `m` bits with total worst case error of
+        `max_eps`. The parameters for the weak designs and 1-bit
+        extractors are computed from `n`, `k`, and `max_eps`. To use
+        the Trevisan extractor, provide `n`, `k` and `max_eps` and call
+        the method `get_seed_length()` to get the required seed length.
 
         Parameters
         ----------
