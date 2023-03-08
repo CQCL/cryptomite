@@ -1,4 +1,4 @@
-name: lint package
+name: Build, lint and test package
 
 on:
   push:
@@ -8,13 +8,14 @@ on:
 
 env:
   SRC_DIR: cryptomite
+  TEST_DIR: test
 
 jobs:
   lint:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: [ 3.8, 3.9, "3.10", "3.11" ]
+        python-version: [ 3.8, 3.9, "3.10" ]
     outputs:
       error-check: ${{ steps.error-check.conclusion }}
     steps:
@@ -37,3 +38,9 @@ jobs:
       run:
         # exit-zero treats all errors as warnings
         flake8 ${{ env.SRC_DIR }} --count --exit-zero --isolated --max-complexity=10 --max-doc-length=72 --select=C901,W505 --statistics
+    - name: Install package
+      run: pip install .
+    - name: Test package
+      run: |
+        pip install pytest
+        pytest ${{ env.TEST_DIR }}
