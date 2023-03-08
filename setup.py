@@ -5,6 +5,6 @@ from skbuild import setup
 
 setup(
     zip_safe=False,
-    packages=["extlib"],
-    cmake_install_dir="extlib",
+    packages=["cryptomite"],
+    cmake_install_dir="cryptomite",
 )

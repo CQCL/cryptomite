@@ -1,5 +1,5 @@
 import pytest
-from extlib.utils import von_neumann
+from cryptomite.utils import von_neumann
 
 vn_testcases = [
     ([], []),

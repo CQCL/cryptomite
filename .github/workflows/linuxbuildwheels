@@ -2,15 +2,15 @@
 
 set -evu
 
-cd /extlib
+cd /cryptomite
 mkdir wheelhouse
 mkdir audited
 
 for pyX in $PY_VERS
 do
-    cd /extlib
+    cd /cryptomite
     export PYEX=/opt/python/${pyX}/bin/python
     ${PYEX} -m pip install -U pip wheel scikit-build
     ${PYEX} setup.py bdist_wheel -d "tmpwheel_${pyX}"
-    auditwheel repair "tmpwheel_${pyX}/extlib-"*".whl" -w "audited/"
+    auditwheel repair "tmpwheel_${pyX}/cryptomite-"*".whl" -w "audited/"
 done

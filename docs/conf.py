@@ -20,7 +20,7 @@
 release = version = "[put version here]"
 
 
-project = 'extlib'
+project = 'cryptomite'
 copyright = '2021, 2022, Cambridge Quantum Computing Ltd.'
 author = 'Cambridge Quantum Team'
 

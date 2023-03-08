@@ -1,11 +1,11 @@
-extlib
+cryptomite
 ======
 
 This is a library. Stuff goes here.
 
 .. code-block:: bash
 
-   pip install extlib
+   pip install cryptomite
 
 .. toctree::
    :caption: Toolkit
@@ -13,4 +13,4 @@ This is a library. Stuff goes here.
 
    intro
    glossary
-   extlib
+   cryptomite

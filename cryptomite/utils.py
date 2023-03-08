@@ -6,7 +6,7 @@ from __future__ import annotations
 from math import sqrt
 from typing import Literal, Sequence
 
-from extlib._extlib import NTT, mul_vec
+from cryptomite._cryptomite import NTT, mul_vec
 
 __all__ = ['is_prime', 'prime_facto', 'na_set', 'von_neumann']
 

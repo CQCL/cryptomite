@@ -8,7 +8,7 @@ namespace py = pybind11;
 
 // PYBIND11_MAKE_OPAQUE(std::vector<int>);
 
-PYBIND11_MODULE(_extlib, m) {
+PYBIND11_MODULE(_cryptomite, m) {
     // optional module docstring
     m.doc() = "C++ Implementation of Randomness Extractors";
 

@@ -14,13 +14,13 @@ jobs:
     - name: set up container
       run: |
         docker create --name linux_build -i -v /:/host quay.io/pypa/manylinux2014_x86_64:latest /bin/bash
-        docker cp . linux_build:/extlib/
+        docker cp . linux_build:/cryptomite/
     - name: run build
       run: |
         docker start linux_build
-        docker exec -e PY_VERS="${PY_VERS}" linux_build /bin/bash -c "/extlib/.github/workflows/linuxbuildwheels"
+        docker exec -e PY_VERS="${PY_VERS}" linux_build /bin/bash -c "/cryptomite/.github/workflows/linuxbuildwheels"
         mkdir wheelhouse
-        docker cp linux_build:/extlib/audited/. wheelhouse/
+        docker cp linux_build:/cryptomite/audited/. wheelhouse/
     - uses: actions/upload-artifact@v2
       with:
         name: linux_wheels

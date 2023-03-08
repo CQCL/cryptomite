@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ['Trevisan']
 
-from extlib import _extlib
+from cryptomite import _cryptomite
 
 
 class Trevisan:
@@ -29,8 +29,8 @@ class Trevisan:
             max_eps : float
                 The total worst case error.
         """
-        self.config = _extlib.TrevisanConfig(n, k, max_eps)
-        self.ext = _extlib.Trevisan(self.config)
+        self.config = _cryptomite.TrevisanConfig(n, k, max_eps)
+        self.ext = _cryptomite.Trevisan(self.config)
 
     def extract(self, source: list[bool], seed: list[bool]) -> list[bool]:
         """

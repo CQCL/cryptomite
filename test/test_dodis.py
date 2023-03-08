@@ -1,5 +1,5 @@
 import pytest
-from extlib.dodis import Dodis
+from cryptomite.dodis import Dodis
 
 
 dodis_testcases = [

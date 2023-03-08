@@ -1,5 +1,5 @@
 import pytest
-from extlib.toeplitz import Toeplitz
+from cryptomite.toeplitz import Toeplitz
 
 
 toeplitz_testcases = [

@@ -1,37 +1,37 @@
-extlib package
+cryptomite package
 ==============
 
 Submodules
 ----------
 
-extlib.dodis module
+cryptomite.dodis module
 -------------------
 
-.. automodule:: extlib.dodis
+.. automodule:: cryptomite.dodis
    :members:
    :undoc-members:
    :show-inheritance:
 
-extlib.toeplitz module
+cryptomite.toeplitz module
 ----------------------
 
-.. automodule:: extlib.toeplitz
+.. automodule:: cryptomite.toeplitz
    :members:
    :undoc-members:
    :show-inheritance:
 
-extlib.trevisan module
+cryptomite.trevisan module
 ----------------------
 
-.. automodule:: extlib.trevisan
+.. automodule:: cryptomite.trevisan
    :members:
    :undoc-members:
    :show-inheritance:
 
-extlib.utils module
+cryptomite.utils module
 ----------------------
 
-.. automodule:: extlib.utils
+.. automodule:: cryptomite.utils
    :members:
    :undoc-members:
    :show-inheritance:
@@ -39,7 +39,7 @@ extlib.utils module
 Module contents
 ---------------
 
-.. automodule:: extlib
+.. automodule:: cryptomite
    :members:
    :undoc-members:
    :show-inheritance:

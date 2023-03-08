@@ -7,7 +7,7 @@ on:
   pull_request:
 
 env:
-  SRC_DIR: extlib
+  SRC_DIR: cryptomite
 
 jobs:
   lint:

@@ -7,4 +7,4 @@ cd ${GITHUB_WORKSPACE}
 PYVER=`python -c 'import sys; print(".".join(map(str, sys.version_info[:3])))'`
 python -m pip install -U pip wheel scikit-build delocate
 python setup.py bdist_wheel -d "${GITHUB_WORKSPACE}/tmpwheel_${PYVER}"
-delocate-wheel -v -w "${GITHUB_WORKSPACE}/wheelhouse/" "${GITHUB_WORKSPACE}/tmpwheel_${PYVER}/extlib-"*".whl"
+delocate-wheel -v -w "${GITHUB_WORKSPACE}/wheelhouse/" "${GITHUB_WORKSPACE}/tmpwheel_${PYVER}/cryptomite-"*".whl"

@@ -1,5 +1,5 @@
-# `extlib/version.py` is generated automatically by setuptools-scm
-extlib/version.py
+# `cryptomite/version.py` is generated automatically by setuptools-scm
+cryptomite/version.py
 
 # development files
 *.egg-info/
@@ -17,5 +17,5 @@ docs/_*
 # ignore scikit-build stuff
 _skbuild/
 */*.so
-extlib/lib
-extlib/include
+cryptomite/lib
+cryptomite/include

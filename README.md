@@ -1,4 +1,4 @@
-# Extlib
+# cryptomite
 
 An awesome random extraction library. Work in progress.
 
@@ -6,7 +6,7 @@ An awesome random extraction library. Work in progress.
 ## Example Usage
 
 ```python
-from extlib.trevisan import Trevisan
+from cryptomite.trevisan import Trevisan
 from random import randint
 
 n, m, max_eps = 1000, 200, 0.01

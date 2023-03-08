@@ -6,7 +6,7 @@ from __future__ import annotations
 
 from typing import cast
 
-from extlib.utils import BitT, BitsT, conv, log_2
+from cryptomite.utils import BitT, BitsT, conv, log_2
 
 __all__ = ['Toeplitz']
 

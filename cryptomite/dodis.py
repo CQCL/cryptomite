@@ -7,7 +7,7 @@ from __future__ import annotations
 from math import floor, log2
 from typing import cast
 
-from extlib.utils import BitsT, conv, log_2, na_set
+from cryptomite.utils import BitsT, conv, log_2, na_set
 
 __all__ = ['Dodis']
 
