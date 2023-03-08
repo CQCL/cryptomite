@@ -14,3 +14,4 @@ This is a library. Stuff goes here.
    intro
    glossary
    cryptomite
+   notebooks
