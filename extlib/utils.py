@@ -8,7 +8,7 @@ from typing import Literal, Sequence
 
 from extlib._extlib import NTT, mul_vec
 
-__all__ = ['is_prime', 'prime_facto', 'na_set']
+__all__ = ['is_prime', 'prime_facto', 'na_set', 'von_neumann']
 
 
 BitT = Literal[0, 1]
@@ -147,3 +147,8 @@ def na_set(k: int) -> int:
                 k = k - 2
                 break
     return k
+
+
+def von_neumann(bits: BitsT) -> BitsT:
+    """ Extract using Von-Neumann extractor. """
+    return [x for x, y in zip(bits[::2], bits[1::2]) if x == y]
