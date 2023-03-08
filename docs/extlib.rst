@@ -12,14 +12,6 @@ extlib.dodis module
    :undoc-members:
    :show-inheritance:
 
-extlib.hayashi module
----------------------
-
-.. automodule:: extlib.hayashi
-   :members:
-   :undoc-members:
-   :show-inheritance:
-
 extlib.toeplitz module
 ----------------------
 
