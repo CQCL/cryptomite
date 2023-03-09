@@ -1,5 +1,5 @@
 cryptomite
-======
+==========
 
 This is a library. Stuff goes here.
 
@@ -12,6 +12,7 @@ This is a library. Stuff goes here.
    :maxdepth: 4
 
    intro
-   glossary
    cryptomite
    notebooks
+   glossary
+   bibliography

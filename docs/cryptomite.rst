@@ -1,11 +1,11 @@
-cryptomite package
-==============
+API Reference
+=============
 
 Submodules
 ----------
 
 cryptomite.dodis module
--------------------
+-----------------------
 
 .. automodule:: cryptomite.dodis
    :members:
@@ -13,7 +13,7 @@ cryptomite.dodis module
    :show-inheritance:
 
 cryptomite.toeplitz module
-----------------------
+--------------------------
 
 .. automodule:: cryptomite.toeplitz
    :members:
@@ -21,7 +21,7 @@ cryptomite.toeplitz module
    :show-inheritance:
 
 cryptomite.trevisan module
-----------------------
+--------------------------
 
 .. automodule:: cryptomite.trevisan
    :members:
@@ -29,7 +29,7 @@ cryptomite.trevisan module
    :show-inheritance:
 
 cryptomite.utils module
-----------------------
+-----------------------
 
 .. automodule:: cryptomite.utils
    :members:
