@@ -5,6 +5,7 @@ independent, strings of bits to produce some error-perfect random bits.
 from __future__ import annotations
 
 from typing import cast
+from math import floor
 
 from cryptomite.utils import BitT, BitsT, conv, log_2
 
@@ -57,7 +58,8 @@ class Toeplitz:
     def from_params(
             seed_length: int,
             input_length: int,
-            entropy: int,
+            seed_entropy: int,
+            input_entropy: int,
             error: int) -> Toeplitz:
         """
         Calculate the input size and output size for this extractor.
@@ -70,10 +72,14 @@ class Toeplitz:
         Parameters
         ----------
         seed_length : int
-            The initial length of the seed.
+            The initial length of the seed. 
         input_length : int
             The initial length of second input source.
-        entropy : int
+        seed_entropy : int
+            The min-entropy of the seed. 
+            If the seed is uniform, this should equal 
+            seed_length.
+        input_entropy : int
             The min-entropy of second input source.
         error : int
             The acceptable maximum extractor error, in the form
@@ -84,10 +90,32 @@ class Toeplitz:
         Toeplitz
             The Toeplitz extractor.
         """
-        output_length = entropy + 2 * error
-        output_length = min(seed_length - input_length + 1,
-                            entropy + 2 * error)
-        assert seed_length >= output_length + input_length - 1
+        if error > 0:
+            raise Exception('''Cannot extract with these parameters.
+                             Error must be < 0.''')
+        if seed_length <= input_length: 
+            raise Exception('''Cannot extract with these parameters. 
+                               Increase seed length. The seed must 
+                               be longer than the input.''')
+        if seed_entropy >= seed_length:
+            output_length = input_entropy + 2 * error
+            assert output_length >= 0
+            if seed_length > output_length + input_length - 1:
+                seed_length == output_length + input_length - 1
+            if seed_length < output_length + input_length - 1:
+                while seed_length < output_length + input_length - 1:
+                    output_length -= 1
+        if seed_entropy < seed_length:
+            output_length = floor(1/3 * (2*seed_entropy - 2*input_length
+                                       + input_entropy + 2 * error +2))
+            if seed_length > output_length + input_length - 1:
+                # INCREASE INPUT LENGTH BY PADDING
+                input_length = seed_length - output_length + 1
+            if seed_length < output_length + input_length - 1:
+                while seed_length < output_length + input_length - 1:
+                    output_length -= 1
+        assert seed_length == output_length + input_length - 1
         if output_length <= 0:
-            raise Exception('Cannot extract with these parameters.')
+            raise Exception('''Cannot extract with these parameters. 
+                               Increase input_entropy and/or seed_entropy''')
         return Toeplitz(n=input_length, m=output_length)

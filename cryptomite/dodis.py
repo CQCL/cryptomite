@@ -93,6 +93,9 @@ class Dodis:
         Dodis
             The Dodis extractor.
         """
+        if error > 0:
+            raise Exception('''Cannot extract with these parameters.
+                             Error must be < 0.''')
         input_length = na_set(min(input_length1, input_length2) - 1) + 1
         entropy1 -= input_length1 - input_length
         entropy2 -= input_length2 - input_length
@@ -102,5 +105,6 @@ class Dodis:
             output_length = floor(0.2 * (entropy1 + entropy2 - input_length)
                                   + 8 * error + 9 - 4 * log2(3))
         if output_length <= 0:
-            raise Exception('Cannot extract with these parameters.')
+            raise Exception('''Cannot extract with these parameters.
+                               Increase entropy1 and/or entropy2.''')
         return Dodis(n=input_length, m=output_length)

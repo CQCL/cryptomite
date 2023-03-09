@@ -1,25 +1,45 @@
 Introduction
 ============
-Random numbers, or equivalently random bits, are a vital ingredient in numerous cryptographic and scientific applications. For example, in the former, the one-time-pad depends upon a secret random bit string to provide security and in the latter, Monte Carlo simulations require random numbers to ensure meaningful results.
+Randomness extractors are functions that map weakly random variables to near-uniform variables. 
+These functions have far-reaching applications including derandomisation in computational complexity theory, 
+list-decodable error-correcting codes and, 
+perhaps most notably, quantum cryptography. 
 
-In all of these applications it is best to use random numbers that are perfectly random – that is, random numbers (or bits) that allow no additional information about their underlying distribution to an unbounded physical observer before generation
-i.e. numbers that are equally probable to an unbounded observer who only obeys the laws of physics.
+Arguably started by Vazirani and others in their study of pseudo-random objects [.], randomness extractor theory was first formalized by Zuckerman and others[.]. 
+Since then, randomness extractors have been extensively studied, with numerous new constructions invented, 
+efficient implementations developed and improved parameters derived. 
+Recent years have seen interesting advances, with the introduction of new tools and frameworks that 
+paved the way for rapid progress on many long-standing open problems. 
 
-Despite the widespread need for so-called perfect random numbers, it is hard, if not impossible to generate them directly.
+In quantum cryptography, tasks such as key distribution and random number generations
+have a number of crucial (classical) post-processing subroutines.  
+Randomness extractors play a fundamental role in realizing these, for example, providing an 
+explicit technique to purify a shared raw secret key (known as privacy amplification) and/or
+distil near-perfect randomness from a weakly random raw output string (known as randomness extraction) in the presence of an adversary.\\
 
-Software and classical physical process (so-called True) random number generators (RNGs) are based o
-n computational hardness assumptions.
-Consequently, when considering a computationally-unbounded physical observer, these random number ge
-nerators are predictable and not sufficient.
+Recent years have seen major advances in theoretical and experimental quantum cryptography, including exciting quantum cryptography proof-of-concept demonstrations [.] and even commercialized products [.]. 
+Each of these require a suitable randomness extractor, considering the following features:
 
-Quantum random number generators (QRNG) aim to solve this problem by exploiting the probabilistic na
-ture of measurement outcomes in quantum mechanics.
-In the idealized case – exploiting this effect gives our desired resource: perfect random numbers.
-Unfortunately, there is a disparity between the theory and what is experimentally possible, meaning
-that isolating quantum effects is difficult if not unachievable.
-Imperfections in devices potentially allow an unbounded physical observer to attain additional infor
-mation about the output random numbers.
-For example, it is tough to guarantee there are no memory e.g. memory in photon detectors could allo
-w for exploitable correlations in the output random bits.
-More recently, a class of QRNG known as device-independent quantum random number generators (DIQRNG)
-, were introduced.
+Can it be implemented?: 
+There are numerous explicit randomness extractors - however 
+    many do not have a clear implementation. An end-to-end demonstration requires the randomness extractor algorithm to be written in software. 
+
+What are the initial required resources?: 
+Often, randomness extractors require 
+    auxiliary randomness, known as a seed, independent of any generated during the protocol. 
+    Some extractors allow for the seed to be any combination of i) short, ii) weakly random 
+    and iii) dependent to some degree.
+
+How well does it extract?: 
+Some randomness extractors are able to map weakly random variables to 
+    near-uniform random variables with only constant loss in length (implying exponentially small error) against both quantum 
+    and classical side information. 
+    Not all extractors have this property.
+
+What is its computational complexity?: 
+Many randomness extractors have generic 
+    polynomial computational complexity. For some applications, this may not be sufficient. 
+
+To facilitate these advances, we have developed \texttt{cryptomite}. 
+This software library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
+providing a trade-off of features that suits numerous practical use cases today. 

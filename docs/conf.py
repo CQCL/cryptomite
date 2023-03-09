@@ -21,7 +21,7 @@ release = version = "[put version here]"
 
 
 project = 'cryptomite'
-copyright = '2021, 2022, Cambridge Quantum Computing Ltd.'
+copyright = '2021, 2022, 2023, Cambridge Quantum Computing Ltd.'
 author = 'Cambridge Quantum Team'
 
 # -- General configuration ---------------------------------------------------
