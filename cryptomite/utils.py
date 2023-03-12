@@ -42,7 +42,6 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
         list[int] : The convolved output.
     """
     L = 1 << l
-    print(len(source1), len(source2), L)
     assert len(source1) == len(source2) == L
     ntt = NTT(l)
     ntt_source1 = ntt.ntt(source1, False)
