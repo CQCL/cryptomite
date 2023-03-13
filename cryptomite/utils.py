@@ -46,10 +46,7 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
     ntt = NTT(l)
     ntt_source1 = ntt.ntt(source1, False)
     ntt_source2 = ntt.ntt(source2, False)
-    P = (3 << 30) + 1
-    mul_source_slow = [(x * y) % P for x, y in zip(ntt_source1, ntt_source2)]
     mul_source = mul_vec(ntt_source1, ntt_source2)
-    assert mul_source_slow == mul_source
     conv_output = ntt.ntt(mul_source, True)
     return conv_output
 
