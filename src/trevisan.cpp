@@ -289,14 +289,13 @@ private:
     vector<bool> source_inp;
     vector<bool> source_seed;
 public:
-    int n, m, log_t, l;
+    int n, m, log_t;
     int t, k;
-    double log_eps;
     bool source_loaded = false;
 
     Trevisan(TrevisanConfig config) 
     : wd(config.m, config.log_t), ext(config.n, config.l), 
-      n(config.n), m(config.m), l(config.l) {};
+      n(config.n), m(config.m) {};
 
     int get_seed_length() {
         return wd.d;
@@ -333,8 +332,8 @@ public:
         }
 
         auto design_set = wd.get_s(i);
-        auto selected_bits = vector<bool>(2*l);
-        for (int i = 0; i < 2*l; i++) {
+        auto selected_bits = vector<bool>(design_set.size());
+        for (int i = 0; i < (int) design_set.size(); i++) {
             selected_bits[i] = source_seed[design_set[i]];
         }
 
