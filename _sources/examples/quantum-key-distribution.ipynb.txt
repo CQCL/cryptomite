@@ -1,0 +1,214 @@
+{
+ "cells": [
+  {
+   "cell_type": "markdown",
+   "id": "512571e4",
+   "metadata": {},
+   "source": [
+    "# Quantum Key Distribution\n",
+    "\n",
+    "In quantum key distribution (QKD), the use of randomness extractors is required to perform an essential subroutine known as privacy amplification.\n",
+    "\n",
+    "A general QKD protocol has the following setup. \n",
+    "\n",
+    "  * **Raw Key Exchange:** Raw key is exchanged between two parties. This is the only part of QKD that requires quantum resources.\n",
+    "  * **Key Sifting:** Certain rounds are selected which will be processed into shared secret key. \n",
+    "  * **Parameter Estimation:** Statistical parameters about the key exchange are estimated.\n",
+    "  * **Error Correction:** Both parties raw keys are manipulated into a jointly shared raw key, which may be partially known by an adversary.\n",
+    "  * **Privacy Amplification:** The jointly shared raw key is processed into a shorter, uniform and private shared secret key.\n",
+    "\n",
+    "Importantly, some of these steps assume the two parties have initial uniform (and sometimes private) shared randomness. \n"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "id": "4b899d5b",
+   "metadata": {},
+   "source": [
+    "## Experimental CV-QKD"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "raw",
+   "id": "9ff5db2e",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "Following the experimental results of the continuous variable protocol outlined in [Jea2022]_, we give pseudocode replicating the\n",
+    "privacy amplification step of their experiment using our extractor library. This example can be easily adapted to any explicit QKD protocol. \n",
+    "In this protocol, the quantum information is encoded into the amplitude and phase quadratures of the optical field. \n",
+    "Alice encodes random bits, which she generates with a quantum random number generator (QRNG), by modulating the optical signal field to obtain coherent states.\n",
+    "The QRNG used to generate random bits is based on [Gea2010]_, which consists of homodyne measurements of the vacuum state. \n",
+    "Bob decodes this information using coherent detection, facilitated by a so-called local oscillator.\n",
+    "For security against a quantum adversary, a quantum proof randomness extractor must be used for privacy amplification.\n",
+    "\n",
+    "All security parameters are set to :math:`10^{-10}`, except for correctness error after sifting, which is :math:`10^{-12}`.\n",
+    "The protocol starts with :math:`\\mathrm{N}=10^9` key generation rounds, which becomes :math:`\\mathrm{N_{sifted}}= 9.88 \\times 10^8` after sifting. \n",
+    "After parameter estimation and error correction using multi edge type low-density parity check error correcting codes, they are left with\n",
+    ":math:`\\mathrm{N_{EC}} = 8.69 \\times 10^8`. Since measurements are performed in 2 quadratures, \n",
+    "this gives :math:`n = 1.738 \\times 10^9` raw key bits for privacy amplification\n",
+    "on both Alice and Bob's side, which should be identical (up to the errors of prior protocol steps).\n",
+    "Based on the security parameters, a final secret key length of :math:`41378264` is calculated.\n",
+    "\n",
+    "The experimental implementation uses the :py:class:`.Toeplitz` extractor for privacy amplification, with a raw key input length \n",
+    "of :math:`n = 1.738 \\times 10^9`, an output of :math:`m = 41378264` and therefore, a required seed length of :math:`d = 1.738 \\times 10^9 + 41378263`."
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5f168725",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import cryptomite\n",
+    "def privacy_amplification(seed_bits, raw_key_bits, n = 1.738 * 10**9, m = 41378264):\n",
+    "  \"\"\" Perform privacy amplification for Practical \n",
+    "  CV-QKD with composable security.\n",
+    "\n",
+    "  Parameters\n",
+    "  ----------\n",
+    "  raw_key_bits : list of bits from \n",
+    "    the results of measurements in the QKD protocol, \n",
+    "    after sifting, error correction and parameter \n",
+    "    estimation. \n",
+    "  seed_bits : list of bits generated \n",
+    "    independently of the QKD protocol\n",
+    "    using a QRNG.\n",
+    "  n: integer, the number of raw key bits.\n",
+    "  m: integer, the number of output secret key bits.\n",
+    "\n",
+    "  Returns\n",
+    "  ---------\n",
+    "  list of bits\n",
+    "    The extracted output, which is \n",
+    "    the shared secret key.\n",
+    "  \"\"\"\n",
+    "  assert len(seed_bits) == n + m - 1\n",
+    "  assert len(raw_key_bits) == n\n",
+    "  toeplitz = cryptomite.Toeplitz(n, m)\n",
+    "  return toeplitz.extract(seed_bits, raw_key_bits)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "id": "0853ac83",
+   "metadata": {},
+   "source": [
+    "## Extensions\n",
+    "\n",
+    "The experimental demonstration above admits some improvements with our extractor library:\n",
+    "\n",
+    "### Extension 1: Toeplitz extraction"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "Since the QRNG generating the seed bits is device-dependent the quality of the seed relies on the correct characterization and perfect modelling of the device.\n",
+    "This opens the possibility that the seed bits may only be somewhat random.\n",
+    "In this case, a shared secret key can still be generated, but each user must use the :py:class:`.Toeplitz` two-source (as opposed to seeded) randomness extractor extension and adjust their output length accordingly. \n",
+    "Below we show an example of this when considering the QRNG generated seed bits have a min-entropy rate of 0.99 (as opposed to 1 if it had been perfectly random). \n",
+    "Let :math:`\\boldsymbol{x}, \\boldsymbol{y}` be the raw key bits and seed bits respectively, then the output length is adjusted to :math:`m' = \\frac{1}{3} (41378264 - 2 (k_1 - n) + 2)`, where :math:`k_1 = 0.99 \\times n` is the seed min-entropy.\n"
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "19ba95c7",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import cryptomite\n",
+    "from math import log2\n",
+    "def privacy_amplification_weak_seed(\n",
+    "        seed_bits,\n",
+    "        raw_key_bits,\n",
+    "        seed_entropy, \n",
+    "        input_entropy=41378264 - 2 * log2(10**(-10)),\n",
+    "        error = 10**(-10)):\n",
+    "\n",
+    "    m = cryptomite.Toeplitz.from_params(\n",
+    "            len(seed_bits),\n",
+    "            len(raw_key_bits),\n",
+    "            seed_entropy,\n",
+    "            input_entropy,\n",
+    "            log2(error))\n",
+    "\n",
+    "    toeplitz = cryptomite.Toeplitz(n, m)\n",
+    "    return toeplitz.extract(seed_bits, raw_key_bits)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "id": "181a9186",
+   "metadata": {},
+   "source": [
+    "### Extension 2: Trevisan Extraction"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "metadata": {
+    "raw_mimetype": "text/restructuredtext"
+   },
+   "source": [
+    "One could use the :py:class:`.Trevisan` extractor to generate almost the same amount of shared secret key, whilst reducing the size of the QRNG seed needed. \n",
+    "The cost of this reduction in seed size is computational complexity, so the privacy amplification algorithm would run much slower. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "16299478",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import cryptomite\n",
+    "from math import log2\n",
+    "def privacy_amplification_trevisan(\n",
+    "        seed_bits,\n",
+    "        raw_key_bits,\n",
+    "        seed_entropy, \n",
+    "        input_entropy = 41378264 - 2 * log2(10**(-10)),\n",
+    "        error = 10**(-10)):\n",
+    "\n",
+    "    m = cryptomite.Trevisan.from_params(\n",
+    "        len(seed_bits),\n",
+    "        len(raw_key_bits),\n",
+    "        seed_entropy,\n",
+    "        input_entropy,\n",
+    "        log2(error))\n",
+    "\n",
+    "    trevisan = cryptomite.Trevisan(n, m)\n",
+    "    return trevisan.extract(seed_bits, raw_key_bits)"
+   ]
+  }
+ ],
+ "metadata": {
+  "kernelspec": {
+   "display_name": "cqcenv",
+   "language": "python",
+   "name": "python3"
+  },
+  "language_info": {
+   "name": "python",
+   "version": "3.8.6 (default, Sep 28 2020, 04:41:02) \n[Clang 11.0.3 (clang-1103.0.32.62)]"
+  },
+  "vscode": {
+   "interpreter": {
+    "hash": "387a14a3015d91e6279f9d63ff94ea7a45fc0dbedceff8d7a2a520a51eb61771"
+   }
+  }
+ },
+ "nbformat": 4,
+ "nbformat_minor": 5
+}

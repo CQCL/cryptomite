@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; cryptomite [put version here] documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+        <script>window.MathJax = {"tex": {"inlineMath": [["$", "$"], ["\\(", "\\)"]], "processEscapes": true}, "options": {"ignoreHtmlClass": "tex2jax_ignore|mathjax_ignore|document", "processHtmlClass": "tex2jax_process|mathjax_process|math|output_area"}}</script>
+        <script defer="defer" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Examples" href="notebooks.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> cryptomite
+          </a>
+              <div class="version">
+                [put version here]
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.dodis">cryptomite.dodis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.toeplitz">cryptomite.toeplitz module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.trevisan">cryptomite.trevisan module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.utils">cryptomite.utils module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite">Module contents</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
+<li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">cryptomite</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/cryptomite.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  
+<style>
+/* CSS overrides for sphinx_rtd_theme */
+
+/* 24px margin */
+.nbinput.nblast.container,
+.nboutput.nblast.container {
+    margin-bottom: 19px;  /* padding has already 5px */
+}
+
+/* ... except between code cells! */
+.nblast.container + .nbinput.container {
+    margin-top: -19px;
+}
+
+.admonition > p:before {
+    margin-right: 4px;  /* make room for the exclamation icon */
+}
+
+/* Fix math alignment, see https://github.com/rtfd/sphinx_rtd_theme/pull/686 */
+.math {
+    text-align: unset;
+}
+</style>
+<section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Permalink to this headline"></a></h1>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-cryptomite.dodis">
+<span id="cryptomite-dodis-module"></span><h2>cryptomite.dodis module<a class="headerlink" href="#module-cryptomite.dodis" title="Permalink to this headline"></a></h2>
+<p>Dodis is a 2-source extractor that takes two equal length, independent,
+strings of bits to produce some error-perfect random bits.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.dodis.Dodis">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.dodis.</span></span><span class="sig-name descname"><span class="pre">Dodis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Dodis extractor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.dodis.Dodis.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Dodis Extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.</p>
+</dd>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.dodis.Dodis.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Extract randomness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+</dd>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bits</dt><dd><p>The extracted output.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.dodis.Dodis.from_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><span class="pre">cryptomite.dodis.Dodis</span></a></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the input size and output size for this 2-source
+extractor.</p>
+<p>The input_length -1 must be in <a class="reference internal" href="#cryptomite.utils.na_set" title="cryptomite.utils.na_set"><code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code></a>.
+The entropy inputs are a lower bound on the <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a>
+of the related input string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 1.</p>
+</dd>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 2.</p>
+</dd>
+<dt><strong>entropy1</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 1.</p>
+</dd>
+<dt><strong>entropy2</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 2.</p>
+</dd>
+<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
+</dd>
+<dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for quantum side
+information or not.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Dodis</dt><dd><p>The Dodis extractor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cryptomite.toeplitz">
+<span id="cryptomite-toeplitz-module"></span><h2>cryptomite.toeplitz module<a class="headerlink" href="#module-cryptomite.toeplitz" title="Permalink to this headline"></a></h2>
+<p>Toeplitz is a seeded extractor that takes two differing length,
+independent, strings of bits to produce some error-perfect random bits.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.toeplitz.</span></span><span class="sig-name descname"><span class="pre">Toeplitz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Toeplitz extractor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Toeplitz Extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The input size (the number of columns in the matrix).</p>
+</dd>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The output size (the number of rows in the matrix).</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Extract randomness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+</dd>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bits</dt><dd><p>The extracted output.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.from_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><span class="pre">cryptomite.toeplitz.Toeplitz</span></a></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the input size and output size for this extractor.</p>
+<p>The entropy input is a lower bound on the min-entropy of the
+related input string.
+This function defines the input size and output size for this
+seeded extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+</dd>
+<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+</dd>
+<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
+If the seed is uniform, this should equal
+seed_length.</p>
+</dd>
+<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+</dd>
+<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
+error = b where extractor error = 2 ^ b.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Toeplitz</dt><dd><p>The Toeplitz extractor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cryptomite.trevisan">
+<span id="cryptomite-trevisan-module"></span><h2>cryptomite.trevisan module<a class="headerlink" href="#module-cryptomite.trevisan" title="Permalink to this headline"></a></h2>
+<p>This is a module.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.trevisan.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Trevisan extractor</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Trevisan Extractor.</p>
+<p>The extractor accepts <cite>n</cite> input bits of min-entropy <cite>k</cite> and <cite>d</cite>
+seed bits and outputs <cite>m</cite> bits with total worst case error of
+<cite>max_eps</cite>. The parameters for the weak designs and 1-bit
+extractors are computed from <cite>n</cite>, <cite>k</cite>, and <cite>max_eps</cite>. To use
+the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite> and call
+the method <cite>get_seed_length()</cite> to get the required seed length.</p>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><blockquote>
+<div><p>The number of input bits.</p>
+</div></blockquote>
+<dl class="simple">
+<dt>k<span class="classifier">float</span></dt><dd><p>The amount of min-entropy in the input bits.</p>
+</dd>
+<dt>max_eps<span class="classifier">float</span></dt><dd><p>The total worst case error.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Load the source and the seed.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>source</strong><span class="classifier">list of bool</span></dt><dd><p>The input bits.</p>
+</dd>
+<dt><strong>seed</strong><span class="classifier">list of bool</span></dt><dd><p>The seed bits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bool</dt><dd><p>The output bits from the extractor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.from_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate the input size and output size for this extractor.</p>
+<p>The entropy input is a lower bound on the min-entropy of the
+related input string.
+This function defines the input size and output size for this
+seeded extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+</dd>
+<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+</dd>
+<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
+If the seed is uniform, this should equal
+seed_length.</p>
+</dd>
+<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+</dd>
+<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
+error = b where extractor error = 2 ^ b.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Trevisan</dt><dd><p>The Trevisan extractor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-cryptomite.utils">
+<span id="cryptomite-utils-module"></span><h2>cryptomite.utils module<a class="headerlink" href="#module-cryptomite.utils" title="Permalink to this headline"></a></h2>
+<p>This is a module.</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.is_prime">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">is_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#is_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.is_prime" title="Permalink to this definition"></a></dt>
+<dd><p>Checks an integer for primality.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>integer to check for primality</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt><strong>bool</strong><span class="classifier">Whether n is prime.</span></dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.na_set">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">na_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#na_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.na_set" title="Permalink to this definition"></a></dt>
+<dd><p>Ensure the number of runs falls within the correct set:
+i.e. that we run enough times.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is in the set.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>This number +1 is in na_set.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.prime_facto">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">prime_facto</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#prime_facto"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.prime_facto" title="Permalink to this definition"></a></dt>
+<dd><p>Defines the factors of the prime numbers used.
+It is required for the later function: na_set.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>number to check</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list :</dt><dd><p>Returns factors and powers.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.von_neumann">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">von_neumann</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">bits</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#von_neumann"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.von_neumann" title="Permalink to this definition"></a></dt>
+<dd><p>Extract using Von-Neumann extractor.</p>
+</dd></dl>
+
+</section>
+<section id="module-cryptomite">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-cryptomite" title="Permalink to this headline"></a></h2>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="intro.html" class="btn btn-neutral float-left" title="Introduction" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, 2022, 2023, Cambridge Quantum Computing Ltd..</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
