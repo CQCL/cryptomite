@@ -50,9 +50,9 @@
 <li class="toctree-l1"><a class="reference internal" href="../cryptomite.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Quantum Key Distribution</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Experimental-CV-QKD">Experimental CV-QKD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Experimental-Continuous-Variable-QKD">Experimental Continuous Variable QKD</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Extensions">Extensions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Extension-1:-Toeplitz-extraction">Extension 1: Toeplitz extraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Extension-1:-Toeplitz-2-source-extraction">Extension 1: Toeplitz 2-source extraction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Extension-2:-Trevisan-Extraction">Extension 2: Trevisan Extraction</a></li>
 </ul>
 </li>
@@ -371,43 +371,35 @@ div.rendered_html tbody tr:hover {
 <li><p><strong>Error Correction:</strong> Both parties raw keys are manipulated into a jointly shared raw key, which may be partially known by an adversary.</p></li>
 <li><p><strong>Privacy Amplification:</strong> The jointly shared raw key is processed into a shorter, uniform and private shared secret key.</p></li>
 </ul>
-<p>Importantly, some of these steps assume the two parties have initial uniform (and sometimes private) shared randomness.</p>
-<section id="Experimental-CV-QKD">
-<h2>Experimental CV-QKD<a class="headerlink" href="#Experimental-CV-QKD" title="Permalink to this headline"></a></h2>
-<p>Following the experimental results of the continuous variable protocol outlined in <a class="reference internal" href="../bibliography.html#jea2022" id="id1"><span>[Jea2022]</span></a>, we give pseudocode replicating the
-privacy amplification step of their experiment using our extractor library. This example can be easily adapted to any explicit QKD protocol.
-In this protocol, the quantum information is encoded into the amplitude and phase quadratures of the optical field.
-Alice encodes random bits, which she generates with a quantum random number generator (QRNG), by modulating the optical signal field to obtain coherent states.
-The QRNG used to generate random bits is based on <a class="reference internal" href="../bibliography.html#gea2010" id="id2"><span>[Gea2010]</span></a>, which consists of homodyne measurements of the vacuum state.
-Bob decodes this information using coherent detection, facilitated by a so-called local oscillator.
-For security against a quantum adversary, a quantum proof randomness extractor must be used for privacy amplification.</p>
-<p>All security parameters are set to <span class="math notranslate nohighlight">\(10^{-10}\)</span>, except for correctness error after sifting, which is <span class="math notranslate nohighlight">\(10^{-12}\)</span>.
-The protocol starts with <span class="math notranslate nohighlight">\(\mathrm{N}=10^9\)</span> key generation rounds, which becomes <span class="math notranslate nohighlight">\(\mathrm{N_{sifted}}= 9.88 \times 10^8\)</span> after sifting.
-After parameter estimation and error correction using multi edge type low-density parity check error correcting codes, they are left with
-<span class="math notranslate nohighlight">\(\mathrm{N_{EC}} = 8.69 \times 10^8\)</span>. Since measurements are performed in 2 quadratures,
-this gives <span class="math notranslate nohighlight">\(n = 1.738 \times 10^9\)</span> raw key bits for privacy amplification
-on both Alice and Bob’s side, which should be identical (up to the errors of prior protocol steps).
-Based on the security parameters, a final secret key length of <span class="math notranslate nohighlight">\(41378264\)</span> is calculated.</p>
-<p>The experimental implementation uses the <a class="reference internal" href="../cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractor for privacy amplification, with a raw key input length
-of <span class="math notranslate nohighlight">\(n = 1.738 \times 10^9\)</span>, an output of <span class="math notranslate nohighlight">\(m = 41378264\)</span> and therefore, a required seed length of <span class="math notranslate nohighlight">\(d = 1.738 \times 10^9 + 41378263\)</span>.</p>
+<section id="Experimental-Continuous-Variable-QKD">
+<h2>Experimental Continuous Variable QKD<a class="headerlink" href="#Experimental-Continuous-Variable-QKD" title="Permalink to this headline"></a></h2>
+<p>We consider the continuous variable QKD protocol <a class="reference internal" href="../bibliography.html#jea2022" id="id1"><span>[Jea2022]</span></a>, and give code replicating the
+privacy amplification step of their experiment using our extractor library.
+This example can be easily adapted to any explicit QKD protocol.
+In this protocol Alice encodes (locally generated) random bits into the amplitude and phase quadratures of the optical field to produce coherent states.
+When Bob receives this, he decodes using coherent detection facilitated by a local oscillator.
+Alice and Bob then perform parameter estimation, error reconciliation and finally, privacy amplification.
+The protocol security is considered against quantum side information only, so the randomness extractor must be quantum-proof.</p>
+<p>We focus on the privacy amplification step (since this is the relevant subroutine).
+The experimental implementation uses the <a class="reference internal" href="../cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractor for privacy amplification, with an input length
+of <span class="math notranslate nohighlight">\(n = 1.738 \times 10^9\)</span> (after sifting and error reconciliation),
+an output of <span class="math notranslate nohighlight">\(m = 41378264\)</span>, extractor error of <span class="math notranslate nohighlight">\(\epsilon = 10^{-10}\)</span> and a seed length of <span class="math notranslate nohighlight">\(d = 1.738 \times 10^9 + 41378263\)</span>.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
 <span class="k">def</span> <span class="nf">privacy_amplification</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mf">1.738</span> <span class="o">*</span> <span class="mi">10</span><span class="o">**</span><span class="mi">9</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">41378264</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot; Perform privacy amplification for Practical</span>
-<span class="sd">  CV-QKD with composable security.</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot; Perform privacy amplification for example QKD.</span>
 
 <span class="sd">  Parameters</span>
 <span class="sd">  ----------</span>
+<span class="sd">  seed_bits : list of (uniformly random) bits statistically</span>
+<span class="sd">    independently of the bits generated in the protocol.</span>
 <span class="sd">  raw_key_bits : list of bits from</span>
 <span class="sd">    the results of measurements in the QKD protocol,</span>
 <span class="sd">    after sifting, error correction and parameter</span>
 <span class="sd">    estimation.</span>
-<span class="sd">  seed_bits : list of bits generated</span>
-<span class="sd">    independently of the QKD protocol</span>
-<span class="sd">    using a QRNG.</span>
 <span class="sd">  n: integer, the number of raw key bits.</span>
 <span class="sd">  m: integer, the number of output secret key bits.</span>
 
@@ -417,8 +409,6 @@ of <span class="math notranslate nohighlight">\(n = 1.738 \times 10^9\)</span>, 
 <span class="sd">    The extracted output, which is</span>
 <span class="sd">    the shared secret key.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="o">+</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
-  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_key_bits</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span>
   <span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">)</span>
 </pre></div>
@@ -428,13 +418,12 @@ of <span class="math notranslate nohighlight">\(n = 1.738 \times 10^9\)</span>, 
 <section id="Extensions">
 <h2>Extensions<a class="headerlink" href="#Extensions" title="Permalink to this headline"></a></h2>
 <p>The experimental demonstration above admits some improvements with our extractor library:</p>
-<section id="Extension-1:-Toeplitz-extraction">
-<h3>Extension 1: Toeplitz extraction<a class="headerlink" href="#Extension-1:-Toeplitz-extraction" title="Permalink to this headline"></a></h3>
-<p>Since the QRNG generating the seed bits is device-dependent the quality of the seed relies on the correct characterization and perfect modelling of the device.
-This opens the possibility that the seed bits may only be somewhat random.
-In this case, a shared secret key can still be generated, but each user must use the <a class="reference internal" href="../cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> two-source (as opposed to seeded) randomness extractor extension and adjust their output length accordingly.
-Below we show an example of this when considering the QRNG generated seed bits have a min-entropy rate of 0.99 (as opposed to 1 if it had been perfectly random).
-Let <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y}\)</span> be the raw key bits and seed bits respectively, then the output length is adjusted to <span class="math notranslate nohighlight">\(m' = \frac{1}{3} (41378264 - 2 (k_1 - n) + 2)\)</span>, where <span class="math notranslate nohighlight">\(k_1 = 0.99 \times n\)</span> is the seed min-entropy.</p>
+<section id="Extension-1:-Toeplitz-2-source-extraction">
+<h3>Extension 1: Toeplitz 2-source extraction<a class="headerlink" href="#Extension-1:-Toeplitz-2-source-extraction" title="Permalink to this headline"></a></h3>
+<p>In this demonstration, Alice generates the seed used for privacy amplification with a quantum random number generator (QRNG) based on <a class="reference internal" href="../bibliography.html#gea2010" id="id2"><span>[Gea2010]</span></a>.
+The quality of the randomness generated by QRNG is dependent on the correct modelling and characterization of the hardware, which opens the possibility that the seed may only be weakly random.
+In this case, a shared secret key can still be generated, but each user must use the <a class="reference internal" href="../cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> as a two-source (as opposed to seeded) randomness extractor and adjust the output length accordingly.
+Below we show an example of this when considering the QRNG generated seed is only <span class="math notranslate nohighlight">\(90\%\)</span> random (as opposed to perfectly random).</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
@@ -464,7 +453,7 @@ Let <span class="math notranslate nohighlight">\(\boldsymbol{x}, \boldsymbol{y}\
 <section id="Extension-2:-Trevisan-Extraction">
 <h3>Extension 2: Trevisan Extraction<a class="headerlink" href="#Extension-2:-Trevisan-Extraction" title="Permalink to this headline"></a></h3>
 <p>One could use the <a class="reference internal" href="../cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor to generate almost the same amount of shared secret key, whilst reducing the size of the QRNG seed needed.
-The cost of this reduction in seed size is computational complexity, so the privacy amplification algorithm would run much slower.</p>
+The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run much slower.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>

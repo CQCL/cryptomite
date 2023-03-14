@@ -100,10 +100,29 @@
 </style>
 <section id="cryptomite">
 <h1>cryptomite<a class="headerlink" href="#cryptomite" title="Permalink to this headline"></a></h1>
-<p>This is a library. Stuff goes here.</p>
+<p><code class="code docutils literal notranslate"><span class="pre">cryptomite</span></code> is a modular, extensible high-level Python library
+for randomness extractions, created by Quantinuum’s Quantum Cryptography team.
+At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
+providing a trade-off of features that suits numerous practical use cases today.</p>
+<p>The performance critical parts of the library (e.g. NTT) are implemented in C++, but the rest of the
+library (e.g. parameter estimation) is implemented in Python for accessibility and ease of installation.</p>
+<p>The package is available for Python 3.8 and higher on Mac, Windows and Linux. To install, type:</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>pip<span class="w"> </span>install<span class="w"> </span>cryptomite
 </pre></div>
 </div>
+<p>To see the example notebooks, go to Examples.</p>
+<section id="user-support">
+<h2>User Support<a class="headerlink" href="#user-support" title="Permalink to this headline"></a></h2>
+<p>If you need help with <code class="code docutils literal notranslate"><span class="pre">cryptomite</span></code> or you think you have found a bug, please send an email to
+<a class="reference external" href="mailto:qcrypto&#37;&#52;&#48;quantinuum&#46;com">qcrypto<span>&#64;</span>quantinuum<span>&#46;</span>com</a>.</p>
+</section>
+<section id="license">
+<h2>License<a class="headerlink" href="#license" title="Permalink to this headline"></a></h2>
+<p>Licensed under XXXX?</p>
+</section>
+<section id="how-to-cite">
+<h2>How to Cite<a class="headerlink" href="#how-to-cite" title="Permalink to this headline"></a></h2>
+<p>If you use <code class="code docutils literal notranslate"><span class="pre">cryptomite</span></code> for your research, please cite the accompanying paper [.]:</p>
 <div class="toctree-wrapper compound">
 <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
 <ul>
@@ -119,9 +138,9 @@
 </li>
 <li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="examples/quantum-key-distribution.html">Quantum Key Distribution</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Experimental-CV-QKD">Experimental CV-QKD</a></li>
+<li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Experimental-Continuous-Variable-QKD">Experimental Continuous Variable QKD</a></li>
 <li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Extensions">Extensions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-1:-Toeplitz-extraction">Extension 1: Toeplitz extraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-1:-Toeplitz-2-source-extraction">Extension 1: Toeplitz 2-source extraction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-2:-Trevisan-Extraction">Extension 2: Trevisan Extraction</a></li>
 </ul>
 </li>
@@ -137,6 +156,7 @@
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
 </div>
+</section>
 </section>
 
 

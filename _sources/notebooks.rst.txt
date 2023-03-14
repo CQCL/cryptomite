@@ -3,8 +3,8 @@
 Examples
 ========
 
-In this section we give some explicit examples using ``cryptomite`` on recent experimental quantum cryptography demonstrations.
-Since our package is easy to use, efficient and numerically precise, it is perfect for these applications. 
+Here we give examples using ``cryptomite`` for the randomness extraction step in recent experimental quantum cryptography demonstrations, specifically, the tasks of 
+quantum key distribution and quantum random number generation.
 We also highlight some extensions in these examples, whereby the results of these previous works could be improved by some combination of 
 (i) relaxing assumptions and (ii) speeding-up implementation.
 

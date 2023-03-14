@@ -357,34 +357,35 @@ div.rendered_html tbody tr:hover {
 </style>
 <section id="Quantum-Random-Number-Generation">
 <h1>Quantum Random Number Generation<a class="headerlink" href="#Quantum-Random-Number-Generation" title="Permalink to this headline"></a></h1>
-<p>In order to showcase our extractor library once more, we consider another use-case: quantum random number generation (QRNG). IN QRNG, randomness extraction is used to ensure the output is only the true randomness generated from quantum mechanical effects, not including classical noise which is only computationally random.</p>
+<p>In quantum random number generation (QRNG), randomness extraction is used to ensure the final output is only from the randomness certified by some estimation process, which accounts for adversarial information. Here, we give an example of how our library can be used off-the-shelf in this scenario.</p>
 <section id="Semi-Device-Independent-Heterodyne-Based-QRNG">
 <h2>Semi-Device-Independent Heterodyne-Based QRNG<a class="headerlink" href="#Semi-Device-Independent-Heterodyne-Based-QRNG" title="Permalink to this headline"></a></h2>
-<p>We consider the semi-device-independent quantum random number generator based on heterodyne detection <a class="reference internal" href="../bibliography.html#atvv2021" id="id1"><span>[ATVV2021]</span></a>. In this scheme, the authors introduce a semi-DI QRNG based on heterodyne detection that assumes an upper bound on the amount of energy generated states have, there is no I.I.D type assumption on these states. The implementation boast high generation rates with a relatively simple experimental setup. It is based on the prepare-and-measure scenario; therefore, no entanglement
-generation is necessary. The protocol security is considered against classical side information only.</p>
-<p>In order to calculate the amount of output generated randomness, they fix the security parameters associated to the randomness extractor, <span class="math notranslate nohighlight">\(\epsilon_{RE}\)</span>, as <span class="math notranslate nohighlight">\(10^{-10}\)</span>, and the global protocol security parameter <span class="math notranslate nohighlight">\(\epsilon_{prot}\)</span>to be <span class="math notranslate nohighlight">\(\leq 10^{-5}\)</span>. The block length they choose for finite analysis is <span class="math notranslate nohighlight">\(6.5 \cdot 10^{9}\)</span>, which is chosen to minimize the finite size correction terms. The experimental results give a min-entropy rate of <span class="math notranslate nohighlight">\(0.09\)</span> bits per trial,
-which is reduced to <span class="math notranslate nohighlight">\(0.08943\)</span> once accounting for finite size corrections. This gives a total entropy of <span class="math notranslate nohighlight">\(k = 0.08943\)</span> and <span class="math notranslate nohighlight">\(n = 581295000\)</span>.</p>
-<p>The experimental demonstration uses the Toeplitz extractor, which can give an output length of <span class="math notranslate nohighlight">\(\geq 581294933\)</span>, given the extractor error is <span class="math notranslate nohighlight">\(\leq 10^{-10}\)</span>. This requires a seed of <span class="math notranslate nohighlight">\(7081294934\)</span> bits and for the raw randomness input length of <span class="math notranslate nohighlight">\(6.5 \cdot 10^{9}\)</span>.</p>
-<div class="nbinput nblast docutils container">
+We consider the semi-device-independent quantum random number generator based on heterodyne detection [ATVV2021]_.
+This protocol is a semi-device-independent QRNG based on heterodyne detection that assumes an upper
+bound on the amount of energy generated states have, avoiding an identically and independently distribution type assumption on generated states.
+The protocol security is considered against classical side information only, so the randomness extractor need only be classical-proof.
+
+The experimental demonstration uses the :py:class:`.Toeplitz` extractor, with an input length of :math:`n = 6500000000`,
+input :term:`min-entropy <symbol>` of :math:`k= 581295000`, output length of :math:`m = 581294933`, extractor error of :math:`\epsilon = 10^{-10}` and
+seed length :math:`d = 7081294932`.<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log2</span><span class="p">,</span> <span class="n">floor</span>
-<span class="k">def</span> <span class="nf">randomness_extraction</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">6500000000</span><span class="p">,</span> <span class="n">k</span> <span class="o">=</span> <span class="mi">581295000</span><span class="p">,</span> <span class="n">epsilon</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**-</span><span class="mi">10</span><span class="p">):</span>
-<span class="w">  </span><span class="sd">&quot;&quot;&quot; Perform randomness extraction for semi-DI QRNG.</span>
+<span class="k">def</span> <span class="nf">randomness_extraction</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">6500000000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">581294933</span><span class="p">):</span>
+<span class="w">  </span><span class="sd">&quot;&quot;&quot; Perform randomness extraction for example QRNG.</span>
 
 <span class="sd">  Parameters</span>
 <span class="sd">  ----------</span>
-<span class="sd">  seed_bits : list of bits generated</span>
-<span class="sd">    independently of the QKD protocol</span>
-<span class="sd">    using a QRNG.</span>
+<span class="sd">  seed_bits : list of (uniformly random) bits statistically</span>
+<span class="sd">    independently of the bits generated in the protocol.</span>
 <span class="sd">  raw_randomness : list of bits from</span>
 <span class="sd">    the results of measurements in the QRNG</span>
 <span class="sd">    protocol based on heterodyne measurements.</span>
 <span class="sd">  n: integer, the number of raw randomness bits.</span>
-<span class="sd">  k: total min-entropy of the raw randomness.</span>
-<span class="sd">  epsilon: extractor error parameter.</span>
+<span class="sd">  m: integer, the number of extractable bits, given</span>
+<span class="sd">    the error and min-entropy.</span>
 
 <span class="sd">  Returns</span>
 <span class="sd">  ---------</span>
@@ -392,9 +393,6 @@ which is reduced to <span class="math notranslate nohighlight">\(0.08943\)</span
 <span class="sd">    The extracted output, which is</span>
 <span class="sd">    the shared secret key.</span>
 <span class="sd">  &quot;&quot;&quot;</span>
-  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span> <span class="o">+</span> <span class="n">m</span> <span class="o">-</span> <span class="mi">1</span>
-  <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_randomness</span><span class="p">)</span> <span class="o">==</span> <span class="n">n</span>
-  <span class="n">m</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">2</span><span class="o">*</span><span class="n">log2</span><span class="p">(</span><span class="n">epsilon</span><span class="p">))</span>
   <span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
   <span class="k">return</span> <span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">)</span>
 </pre></div>
