@@ -20,10 +20,10 @@ To see the example notebooks, go to Examples.
 
 User Support
 ============
-If you need help with :code:`cryptomite` or you think you have found a bug, please send an email to 
+If you need help with :code:`cryptomite` or you think you have found a bug, please email 
 qcrypto@quantinuum.com. 
 
-License
+Licence
 =======
 Licensed under XXXX?
 
@@ -37,6 +37,7 @@ If you use :code:`cryptomite` for your research, please cite the accompanying pa
    :maxdepth: 4
 
    intro
+   gettingstarted
    cryptomite
    notebooks
    glossary

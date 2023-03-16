@@ -47,6 +47,7 @@
               <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Selecting a Randomness Extractor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cryptomite.html">API Reference</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Quantum Key Distribution</a><ul>
@@ -453,28 +454,19 @@ Below we show an example of this when considering the QRNG generated seed is onl
 <section id="Extension-2:-Trevisan-Extraction">
 <h3>Extension 2: Trevisan Extraction<a class="headerlink" href="#Extension-2:-Trevisan-Extraction" title="Permalink to this headline"></a></h3>
 <p>One could use the <a class="reference internal" href="../cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor to generate almost the same amount of shared secret key, whilst reducing the size of the QRNG seed needed.
-The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run much slower.</p>
+The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run slower.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log2</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
 <span class="k">def</span> <span class="nf">privacy_amplification_trevisan</span><span class="p">(</span>
         <span class="n">seed_bits</span><span class="p">,</span>
         <span class="n">raw_key_bits</span><span class="p">,</span>
-        <span class="n">seed_entropy</span><span class="p">,</span>
-        <span class="n">input_entropy</span> <span class="o">=</span> <span class="mi">41378264</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)),</span>
+        <span class="n">raw_key_entropy</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mi">41378264</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">))),</span>
         <span class="n">error</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)):</span>
-
-    <span class="n">m</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
-        <span class="nb">len</span><span class="p">(</span><span class="n">raw_key_bits</span><span class="p">),</span>
-        <span class="n">seed_entropy</span><span class="p">,</span>
-        <span class="n">input_entropy</span><span class="p">,</span>
-        <span class="n">log2</span><span class="p">(</span><span class="n">error</span><span class="p">))</span>
-
-    <span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+    <span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">raw_key_entropy</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">trevisan</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">)</span>
 </pre></div>
 </div>
