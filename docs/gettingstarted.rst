@@ -2,7 +2,7 @@ Selecting a Randomness Extractor
 ===============
 In the following, we use the notation :math:`n1, n2` to denote the length and :math:`k1, k2` to denote the min-entropy of 
 any first or second input string respectively. Additionally, :math:`m` denotes the length of an output string, :math:`\epsilon` 
-the extractor error and :math:`\bigO(.)` denotes the asymptotic behaviour of a function.
+the extractor error and :math:`O(.)` denotes the asymptotic behaviour of a function.
 
 :code:`Dodis`
 -----------------
@@ -33,8 +33,8 @@ against quantum side information.
 -----------------
 The Trevisan extractor is a seeded extractor, meaning that it requires two independent bit 
 strings of randomness, where one is already (near-)perfectly random (called a seed).
-It requires a seed length of :math:`n2 = \bigO(\log_2 (n1))` and outputs approximately :math:`m \approx k1` when considering classical or quantum side information.
-Our implementation of this extractor has :math:`\bigO(n1^2)` computational complexity. 
+It requires a seed length of :math:`n2 = O(\log_2 (n1))` and outputs approximately :math:`m \approx k1` when considering classical or quantum side information.
+Our implementation of this extractor has :math:`O(n1^2)` computational complexity. 
 We also offer a two-source extension of this extractor, whereby the error scales with :math:`\epsilon \rightarrow 2^{n2 - k2} \epsilon`, 
 where :math:`n2-k2` is the difference between the seed length and the seed min-entropy.  
 

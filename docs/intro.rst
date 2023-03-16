@@ -11,7 +11,8 @@ Randomness extractors play a fundamental role in realizing these, for example, p
 explicit technique to purify a shared raw secret key (known as privacy amplification) and/or
 distil near-perfect randomness from a weakly random raw output string (known as randomness extraction) in the presence of an adversary.
 
-Recent years have seen major advances in theoretical and experimental quantum cryptography, including exciting proof-of-concept demonstrations [.] and even commercialized products [.]. 
+Recent years have seen major advances in theoretical and experimental quantum cryptography, including exciting proof-of-concept 
+demonstrations and even commercialized products. 
 All of these require a suitable randomness extractor with the appropriate implementation complexity, loss/error and security.
 
 To facilitate these advances, we have developed :code:`cryptomite`, a software library with multiple randomness extractor implementations.

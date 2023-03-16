@@ -78,7 +78,7 @@ Glossary
         where :math:`U_m` is the uniform distribution on :math:`\{0,1\}^m`. 
         In words, a seeded extractor is a randomized function that maps a random variable :math:`X` to a new variable :math:`\mathrm{Ext}_s(X, S)` that is near-perfect, as defined in :term:`near-perfect randomness`.
 
-    2-weak-source randomness extractor
+    2-source randomness extractor
         A :math:`(k_1, k_2, \epsilon, n_1, n_2, m)`-2-weak-source randomness extractor is a function 
     
         .. math::
