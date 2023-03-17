@@ -17,7 +17,9 @@
 
 # -- Project information -----------------------------------------------------
 
-release = version = "[put version here]"
+from cryptomite import __version__
+
+release = version = __version__
 
 
 project = 'cryptomite'
