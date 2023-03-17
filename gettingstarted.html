@@ -48,10 +48,10 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Selecting a Randomness Extractor</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="#dodis"><code class="code docutils literal notranslate"><span class="pre">Dodis</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#toeplitz"><code class="code docutils literal notranslate"><span class="pre">Toeplitz</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#trevisan"><code class="code docutils literal notranslate"><span class="pre">Trevisan</span></code></a></li>
-<li class="toctree-l2"><a class="reference internal" href="#von-neumann"><code class="code docutils literal notranslate"><span class="pre">Von</span> <span class="pre">Neumann</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a></li>
+<li class="toctree-l2"><a class="reference internal" href="#von-neumann"><code class="xref py py-func docutils literal notranslate"><span class="pre">von_neumann()</span></code></a></li>
 </ul>
 </li>
 <li class="toctree-l1"><a class="reference internal" href="cryptomite.html">API Reference</a></li>
@@ -110,45 +110,45 @@
 </style>
 <section id="selecting-a-randomness-extractor">
 <h1>Selecting a Randomness Extractor<a class="headerlink" href="#selecting-a-randomness-extractor" title="Permalink to this headline"></a></h1>
-<p>In the following, we use the notation <span class="math notranslate nohighlight">\(n1, n2\)</span> to denote the length and <span class="math notranslate nohighlight">\(k1, k2\)</span> to denote the min-entropy of
+<p>In the following, we use the notation <span class="math notranslate nohighlight">\(n_1, n_2\)</span> to denote the length and <span class="math notranslate nohighlight">\(k_1, k_2\)</span> to denote the min-entropy of
 any first or second input string respectively. Additionally, <span class="math notranslate nohighlight">\(m\)</span> denotes the length of an output string, <span class="math notranslate nohighlight">\(\epsilon\)</span>
 the extractor error and <span class="math notranslate nohighlight">\(O(.)\)</span> denotes the asymptotic behaviour of a function.</p>
 <section id="dodis">
-<h2><code class="code docutils literal notranslate"><span class="pre">Dodis</span></code><a class="headerlink" href="#dodis" title="Permalink to this headline"></a></h2>
+<h2><a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a><a class="headerlink" href="#dodis" title="Permalink to this headline"></a></h2>
 <p>The Dodis extractor is a two-source extractor, meaning that it requires two independent bit
 strings of randomness that only ‘contain’ entropy (as opposed to one or both being fully entropic).
-It requires equal length inputs (<span class="math notranslate nohighlight">\(n1 = n2\)</span>) that are prime with 2 as a primitive root (see <code class="code docutils literal notranslate"><span class="pre">na_set</span></code> in glossary)
-and outputs approximately <span class="math notranslate nohighlight">\(m \approx k1 + k2 - n1\)</span> when considering classical side information and <span class="math notranslate nohighlight">\(m \approx \frac{1}{5}(k1 + k2 - n1)\)</span>.
+It requires equal length inputs (<span class="math notranslate nohighlight">\(n_1 = n_2\)</span>) that are prime with 2 as a primitive root (see <a class="reference internal" href="cryptomite.html#cryptomite.utils.na_set" title="cryptomite.utils.na_set"><code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code></a> in glossary)
+and outputs approximately <span class="math notranslate nohighlight">\(m \approx k_1 + k_2 - n_1\)</span> when considering classical side information and <span class="math notranslate nohighlight">\(m \approx \frac{1}{5}(k_1 + k_2 - n_1)\)</span>.
 Our implementation of this extractor has near-linear computational complexity.</p>
 <p>This extractor is best suited to scenarios where a two-source extractor is required,
 or a computationally efficient extractor considering classical side information only (then Dodis can be
 used as a seeded extractor, giving approximately the same output length as Toeplitz, whilst reducing required seed size.)</p>
 </section>
 <section id="toeplitz">
-<h2><code class="code docutils literal notranslate"><span class="pre">Toeplitz</span></code><a class="headerlink" href="#toeplitz" title="Permalink to this headline"></a></h2>
+<h2><a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a><a class="headerlink" href="#toeplitz" title="Permalink to this headline"></a></h2>
 <p>The Toeplitz extractor is a seeded extractor, meaning that it requires two independent bit
 strings of randomness, where one is already (near-)perfectly random (called a seed).
-It requires a seed length of <span class="math notranslate nohighlight">\(n2 = n1 + m - 1\)</span>
-and outputs approximately <span class="math notranslate nohighlight">\(m \approx k1\)</span> when considering classical or quantum side information.
+It requires a seed length of <span class="math notranslate nohighlight">\(n_2 = n_1 + m - 1\)</span>
+and outputs approximately <span class="math notranslate nohighlight">\(m \approx k_1\)</span> when considering classical or quantum side information.
 Our implementation of this extractor has near-linear computational complexity.
-We also offer a two-source extension of this extractor, whereby the error scales with <span class="math notranslate nohighlight">\(\epsilon \rightarrow 2^{n2 - k2} \epsilon\)</span>,
-where <span class="math notranslate nohighlight">\(n2-k2\)</span> is the difference between the seed length and the seed min-entropy.</p>
+We also offer a two-source extension of this extractor, whereby the error scales with <span class="math notranslate nohighlight">\(\epsilon \rightarrow 2^{n_2 - k_2} \epsilon\)</span>,
+where <span class="math notranslate nohighlight">\(n_2-k_2\)</span> is the difference between the seed length and the seed min-entropy.</p>
 <p>This extractor is best suited to scenarios where a computationally efficient seeded extractor is needed and security
 against quantum side information.</p>
 </section>
 <section id="trevisan">
-<h2><code class="code docutils literal notranslate"><span class="pre">Trevisan</span></code><a class="headerlink" href="#trevisan" title="Permalink to this headline"></a></h2>
+<h2><a class="reference internal" href="cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a><a class="headerlink" href="#trevisan" title="Permalink to this headline"></a></h2>
 <p>The Trevisan extractor is a seeded extractor, meaning that it requires two independent bit
 strings of randomness, where one is already (near-)perfectly random (called a seed).
-It requires a seed length of <span class="math notranslate nohighlight">\(n2 = O(\log_2 (n1))\)</span> and outputs approximately <span class="math notranslate nohighlight">\(m \approx k1\)</span> when considering classical or quantum side information.
-Our implementation of this extractor has <span class="math notranslate nohighlight">\(O(n1^2)\)</span> computational complexity.
-We also offer a two-source extension of this extractor, whereby the error scales with <span class="math notranslate nohighlight">\(\epsilon \rightarrow 2^{n2 - k2} \epsilon\)</span>,
-where <span class="math notranslate nohighlight">\(n2-k2\)</span> is the difference between the seed length and the seed min-entropy.</p>
+It requires a seed length of <span class="math notranslate nohighlight">\(n_2 = O(\log_2 (n_1))\)</span> and outputs approximately <span class="math notranslate nohighlight">\(m \approx k_1\)</span> when considering classical or quantum side information.
+Our implementation of this extractor has <span class="math notranslate nohighlight">\(O(n_1^2)\)</span> computational complexity.
+We also offer a two-source extension of this extractor, whereby the error scales with <span class="math notranslate nohighlight">\(\epsilon \rightarrow 2^{n_2 - k_2} \epsilon\)</span>,
+where <span class="math notranslate nohighlight">\(n_2-k_2\)</span> is the difference between the seed length and the seed min-entropy.</p>
 <p>This extractor is best suited to scenarios where only a seeded extractor is needed, but only a
 small (in terms of length) seed is available as a resource.</p>
 </section>
 <section id="von-neumann">
-<h2><code class="code docutils literal notranslate"><span class="pre">Von</span> <span class="pre">Neumann</span></code><a class="headerlink" href="#von-neumann" title="Permalink to this headline"></a></h2>
+<h2><a class="reference internal" href="cryptomite.html#cryptomite.utils.von_neumann" title="cryptomite.utils.von_neumann"><code class="xref py py-func docutils literal notranslate"><span class="pre">von_neumann()</span></code></a><a class="headerlink" href="#von-neumann" title="Permalink to this headline"></a></h2>
 <p>The Von-Neumann extractor is a deterministic extractor, meaning that it requires a
 single input string of randomness that has some known (and specific) structure.
 Our implementation of this extractor has linear computational complexity.</p>
