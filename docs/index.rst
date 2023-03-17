@@ -25,11 +25,15 @@ qcrypto@quantinuum.com.
 
 Licence
 =======
-Licensed under XXXX?
+See `license <https://github.com/CQCL/cryptomite/blob/main/LICENSE>`_ here.
+In summary, you are free to use, modify and distribute to :code:`cryptomite`
+for academic purposes. If you wish to use it for commercial use, contact
+qcrypto@quantinuum.com
 
-How to Cite
-===========
-If you use :code:`cryptomite` for your research, please cite the accompanying paper [.]:
+..
+    How to Cite
+    ===========
+    If you use :code:`cryptomite` for your research, please cite the accompanying paper [.]:
 
 
 .. toctree::
