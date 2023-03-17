@@ -39,7 +39,7 @@
     "We consider the continuous variable QKD protocol [Jea2022]_, and give code replicating the\n",
     "privacy amplification step of their experiment using our extractor library.\n",
     "This example can be easily adapted to any explicit QKD protocol. \n",
-    "In this protocol Alice encodes (locally generated) random bits into the amplitude and phase quadratures of the optical field to produce coherent states. \n",
+    "In this protocol Alice encodes (locally generated) random bits into the amplitude and phase quadratures of the optical field to produce coherent states, which she then sends to Bob. \n",
     "When Bob receives this, he decodes using coherent detection facilitated by a local oscillator. \n",
     "Alice and Bob then perform parameter estimation, error reconciliation and finally, privacy amplification. \n",
     "The protocol security is considered against quantum side information only, so the randomness extractor must be quantum-proof. \n",
@@ -150,7 +150,7 @@
    },
    "source": [
     "One could use the :py:class:`.Trevisan` extractor to generate almost the same amount of shared secret key, whilst reducing the size of the QRNG seed needed. \n",
-    "The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run slower. "
+    "The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run slower and/or require an extremely powerful computer. "
    ]
   },
   {
@@ -169,6 +169,50 @@
     "        error = 10**(-10)):\n",
     "    trevisan = cryptomite.Trevisan(n, raw_key_entropy, error)\n",
     "    return trevisan.extract(seed_bits, raw_key_bits)"
+   ]
+  },
+  {
+   "attachments": {},
+   "cell_type": "markdown",
+   "id": "0663ccda",
+   "metadata": {},
+   "source": [
+    "### Extension 3: Dodis Extraction"
+   ]
+  },
+  {
+   "cell_type": "raw",
+   "id": "7c7d34a4",
+   "metadata": {},
+   "source": [
+    "If the protocol considered classical side information only, one could use the :py:class:`.Dodis` extractor instead. \n",
+    "This generates almost the same amount of shared secret key, whilst \n",
+    "significantly reducing the size of the shared seed required by Alice and Bob, but also slightly improving the \n",
+    "speed at which privacy amplification can be performed. "
+   ]
+  },
+  {
+   "cell_type": "code",
+   "execution_count": null,
+   "id": "5d5874fb",
+   "metadata": {},
+   "outputs": [],
+   "source": [
+    "import cryptomite\n",
+    "from math import floor, log2\n",
+    "def privacy_amplification_dodis(\n",
+    "        seed_bits, \n",
+    "        raw_key_bits,\n",
+    "        input_entropy = floor(41378264 - 2 * log2(10**(-10))),\n",
+    "        error = log2(10**(-10))):\n",
+    "    n, m = cryptomite.Dodis.from_params(\n",
+    "        seed_length = len(seed_bits), \n",
+    "        input_length = len(raw_key_bits), \n",
+    "        seed_entropy = len(seed_bits), \n",
+    "        input_entropy = input_entropy, \n",
+    "        error = error)\n",
+    "    dodis = cryptomite.Dodis(n,m)\n",
+    "    return dodis.extract(seed_bits, raw_key_bits)"
    ]
   }
  ],

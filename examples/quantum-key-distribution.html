@@ -55,6 +55,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Extensions">Extensions</a><ul>
 <li class="toctree-l4"><a class="reference internal" href="#Extension-1:-Toeplitz-2-source-extraction">Extension 1: Toeplitz 2-source extraction</a></li>
 <li class="toctree-l4"><a class="reference internal" href="#Extension-2:-Trevisan-Extraction">Extension 2: Trevisan Extraction</a></li>
+<li class="toctree-l4"><a class="reference internal" href="#Extension-3:-Dodis-Extraction">Extension 3: Dodis Extraction</a></li>
 </ul>
 </li>
 </ul>
@@ -377,7 +378,7 @@ div.rendered_html tbody tr:hover {
 <p>We consider the continuous variable QKD protocol <a class="reference internal" href="../bibliography.html#jea2022" id="id1"><span>[Jea2022]</span></a>, and give code replicating the
 privacy amplification step of their experiment using our extractor library.
 This example can be easily adapted to any explicit QKD protocol.
-In this protocol Alice encodes (locally generated) random bits into the amplitude and phase quadratures of the optical field to produce coherent states.
+In this protocol Alice encodes (locally generated) random bits into the amplitude and phase quadratures of the optical field to produce coherent states, which she then sends to Bob.
 When Bob receives this, he decodes using coherent detection facilitated by a local oscillator.
 Alice and Bob then perform parameter estimation, error reconciliation and finally, privacy amplification.
 The protocol security is considered against quantum side information only, so the randomness extractor must be quantum-proof.</p>
@@ -454,7 +455,7 @@ Below we show an example of this when considering the QRNG generated seed is onl
 <section id="Extension-2:-Trevisan-Extraction">
 <h3>Extension 2: Trevisan Extraction<a class="headerlink" href="#Extension-2:-Trevisan-Extraction" title="Permalink to this headline"></a></h3>
 <p>One could use the <a class="reference internal" href="../cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor to generate almost the same amount of shared secret key, whilst reducing the size of the QRNG seed needed.
-The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run slower.</p>
+The cost of this reduction in seed size is an increase in computational complexity, so the privacy amplification algorithm would run slower and/or require an extremely powerful computer.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
@@ -468,6 +469,34 @@ The cost of this reduction in seed size is an increase in computational complexi
         <span class="n">error</span> <span class="o">=</span> <span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">)):</span>
     <span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">raw_key_entropy</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">trevisan</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+</section>
+<section id="Extension-3:-Dodis-Extraction">
+<h3>Extension 3: Dodis Extraction<a class="headerlink" href="#Extension-3:-Dodis-Extraction" title="Permalink to this headline"></a></h3>
+If the protocol considered classical side information only, one could use the :py:class:`.Dodis` extractor instead.
+This generates almost the same amount of shared secret key, whilst
+significantly reducing the size of the shared seed required by Alice and Bob, but also slightly improving the
+speed at which privacy amplification can be performed.<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[4]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
+<span class="k">def</span> <span class="nf">privacy_amplification_dodis</span><span class="p">(</span>
+        <span class="n">seed_bits</span><span class="p">,</span>
+        <span class="n">raw_key_bits</span><span class="p">,</span>
+        <span class="n">input_entropy</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mi">41378264</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">))),</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">))):</span>
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
+        <span class="n">seed_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
+        <span class="n">input_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_key_bits</span><span class="p">),</span>
+        <span class="n">seed_entropy</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
+        <span class="n">input_entropy</span> <span class="o">=</span> <span class="n">input_entropy</span><span class="p">,</span>
+        <span class="n">error</span> <span class="o">=</span> <span class="n">error</span><span class="p">)</span>
+    <span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

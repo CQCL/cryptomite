@@ -22,7 +22,7 @@
   },
   {
    "cell_type": "raw",
-   "id": "3e1e0897",
+   "id": "940a092a",
    "metadata": {},
    "source": [
     "We consider the semi-device-independent quantum random number generator based on heterodyne detection [ATVV2021]_. \n",
