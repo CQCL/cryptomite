@@ -361,14 +361,9 @@ div.rendered_html tbody tr:hover {
 <p>In quantum random number generation (QRNG), randomness extraction is used to ensure the final output is only from the randomness certified by some estimation process, which accounts for adversarial information. Here, we give an example of how our library can be used off-the-shelf in this scenario.</p>
 <section id="Semi-Device-Independent-Heterodyne-Based-QRNG">
 <h2>Semi-Device-Independent Heterodyne-Based QRNG<a class="headerlink" href="#Semi-Device-Independent-Heterodyne-Based-QRNG" title="Permalink to this headline"></a></h2>
-We consider the semi-device-independent quantum random number generator based on heterodyne detection [ATVV2021]_.
-This protocol is a semi-device-independent QRNG based on heterodyne detection that assumes an upper
-bound on the amount of energy generated states have, avoiding an identically and independently distribution type assumption on generated states.
-The protocol security is considered against classical side information only, so the randomness extractor need only be classical-proof.
-
-The experimental demonstration uses the :py:class:`.Toeplitz` extractor, with an input length of :math:`n = 6500000000`,
-input :term:`min-entropy <symbol>` of :math:`k= 581295000`, output length of :math:`m = 581294933`, extractor error of :math:`\epsilon = 10^{-10}` and
-seed length :math:`d = 7081294932`.<div class="nbinput nblast docutils container">
+<p>We consider the semi-device-independent quantum random number generator based on heterodyne detection <a class="reference internal" href="../bibliography.html#atvv2021" id="id1"><span>[ATVV2021]</span></a>. This protocol is a semi-device-independent QRNG based on heterodyne detection that assumes an upper bound on the amount of energy generated states have, avoiding an identically and independently distribution type assumption on generated states. The protocol security is considered against classical side information only, so the randomness extractor need only be classical-proof.</p>
+<p>The experimental demonstration uses the :py:class:<code class="docutils literal notranslate"><span class="pre">.Toeplitz</span></code> extractor, with an input length of :math:<code class="docutils literal notranslate"><span class="pre">n</span> <span class="pre">=</span> <span class="pre">6500000000</span></code>, input :term:<code class="docutils literal notranslate"><span class="pre">min-entropy</span> <span class="pre">&lt;symbol&gt;</span></code> of :math:<code class="docutils literal notranslate"><span class="pre">k=</span> <span class="pre">581295000</span></code>, output length of :math:<code class="docutils literal notranslate"><span class="pre">m</span> <span class="pre">=</span> <span class="pre">581294933</span></code>, extractor error of :math:<code class="docutils literal notranslate"><span class="pre">\epsilon</span> <span class="pre">=</span> <span class="pre">10^{-10}</span></code> and seed length :math:<code class="docutils literal notranslate"><span class="pre">d</span> <span class="pre">=</span> <span class="pre">7081294932</span></code>.</p>
+<div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
