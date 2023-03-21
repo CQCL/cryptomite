@@ -1,5 +1,5 @@
 Selecting a Randomness Extractor
-===============
+================================
 In the following, we use the notation :math:`n_1, n_2` to denote the length and :math:`k_1, k_2` to denote the min-entropy of 
 any first or second input string respectively. Additionally, :math:`m` denotes the length of an output string, :math:`\epsilon` 
 the extractor error and :math:`O(.)` denotes the asymptotic behaviour of a function.
