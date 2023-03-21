@@ -8,7 +8,7 @@ jobs:
     name: build linux wheels
     runs-on: ubuntu-20.04
     env:
-      PY_VERS: cp38-cp38 cp39-cp39 cp310-cp310
+      PY_VERS: cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311
     steps:
     - uses: actions/checkout@v2
     - name: set up container
@@ -47,6 +47,12 @@ jobs:
       with:
         python-version: '3.10'
     - name: build wheel (3.10)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: build wheel (3.11)
       run: .github/workflows/macosbuildwheel
     - uses: actions/upload-artifact@v2
       with:
@@ -105,6 +111,14 @@ jobs:
       with:
         python-version: '3.10'
     - name: build wheel (3.10)
+      run: |
+        python -m pip install -U pip wheel scikit-build
+        python setup.py bdist_wheel -d "${{ github.workspace }}/wheelhouse"
+    - name: set up python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: build wheel (3.11)
       run: |
         python -m pip install -U pip wheel scikit-build
         python setup.py bdist_wheel -d "${{ github.workspace }}/wheelhouse"
