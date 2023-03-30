@@ -6,7 +6,7 @@
    "id": "d03f7a0a",
    "metadata": {},
    "source": [
-    "# Rabdomness Extraction for Random Number Generation\n",
+    "# Randomness Extraction for Random Number Generation\n",
     "\n",
     "In quantum random number generation (QRNG), randomness extraction is used to ensure the final output is only from the randomness certified by some estimation process, which accounts for adversarial information. Here, we give an example of how our library can be used off-the-shelf in this scenario. "
    ]
