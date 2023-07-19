@@ -376,7 +376,7 @@ seed length <span class="math notranslate nohighlight">\(d = 7081294932\)</span>
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log2</span><span class="p">,</span> <span class="n">floor</span>
 <span class="k">def</span> <span class="nf">randomness_extraction</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">6500000000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">581294933</span><span class="p">):</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Perform randomness extraction for example QRNG.</span>
@@ -410,29 +410,30 @@ seed length <span class="math notranslate nohighlight">\(d = 7081294932\)</span>
 <section id="Extension-1:-Dodis-Extraction">
 <h3>Extension 1: Dodis Extraction<a class="headerlink" href="#Extension-1:-Dodis-Extraction" title="Permalink to this headline"></a></h3>
 <p>This change gives a significant reduction in the size of the required uniform seed and a marginally quicker implementation.
-There is a slight cost to this, which is adjusting <span class="math notranslate nohighlight">\(n = 6.5 \cdot 10^9$\)</span> to <span class="math notranslate nohighlight">\(n^{\Dodis} = 6499999931\)</span>.
-This results in an output length of <span class="math notranslate nohighlight">\(581'294'865$\)</span>
+There is a slight cost to this, which is adjusting <span class="math notranslate nohighlight">\(n = 6.5 \cdot 10^9\)</span> to <span class="math notranslate nohighlight">\(n^{\mathsf{Dodis}} = 6499999931\)</span>.
+This results in an output length of <span class="math notranslate nohighlight">\(581'294'865\)</span>
 Overall, for a reduction of <span class="math notranslate nohighlight">\(581'294'932\)</span> uniform seed bits, the price to pay is a loss of <span class="math notranslate nohighlight">\(68\)</span> output bits.
 We implement this below.</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
 <span class="k">def</span> <span class="nf">randomness_extraction_dodis</span><span class="p">(</span>
         <span class="n">seed_bits</span><span class="p">,</span>
         <span class="n">raw_key_bits</span><span class="p">,</span>
         <span class="n">input_entropy</span> <span class="o">=</span> <span class="mi">581295000</span><span class="p">,</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">))):</span>
-    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
+    <span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
         <span class="n">seed_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
         <span class="n">input_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_key_bits</span><span class="p">),</span>
         <span class="n">seed_entropy</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
         <span class="n">input_entropy</span> <span class="o">=</span> <span class="n">input_entropy</span><span class="p">,</span>
         <span class="n">error</span> <span class="o">=</span> <span class="n">error</span><span class="p">)</span>
-    <span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="p">(</span><span class="n">n</span><span class="p">,</span><span class="n">m</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_key_bits</span><span class="p">)</span>
+
+    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">dodis</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dodis</span><span class="o">.</span><span class="n">m</span>
+    <span class="k">return</span> <span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">raw_key_bits</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
 </pre></div>
 </div>
 </div>
