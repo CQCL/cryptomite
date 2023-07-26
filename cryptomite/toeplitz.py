@@ -102,18 +102,20 @@ class Toeplitz:
             assert output_length >= 0
             if seed_length > output_length + input_length - 1:
                 seed_length = output_length + input_length - 1
-            while seed_length < output_length + input_length - 1:
-                output_length -= 1
+            if seed_length < output_length + input_length - 1:
+                output_length = seed_length - input_length + 1
         if seed_entropy < seed_length:
             output_length = floor(
-                1/3 * (2*seed_entropy - 2*input_length
-                       + input_entropy + 2 * error + 2))
+                1/3 * (input_entropy - 2 * (input_length - 1
+                       - seed_entropy) + 2 * error))
             if seed_length > output_length + input_length - 1:
-                # INCREASE INPUT LENGTH BY PADDING
-                input_length = seed_length - output_length + 1
+                if seed_length > output_length + input_length - 1:
+                    penalty = 3*(seed_length - output_length
+                                 - input_length + 1)
+                    output_length = floor(output_length - penalty * 2/3)
+                    seed_length = seed_length - penalty
             if seed_length < output_length + input_length - 1:
-                while seed_length < output_length + input_length - 1:
-                    output_length -= 1
+                seed_length = seed_length - input_length + 1
         assert seed_length == output_length + input_length - 1
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
