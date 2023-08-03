@@ -43,6 +43,7 @@ qcrypto@quantinuum.com
    intro
    gettingstarted
    cryptomite
+   performance
    notebooks
    glossary
    bibliography
