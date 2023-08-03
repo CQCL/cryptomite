@@ -1,12 +1,12 @@
 Selecting a Randomness Extractor
 ================================
-In the following, we use the notation :math:`n_1, n_2` to denote the length and :math:`k_1, k_2` to denote the min-entropy of 
+In the following, we use the notation :math:`n_1, n_2` to denote the length and :math:`k_1, k_2` to denote the :term:`min-entropy` of 
 any first or second input string respectively. Additionally, :math:`m` denotes the length of an output string, :math:`\epsilon` 
 the extractor error and :math:`O(.)` denotes the asymptotic behaviour of a function.
 
 :py:class:`.Dodis`
 ------------------
-The Dodis extractor is a two-source extractor, meaning that it requires two independent bit 
+The Dodis extractor is a :term:`2-source randomness extractor`, meaning that it requires two independent bit 
 strings of randomness that only 'contain' entropy (as opposed to one or both being fully entropic). 
 It requires equal length inputs (:math:`n_1 = n_2`) that are prime with 2 as a primitive root (see :py:func:`.na_set` in glossary) 
 and outputs approximately :math:`m \approx k_1 + k_2 - n_1` when considering classical side information and :math:`m \approx \frac{1}{5}(k_1 + k_2 - n_1)`.
@@ -18,7 +18,7 @@ used as a seeded extractor, giving approximately the same output length as Toepl
 
 :py:class:`.Toeplitz`
 ---------------------
-The Toeplitz extractor is a seeded extractor, meaning that it requires two independent bit 
+The Toeplitz extractor is a :term:`seeded randomness extractor`, meaning that it requires two independent bit 
 strings of randomness, where one is already (near-)perfectly random (called a seed).
 It requires a seed length of :math:`n_2 = n_1 + m - 1`
 and outputs approximately :math:`m \approx k_1` when considering classical or quantum side information.
@@ -31,7 +31,7 @@ against quantum side information.
 
 :py:class:`.Trevisan`
 ---------------------
-The Trevisan extractor is a seeded extractor, meaning that it requires two independent bit 
+The Trevisan extractor is a :term:`seeded randomness extractor`, meaning that it requires two independent bit 
 strings of randomness, where one is already (near-)perfectly random (called a seed).
 It requires a seed length of :math:`n_2 = O(\log_2 (n_1))` and outputs approximately :math:`m \approx k_1` when considering classical or quantum side information.
 Our implementation of this extractor has :math:`O(n_1^2)` computational complexity. 
@@ -43,7 +43,7 @@ small (in terms of length) seed is available as a resource.
 
 :py:func:`.von_neumann`
 -----------------------
-The Von-Neumann extractor is a deterministic extractor, meaning that it requires a 
+The Von-Neumann extractor is a :term:`deterministic randomness extractor`, meaning that it requires a 
 single input string of randomness that has some known (and specific) structure. 
 Our implementation of this extractor has linear computational complexity. 
 

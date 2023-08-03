@@ -2,7 +2,7 @@
 cryptomite
 ==========
 
-:code:`cryptomite` is a modular, extensible high-level Python library 
+:py:mod:`cryptomite` is a modular, extensible high-level Python library 
 for randomness extractions, created by Quantinuum's Quantum Cryptography team. 
 At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
 providing a trade-off of features that suits numerous practical use cases today.
@@ -20,20 +20,20 @@ To see the example notebooks, go to Examples.
 
 User Support
 ============
-If you need help with :code:`cryptomite` or you think you have found a bug, please email 
+If you need help with :py:mod:`cryptomite` or you think you have found a bug, please email 
 qcrypto@quantinuum.com. 
 
 Licence
 =======
 See `license <https://github.com/CQCL/cryptomite/blob/main/LICENSE>`_ here.
-In summary, you are free to use, modify and distribute to :code:`cryptomite`
+In summary, you are free to use, modify and distribute to :py:mod:`cryptomite`
 for academic purposes. If you wish to use it for commercial use, contact
 qcrypto@quantinuum.com
 
 ..
     How to Cite
     ===========
-    If you use :code:`cryptomite` for your research, please cite the accompanying paper [.]:
+    If you use :py:mod:`cryptomite` for your research, please cite the accompanying paper [.]:
 
 
 .. toctree::
