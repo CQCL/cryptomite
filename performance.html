@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Examples &mdash; cryptomite 0.1.1 documentation</title>
+  <title>Performance &mdash; cryptomite 0.1.1 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -20,8 +20,8 @@
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Privacy Amplification for Quantum Key Distribution" href="examples/quantum-key-distribution.html" />
-    <link rel="prev" title="Performance" href="performance.html" /> 
+    <link rel="next" title="Examples" href="notebooks.html" />
+    <link rel="prev" title="API Reference" href="cryptomite.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -47,12 +47,8 @@
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Selecting a Randomness Extractor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="cryptomite.html">API Reference</a></li>
-<li class="toctree-l1"><a class="reference internal" href="performance.html">Performance</a></li>
-<li class="toctree-l1 current"><a class="current reference internal" href="#">Examples</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-key-distribution.html">Privacy Amplification for Quantum Key Distribution</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-random-number-generation.html">Randomness Extraction for Random Number Generation</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Examples</a></li>
 <li class="toctree-l1"><a class="reference internal" href="glossary.html">Glossary</a></li>
 <li class="toctree-l1"><a class="reference internal" href="bibliography.html">Bibliography</a></li>
 </ul>
@@ -71,9 +67,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Examples</li>
+      <li>Performance</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="_sources/notebooks.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/performance.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -105,42 +101,24 @@
     text-align: unset;
 }
 </style>
-<section id="examples">
-<span id="sec-examples"></span><h1>Examples<a class="headerlink" href="#examples" title="Permalink to this headline"></a></h1>
-<p>Here we give examples using <code class="docutils literal notranslate"><span class="pre">cryptomite</span></code> for the randomness extraction step in recent experimental quantum cryptography demonstrations, specifically, the tasks of
-quantum key distribution and quantum random number generation.
-We also highlight some extensions in these examples, whereby the results of these previous works could be improved by some combination of
-(i) relaxing assumptions and (ii) speeding-up implementation.</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="examples/quantum-key-distribution.html">Privacy Amplification for Quantum Key Distribution</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-key-distribution.html#Experimental-Continuous-Variable-QKD">Experimental Continuous Variable QKD</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-key-distribution.html#Extensions">Extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-1:-Toeplitz-2-source-extraction">Extension 1: Toeplitz 2-source extraction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-2:-Trevisan-Extraction">Extension 2: Trevisan Extraction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="examples/quantum-key-distribution.html#Extension-3:-Dodis-Extraction">Extension 3: Dodis Extraction</a></li>
-</ul>
-</li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="examples/quantum-random-number-generation.html">Randomness Extraction for Random Number Generation</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-random-number-generation.html#Semi-Device-Independent-Heterodyne-Based-QRNG">Semi-Device-Independent Heterodyne-Based QRNG</a></li>
-<li class="toctree-l2"><a class="reference internal" href="examples/quantum-random-number-generation.html#Extensions">Extensions</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="examples/quantum-random-number-generation.html#Extension-1:-Dodis-Extraction">Extension 1: Dodis Extraction</a></li>
-</ul>
-</li>
-</ul>
-</li>
-</ul>
-</div>
+<section id="performance">
+<h1>Performance<a class="headerlink" href="#performance" title="Permalink to this headline"></a></h1>
+<p>To demonstrate the capabilities of <code class="code docutils literal notranslate"><span class="pre">Cryptomite</span></code>, we perform some benchmarking on a MacBook Pro personal laptop (with 2 Ghz quad-core Intel i5 processor with 16GB RAM).
+The varying degrees of computational efficiency for the extractors of <code class="code docutils literal notranslate"><span class="pre">Cryptomite</span></code> are evidenced in the following Figure.</p>
+<a class="reference internal image-reference" href="_images/performance.pdf"><img alt="_images/performance.pdf" src="_images/performance.pdf" style="width: 600px;" /></a>
+<p>Some observations performance observations are:
+* The Von-Neumann extractor is able to output at speeds above 7Mbit/s.
+* The Dodis and Toeplitz extractors are able to output at speeds of up to 1Mbit/s. The generation speed is faster for shorter input lengths.
+* The Trevisan extractor can generate output at speeds comparable to the Toeplitz and Dodis extractors only when the input size is extremely short.
+* The Trevisan extractor unable to generate a non-vanishing bits/second rate for input lengths greater than approximately 30’000.</p>
 </section>
 
 
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="performance.html" class="btn btn-neutral float-left" title="Performance" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="examples/quantum-key-distribution.html" class="btn btn-neutral float-right" title="Privacy Amplification for Quantum Key Distribution" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="cryptomite.html" class="btn btn-neutral float-left" title="API Reference" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="notebooks.html" class="btn btn-neutral float-right" title="Examples" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
