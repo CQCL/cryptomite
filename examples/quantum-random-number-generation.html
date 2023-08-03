@@ -394,7 +394,7 @@ seed length <span class="math notranslate nohighlight">\(d = 7081294932\)</span>
 <span class="sd">    the error and min-entropy.</span>
 
 <span class="sd">    Returns</span>
-<span class="sd">    ---------</span>
+<span class="sd">    -------</span>
 <span class="sd">    list of bits</span>
 <span class="sd">    The extracted output, which is</span>
 <span class="sd">    the shared secret key.</span>
@@ -407,12 +407,12 @@ seed length <span class="math notranslate nohighlight">\(d = 7081294932\)</span>
 </section>
 <section id="Extensions">
 <h2>Extensions<a class="headerlink" href="#Extensions" title="Permalink to this headline"></a></h2>
-<p>The experimental demonstration above admits some improvements with <code class="docutils literal notranslate"><span class="pre">cryptomite</span></code> library:</p>
+<p>The experimental demonstration above admits some improvements with our library:</p>
 <section id="Extension-1:-Dodis-Extraction">
 <h3>Extension 1: Dodis Extraction<a class="headerlink" href="#Extension-1:-Dodis-Extraction" title="Permalink to this headline"></a></h3>
 <p>This change gives a significant reduction in the size of the required uniform seed and a marginally quicker implementation.
 There is a slight cost to this, which is adjusting <span class="math notranslate nohighlight">\(n = 6.5 \cdot 10^9\)</span> to <span class="math notranslate nohighlight">\(n^{\mathsf{Dodis}} = 6499999931\)</span>.
-This results in an output length of <span class="math notranslate nohighlight">\(581'294'865\)</span>
+This results in an output length of <span class="math notranslate nohighlight">\(581'294'865\)</span>.
 Overall, for a reduction of <span class="math notranslate nohighlight">\(581'294'932\)</span> uniform seed bits, the price to pay is a loss of <span class="math notranslate nohighlight">\(68\)</span> output bits.
 We implement this below.</p>
 <div class="nbinput nblast docutils container">

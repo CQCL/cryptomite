@@ -103,14 +103,16 @@
 </style>
 <section id="performance">
 <h1>Performance<a class="headerlink" href="#performance" title="Permalink to this headline"></a></h1>
-<p>To demonstrate the capabilities of <code class="code docutils literal notranslate"><span class="pre">Cryptomite</span></code>, we perform some benchmarking on a MacBook Pro personal laptop (with 2 Ghz quad-core Intel i5 processor with 16GB RAM).
-The varying degrees of computational efficiency for the extractors of <code class="code docutils literal notranslate"><span class="pre">Cryptomite</span></code> are evidenced in the following Figure.</p>
-<a class="reference internal image-reference" href="_images/performance.pdf"><img alt="_images/performance.pdf" src="_images/performance.pdf" style="width: 600px;" /></a>
-<p>Some observations performance observations are:
-* The Von-Neumann extractor is able to output at speeds above 7Mbit/s.
-* The Dodis and Toeplitz extractors are able to output at speeds of up to 1Mbit/s. The generation speed is faster for shorter input lengths.
-* The Trevisan extractor can generate output at speeds comparable to the Toeplitz and Dodis extractors only when the input size is extremely short.
-* The Trevisan extractor unable to generate a non-vanishing bits/second rate for input lengths greater than approximately 30’000.</p>
+<p>To demonstrate the capabilities of <a class="reference internal" href="cryptomite.html#module-cryptomite" title="cryptomite"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cryptomite</span></code></a>, we perform some benchmarking on a MacBook Pro personal laptop (with 2 GHz quad-core Intel i5 processor with 16GB RAM).
+The varying degrees of computational efficiency for the extractors of <a class="reference internal" href="cryptomite.html#module-cryptomite" title="cryptomite"><code class="xref py py-mod docutils literal notranslate"><span class="pre">cryptomite</span></code></a> are evidenced in the following Figure.</p>
+<a class="reference internal image-reference" href="_images/performance.png"><img alt="_images/performance.png" src="_images/performance.png" style="width: 600px;" /></a>
+<p>Some observations performance observations are:</p>
+<ul class="simple">
+<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.utils.von_neumann" title="cryptomite.utils.von_neumann"><code class="xref py py-func docutils literal notranslate"><span class="pre">von_neumann()</span></code></a> extractor is able to output at speeds above 7Mbit/s.</p></li>
+<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a> and <a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractors are able to output at speeds of up to 1Mbit/s. The generation speed is faster for shorter input lengths.</p></li>
+<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor can generate output at speeds comparable to the <a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> and <a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a> extractors only when the input size is extremely short.</p></li>
+<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor unable to generate a non-vanishing bits/second rate for input lengths greater than approximately 30,000.</p></li>
+</ul>
 </section>
 
 
