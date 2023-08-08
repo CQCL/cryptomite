@@ -9,6 +9,8 @@ __pycache__/
 build/
 dist/
 htmlcov/
+.idea/
+cmake-build-*/
 
 # ignore the built documentation
 docs/_*

@@ -3,18 +3,18 @@
 #include <gtest/gtest.h>
 
 TEST(GF2PolyTest, Example) {
-    GF2Poly poly = GF2Poly(4);
-    poly_bits x = poly_bits(0b1101);
-    poly_bits y = poly_bits(0b0101);
+    GF2Poly poly(4);
+    poly_bits x(0b1101);
+    poly_bits y(0b0101);
 
-    poly_bits xy = poly_bits(0b1100);
+    poly_bits xy(0b1100);
 
     ASSERT_EQ(xy, poly.poly_mul(x, y));
 }
 
 typedef tuple<int, int, int, vector<uint64_t>> HRExample;
 
-vector<HRExample> hr_examples = {
+static const vector<HRExample> hr_examples = {
     {121, 2, 7, {3, 6, 9, 12}},
     {42, 2, 40, {0, 4, 10, 14}},
     {181, 2, 48, {0, 7, 10, 13}},
@@ -29,7 +29,7 @@ vector<HRExample> hr_examples = {
 
 typedef tuple<int, int, int, vector<uint64_t>> BWDExample;
 
-vector<BWDExample> bwd_examples = {
+static const vector<BWDExample> bwd_examples = {
     {50, 3, 7, {7, 15, 23, 31, 39, 47, 55, 63}},
     {50, 3, 32, {384, 392, 400, 408, 416, 424, 432, 440}},
     {50, 3, 4, {4, 12, 20, 28, 36, 44, 52, 60}},
@@ -54,7 +54,7 @@ vector<BWDExample> bwd_examples = {
 
 typedef tuple<int, int, vector<bool>, vector<bool>, bool> RSHExample;
 
-vector<RSHExample> rsh_examples = {
+static const vector<RSHExample> rsh_examples = {
     {20, 5, {0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1}, {0, 1, 1, 0, 1, 1, 1, 0, 0, 0}, 1},
     {20, 5, {0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1}, {0, 1, 0, 0, 0, 1, 0, 0, 1, 1}, 1},
     {20, 5, {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0}, {1, 1, 0, 1, 0, 1, 0, 1, 0, 0}, 0},

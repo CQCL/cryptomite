@@ -15,3 +15,6 @@ FetchContent_MakeAvailable(googletest)
 # Link runTests with what we want to test and the GTest and pthread library
 add_executable(runTests tests.cpp)
 target_link_libraries(runTests trevisan gtest_main)
+
+# Add to CTest
+add_test(NAME runTests COMMAND $<TARGET_FILE:runTests> --gtest_output=xml:${CMAKE_CURRENT_BINARY_DIR}/)
