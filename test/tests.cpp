@@ -27,6 +27,10 @@ static const vector<HRExample> hr_examples = {
     {4344458, 3, 3265585, {1, 14, 18, 31, 33, 44, 54, 56}},
 };
 
+class HrTest :
+    public testing::TestWithParam<HRExample> {
+};
+
 typedef tuple<int, int, int, vector<uint64_t>> BWDExample;
 
 static const vector<BWDExample> bwd_examples = {
@@ -50,6 +54,10 @@ static const vector<BWDExample> bwd_examples = {
     {50000, 6, 13820, {4112, 4185, 4228, 4301, 4384, 4457, 4532, 4605, 4624, 4697, 4740, 4813, 4896, 4969, 5044, 5117, 5146, 5203, 5262, 5319, 5418, 5475, 5566, 5623, 5658, 5715, 5774, 5831, 5930, 5987, 6078, 6135, 6188, 6245, 6328, 6385, 6428, 6485, 6536, 6593, 6700, 6757, 6840, 6897, 6940, 6997, 7048, 7105, 7206, 7279, 7346, 7419, 7446, 7519, 7554, 7627, 7718, 7791, 7858, 7931, 7958, 8031, 8066, 8139}},
     {50000, 6, 26657, {12344, 12355, 12429, 12534, 12561, 12650, 12708, 12767, 12841, 12882, 12956, 13031, 13056, 13179, 13237, 13262, 13338, 13409, 13487, 13524, 13619, 13640, 13702, 13821, 13835, 13936, 14014, 14021, 14114, 14169, 14231, 14316, 14399, 14404, 14474, 14577, 14614, 14701, 14755, 14808, 14894, 14933, 15003, 15072, 15111, 15228, 15282, 15305, 15389, 15462, 15528, 15571, 15668, 15695, 15745, 15866, 15884, 15991, 16057, 16066, 16165, 16222, 16272, 16363}},
     {50000, 6, 47551, {57356, 57419, 57474, 57541, 57616, 57687, 57758, 57817, 57908, 57971, 58042, 58109, 58152, 58223, 58278, 58337, 58431, 58488, 58545, 58614, 58659, 58724, 58797, 58858, 58887, 58944, 59017, 59086, 59163, 59228, 59285, 59346, 59433, 59502, 59559, 59616, 59701, 59762, 59835, 59900, 59921, 59990, 60063, 60120, 60173, 60234, 60291, 60356, 60442, 60509, 60564, 60627, 60678, 60737, 60808, 60879, 60962, 61029, 61100, 61163, 61246, 61305, 61360, 61431}}
+};
+
+class BwdTest :
+    public testing::TestWithParam<BWDExample> {
 };
 
 typedef tuple<int, int, vector<bool>, vector<bool>, bool> RSHExample;
@@ -97,36 +105,47 @@ static const vector<RSHExample> rsh_examples = {
     {23, 3, {0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0}, {1, 1, 0, 1, 0, 0}, 0},
 };
 
+class RshTest :
+    public testing::TestWithParam<RSHExample> {
+};
 
-TEST(HRTest, Example) {
-    for (auto ex : hr_examples) {
-        int m = get<0>(ex), log_t = get<1>(ex), i = get<2>(ex);
 
-        auto result = get<3>(ex);
-        ASSERT_EQ(result, HRWeakDesign(m, log_t).get_s(i));
-    }
+TEST_P(HrTest, Example) {
+    int m = get<0>(GetParam()), log_t = get<1>(GetParam()), i = get<2>(GetParam());
+
+    auto result = get<3>(GetParam());
+    ASSERT_EQ(result, HRWeakDesign(m, log_t).get_s(i));
 }
 
+INSTANTIATE_TEST_SUITE_P(HrTests,
+                         HrTest,
+                         testing::ValuesIn(hr_examples));
 
-TEST(BWDTest, Example) {
-    for (auto ex : bwd_examples) {
-        int m = get<0>(ex), log_t = get<1>(ex), i = get<2>(ex);
 
-        auto result = get<3>(ex);
-        EXPECT_EQ(result, BlockWeakDesign(m, log_t).get_s(i));
-    }
+TEST_P(BwdTest, Example) {
+    int m = get<0>(GetParam()), log_t = get<1>(GetParam()), i = get<2>(GetParam());
+
+    auto result = get<3>(GetParam());
+    EXPECT_EQ(result, BlockWeakDesign(m, log_t).get_s(i));
 }
 
+INSTANTIATE_TEST_SUITE_P(BwdTests,
+                         BwdTest,
+                         testing::ValuesIn(bwd_examples));
 
-TEST(RSHTest, Example) {
-    for (auto ex : rsh_examples) {
-        int n = get<0>(ex), l = get<1>(ex);
-        vector<bool> r_input = get<2>(ex), r_seed = get<3>(ex);
 
-        int result = get<4>(ex);
-        EXPECT_EQ(result, RSHExtractor(n, l).extract(r_input, r_seed));
-    }
+TEST_P(RshTest, Example) {
+    int n = get<0>(GetParam()), l = get<1>(GetParam());
+    vector<bool> r_input = get<2>(GetParam()), r_seed = get<3>(GetParam());
+
+    int result = get<4>(GetParam());
+    EXPECT_EQ(result, RSHExtractor(n, l).extract(r_input, r_seed));
 }
+
+INSTANTIATE_TEST_SUITE_P(RshTests,
+                         RshTest,
+                         testing::ValuesIn(rsh_examples));
+
 
 TEST(TimingTest, Example) {
     int n = 1000;

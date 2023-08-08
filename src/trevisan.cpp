@@ -4,7 +4,6 @@
 #include <algorithm>
 #include <bitset>
 #include <cmath>
-#include <fstream>
 #include <iostream>
 #include <set>
 
@@ -46,7 +45,7 @@ poly_bits GF2Poly::poly_add(poly_bits x, poly_bits y) {
 }
 
 // Evaluates the polynomial at `x` in a linear number of operations
-poly_bits GF2Poly::horner_method(vector<poly_bits> &coeffs, poly_bits x) const {
+poly_bits GF2Poly::horner_method(const vector<poly_bits> &coeffs, poly_bits x) const {
     poly_bits res = poly_bits();
     size_t n_coeffs = coeffs.size();
     for (size_t i = 0; i < n_coeffs; i++) {
@@ -238,7 +237,7 @@ TrevisanConfig::TrevisanConfig(int n, int k, double max_eps) : n(n) {
 
 Trevisan::Trevisan(TrevisanConfig config)
 : wd(config.m, config.log_t), ext(config.n, config.l),
-  n(config.n), m(config.m), l(config.l) {};
+  n(config.n), m(config.m), l(config.l) {}
 
 int Trevisan::get_seed_length() const {
     return wd.d;

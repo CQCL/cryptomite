@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <vector>
 
-std::vector<uint32_t> mul_vec(const std::vector<uint32_t>& a, const std::vector<uint32_t>& b);
+std::vector<uint32_t> mul_vec(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b);
 
 class NTT {
   private:
@@ -32,5 +32,5 @@ class NTT {
   public:
     explicit NTT(unsigned l);
 
-    std::vector<uint32_t> ntt(const std::vector<uint32_t>& x, bool inverse);
+    std::vector<uint32_t> ntt(const std::vector<uint32_t> &x, bool inverse);
 };

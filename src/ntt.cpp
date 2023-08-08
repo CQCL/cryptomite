@@ -32,7 +32,7 @@ uint32_t mul(uint32_t a, uint32_t b) {
     return n % P;
 }
 
-std::vector<uint32_t> mul_vec(const std::vector<uint32_t>& a, const std::vector<uint32_t>& b) {
+std::vector<uint32_t> mul_vec(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b) {
     std::vector<uint32_t> c(a.size());
     for (uint32_t i = 0; i < a.size(); i++) {
         c[i] = mul(a[i], b[i]);
@@ -109,7 +109,7 @@ NTT::NTT(unsigned l) : L(1<<l) {
 
 }
 
-std::vector<uint32_t> NTT::ntt(const std::vector<uint32_t>& x, bool inverse) {
+std::vector<uint32_t> NTT::ntt(const std::vector<uint32_t> &x, bool inverse) {
     const std::vector<uint32_t>& U = inverse ? Rinv : R;
 
     std::vector<uint32_t> y(L, 0);

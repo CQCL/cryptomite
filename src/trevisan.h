@@ -20,7 +20,7 @@ class GF2Poly {
     static poly_bits poly_add(poly_bits x, poly_bits y);
 
     // Evaluates the polynomial at `x` in a linear number of operations
-    poly_bits horner_method(std::vector<poly_bits> &coeffs, poly_bits x) const;
+    poly_bits horner_method(const std::vector<poly_bits> &coeffs, poly_bits x) const;
 };
 
 // Implements the weak design by Hartman and Raz.
@@ -89,7 +89,6 @@ class Trevisan {
     std::vector<bool> source_seed;
   public:
     int n, m, l;
-    int t, k;
     bool source_loaded = false;
 
     explicit Trevisan(TrevisanConfig config);
