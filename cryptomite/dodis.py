@@ -13,7 +13,7 @@ __all__ = ['Dodis']
 
 
 class Dodis:
-    """ Dodis extractor"""
+    """ Dodis extractor based on [Dodis20]_. """
     def __init__(self, n: int, m: int):
         """Create a Dodis Extractor.
 

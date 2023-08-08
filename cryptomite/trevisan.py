@@ -11,7 +11,7 @@ from cryptomite import _cryptomite
 
 
 class Trevisan:
-    """Trevisan extractor"""
+    """Trevisan extractor based on [Trev2001]_ and [Mauer2012]_. """
     def __init__(self, n: int, k: float, max_eps: float):
         """Create a Trevisan Extractor.
 
