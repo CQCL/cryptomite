@@ -42,3 +42,15 @@ pip install -r requirements.txt
 make clean
 make html
 ```
+
+## Testing
+
+Install `pytest`, then run `pytest test`.
+
+To run the C++ tests, run
+
+```bash
+cmake .
+make
+test/runTest
+```
