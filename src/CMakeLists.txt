@@ -1,4 +1,4 @@
-add_library(trevisan trevisan.cpp irreducible_poly.hpp)
+add_library(trevisan trevisan.cpp irreducible_poly.cpp ntt.cpp)
 
 target_include_directories(trevisan PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
 

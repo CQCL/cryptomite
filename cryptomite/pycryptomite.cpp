@@ -1,6 +1,6 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
-#include <ntt.cpp>
+#include <ntt.h>
 #include <trevisan.cpp>
 
 

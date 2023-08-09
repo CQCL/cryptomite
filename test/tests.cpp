@@ -3,18 +3,18 @@
 #include <gtest/gtest.h>
 
 TEST(GF2PolyTest, Example) {
-    GF2Poly poly = GF2Poly(4);
-    poly_bits x = poly_bits(0b1101);
-    poly_bits y = poly_bits(0b0101);
+    GF2Poly poly(4);
+    poly_bits x(0b1101);
+    poly_bits y(0b0101);
 
-    poly_bits xy = poly_bits(0b1100);
+    poly_bits xy(0b1100);
 
     ASSERT_EQ(xy, poly.poly_mul(x, y));
 }
 
 typedef tuple<int, int, int, vector<uint64_t>> HRExample;
 
-vector<HRExample> hr_examples = {
+static const vector<HRExample> hr_examples = {
     {121, 2, 7, {3, 6, 9, 12}},
     {42, 2, 40, {0, 4, 10, 14}},
     {181, 2, 48, {0, 7, 10, 13}},
@@ -27,9 +27,13 @@ vector<HRExample> hr_examples = {
     {4344458, 3, 3265585, {1, 14, 18, 31, 33, 44, 54, 56}},
 };
 
+class HrTest :
+    public testing::TestWithParam<HRExample> {
+};
+
 typedef tuple<int, int, int, vector<uint64_t>> BWDExample;
 
-vector<BWDExample> bwd_examples = {
+static const vector<BWDExample> bwd_examples = {
     {50, 3, 7, {7, 15, 23, 31, 39, 47, 55, 63}},
     {50, 3, 32, {384, 392, 400, 408, 416, 424, 432, 440}},
     {50, 3, 4, {4, 12, 20, 28, 36, 44, 52, 60}},
@@ -52,9 +56,13 @@ vector<BWDExample> bwd_examples = {
     {50000, 6, 47551, {57356, 57419, 57474, 57541, 57616, 57687, 57758, 57817, 57908, 57971, 58042, 58109, 58152, 58223, 58278, 58337, 58431, 58488, 58545, 58614, 58659, 58724, 58797, 58858, 58887, 58944, 59017, 59086, 59163, 59228, 59285, 59346, 59433, 59502, 59559, 59616, 59701, 59762, 59835, 59900, 59921, 59990, 60063, 60120, 60173, 60234, 60291, 60356, 60442, 60509, 60564, 60627, 60678, 60737, 60808, 60879, 60962, 61029, 61100, 61163, 61246, 61305, 61360, 61431}}
 };
 
+class BwdTest :
+    public testing::TestWithParam<BWDExample> {
+};
+
 typedef tuple<int, int, vector<bool>, vector<bool>, bool> RSHExample;
 
-vector<RSHExample> rsh_examples = {
+static const vector<RSHExample> rsh_examples = {
     {20, 5, {0, 0, 1, 1, 0, 0, 1, 0, 1, 1, 0, 0, 1, 1, 0, 1, 0, 0, 0, 1}, {0, 1, 1, 0, 1, 1, 1, 0, 0, 0}, 1},
     {20, 5, {0, 0, 1, 0, 1, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1}, {0, 1, 0, 0, 0, 1, 0, 0, 1, 1}, 1},
     {20, 5, {0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0}, {1, 1, 0, 1, 0, 1, 0, 1, 0, 0}, 0},
@@ -97,36 +105,47 @@ vector<RSHExample> rsh_examples = {
     {23, 3, {0, 1, 0, 1, 1, 0, 0, 0, 1, 0, 1, 1, 1, 0, 1, 0, 1, 0, 1, 0, 0, 0, 0}, {1, 1, 0, 1, 0, 0}, 0},
 };
 
+class RshTest :
+    public testing::TestWithParam<RSHExample> {
+};
 
-TEST(HRTest, Example) {
-    for (auto ex : hr_examples) {
-        int m = get<0>(ex), log_t = get<1>(ex), i = get<2>(ex);
 
-        auto result = get<3>(ex);
-        ASSERT_EQ(result, HRWeakDesign(m, log_t).get_s(i));
-    }
+TEST_P(HrTest, Example) {
+    int m = get<0>(GetParam()), log_t = get<1>(GetParam()), i = get<2>(GetParam());
+
+    auto result = get<3>(GetParam());
+    ASSERT_EQ(result, HRWeakDesign(m, log_t).get_s(i));
 }
 
+INSTANTIATE_TEST_SUITE_P(HrTests,
+                         HrTest,
+                         testing::ValuesIn(hr_examples));
 
-TEST(BWDTest, Example) {
-    for (auto ex : bwd_examples) {
-        int m = get<0>(ex), log_t = get<1>(ex), i = get<2>(ex);
 
-        auto result = get<3>(ex);
-        EXPECT_EQ(result, BlockWeakDesign(m, log_t).get_s(i));
-    }
+TEST_P(BwdTest, Example) {
+    int m = get<0>(GetParam()), log_t = get<1>(GetParam()), i = get<2>(GetParam());
+
+    auto result = get<3>(GetParam());
+    EXPECT_EQ(result, BlockWeakDesign(m, log_t).get_s(i));
 }
 
+INSTANTIATE_TEST_SUITE_P(BwdTests,
+                         BwdTest,
+                         testing::ValuesIn(bwd_examples));
 
-TEST(RSHTest, Example) {
-    for (auto ex : rsh_examples) {
-        int n = get<0>(ex), l = get<1>(ex);
-        vector<bool> r_input = get<2>(ex), r_seed = get<3>(ex);
 
-        int result = get<4>(ex);
-        EXPECT_EQ(result, RSHExtractor(n, l).extract(r_input, r_seed));
-    }
+TEST_P(RshTest, Example) {
+    int n = get<0>(GetParam()), l = get<1>(GetParam());
+    vector<bool> r_input = get<2>(GetParam()), r_seed = get<3>(GetParam());
+
+    int result = get<4>(GetParam());
+    EXPECT_EQ(result, RSHExtractor(n, l).extract(r_input, r_seed));
 }
+
+INSTANTIATE_TEST_SUITE_P(RshTests,
+                         RshTest,
+                         testing::ValuesIn(rsh_examples));
+
 
 TEST(TimingTest, Example) {
     int n = 1000;
