@@ -2,11 +2,11 @@ name: wheels
 on:
   push:
     branches:
-      - 'wheel/**'
+      - 'build-wheel'
 jobs:
   build_linux_wheels:
     name: build linux wheels
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     env:
       PY_VERS: cp38-cp38 cp39-cp39 cp310-cp310 cp311-cp311 cp312-cp312
     steps:
@@ -54,7 +54,7 @@ jobs:
         python-version: '3.11'
     - name: build wheel (3.11)
       run: .github/workflows/macosbuildwheel
-      - name: set up python 3.12
+    - name: set up python 3.12
       uses: actions/setup-python@v2
       with:
         python-version: '3.12'
