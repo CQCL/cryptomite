@@ -64,33 +64,45 @@ jobs:
       with:
         name: macos_wheels
         path: wheelhouse/
-#  build_macos_m1_wheels:
-#    name: build macos m1 wheels
-#    runs-on: [self-hosted, macos, M1]
-#    defaults:
-#      run:
-#        shell: "/usr/bin/arch -arch arm64e /bin/bash {0}"
-#    steps:
-#    - uses: actions/checkout@v2
-#    - name: build wheel (3.8)
-#      run: |
-#        eval "$(pyenv init -)"
-#        pyenv shell tket-3.8
-#        .github/workflows/macosbuildwheel
-#    - name: build wheel (3.9)
-#      run: |
-#        eval "$(pyenv init -)"
-#        pyenv shell tket-3.9
-#        .github/workflows/macosbuildwheel
-#    - name: build wheel (3.10)
-#      run: |
-#        eval "$(pyenv init -)"
-#        pyenv shell tket-3.10
-#        .github/workflows/macosbuildwheel
-#    - uses: actions/upload-artifact@v2
-#      with:
-#        name: macos_m1_wheels
-#        path: wheelhouse/
+  build_macos_m1_wheels:
+    name: build macos M1 wheels
+    runs-on: macos-latest-xlarge
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up python 3.8
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.8'
+    - name: build wheel (3.8)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.9
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.9'
+    - name: build wheel (3.9)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.10
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+    - name: build wheel (3.10)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.11
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.11'
+    - name: build wheel (3.11)
+      run: .github/workflows/macosbuildwheel
+    - name: set up python 3.12
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.12'
+    - name: build wheel (3.12)
+      run: .github/workflows/macosbuildwheel
+    - uses: actions/upload-artifact@v2
+      with:
+        name: macos_m1_wheels
+        path: wheelhouse/
   build_windows_wheels:
     name: build windows wheels
     runs-on: windows-2019
