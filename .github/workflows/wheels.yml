@@ -69,18 +69,6 @@ jobs:
     runs-on: macos-latest-xlarge
     steps:
     - uses: actions/checkout@v2
-    - name: set up python 3.8
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.8'
-    - name: build wheel (3.8)
-      run: .github/workflows/macosbuildwheel
-    - name: set up python 3.9
-      uses: actions/setup-python@v2
-      with:
-        python-version: '3.9'
-    - name: build wheel (3.9)
-      run: .github/workflows/macosbuildwheel
     - name: set up python 3.10
       uses: actions/setup-python@v2
       with:
