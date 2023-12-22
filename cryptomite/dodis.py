@@ -107,17 +107,18 @@ class Dodis:
                               - input_length + 1 + 2 * log_error)
         if markov_q_proof:
             output_length = floor(0.2 * (min_entropy1 + min_entropy2
-                                         - input_length)
-                                  + 8 * log_error + 9 - 4 * log2(3))
+                                         - input_length + 8 * log_error 
+                                         + 9 - 4 * log2(3)))
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
-                            'Increase min_entropy1 and/or min_entropy2.')
+                            '''Increase min_entropy1 and/or min_entropy2
+                            and/or log_error.''')
         if verbose:
-            print('Adjusted entropy1: ', min_entropy1,
-                  'Adjusted entropy2: ', min_entropy2,
+            print('Min entropy1: ', min_entropy1,
+                  'Min entropy2: ', min_entropy2,
                   'Log error: ', log_error,
                   'Input length1: ', input_length, 
                   'Input length2: ', input_length,
                   'Output length: ', output_length)
-            print('Adjust length of input and (weak) seed accordingly')
+            print('Adjust length of the input and (weak) seed accordingly')
         return Dodis(n=input_length, m=output_length)

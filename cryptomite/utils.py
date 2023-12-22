@@ -6,10 +6,10 @@ from __future__ import annotations
 from math import sqrt
 from typing import Literal, Sequence
 
-#from cryptomite._cryptomite import NTT, mul_vec
+from cryptomite._cryptomite import NTT, mul_vec
 
-__all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime', 
-           'closest_prime', 'previous_na_set', 'next_na_set', 
+__all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime',
+           'closest_prime', 'previous_na_set', 'next_na_set',
            'closest_na_set', 'von_neumann']
 
 
@@ -33,11 +33,11 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
     Parameters
     ----------
         l : int
-            log_2 of the size of the convolution
+            log_2 of the size of the convolution.
         source1: list of int
-            first vector
+            first vector.
         source2: list of int
-            second vector
+            second vector.
 
     Returns
     -------
@@ -60,7 +60,7 @@ def is_prime(n: int) -> bool:
     Parameters
     ----------
         n : int
-            integer to check for primality
+            integer to check for primality.
 
     Returns
     -------
@@ -81,7 +81,7 @@ def prime_facto(n: int) -> tuple[list[int], list[int]]:
     Parameters
     ----------
         n : int
-            number to check
+            number to check.
 
     Returns
     -------
@@ -115,10 +115,10 @@ def prime_facto(n: int) -> tuple[list[int], list[int]]:
     return factors2, powers
 
 
-def previous_prime(k: int) -> int: 
+def previous_prime(k: int) -> int:
     """
-    Finds the largest integer smaller than or equal to the input 
-    that is prime. 
+    Finds the largest integer smaller than or equal to the input
+    that is prime.
 
     Parameters
     ----------
@@ -141,10 +141,10 @@ def previous_prime(k: int) -> int:
     return k + 1
 
 
-def next_prime(k: int) -> int: 
+def next_prime(k: int) -> int:
     """
-    Finds the smallest integer largest than or equal to the input 
-    that is prime. 
+    Finds the smallest integer larger than or equal to the input
+    that is prime.
 
     Parameters
     ----------
@@ -167,10 +167,11 @@ def next_prime(k: int) -> int:
     return k + 1
 
 
-def closest_prime(k: int) -> int: 
+def closest_prime(k: int) -> int:
     """
     Finds the closest integer to the input that is prime.
-    If both directions are equidistant, outputs prime less than input.
+    If both directions are equidistant, outputs the prime less
+    than the input.
 
     Parameters
     ----------
@@ -194,7 +195,7 @@ def closest_prime(k: int) -> int:
 def previous_na_set(k: int) -> int:
     """
     Finds the largest integer smaller than the input that is prime
-    with primitive root 2. 
+    with primitive root 2.
 
     Parameters
     ----------
@@ -226,7 +227,7 @@ def previous_na_set(k: int) -> int:
 def next_na_set(k: int) -> int:
     """
     Finds the smallest integer larger than the input that is prime
-    with primitive root 2. 
+    with primitive root 2.
 
     Parameters
     ----------
@@ -255,11 +256,12 @@ def next_na_set(k: int) -> int:
     return k + 1
 
 
-def closest_na_set(k: int) -> int: 
+def closest_na_set(k: int) -> int:
     """
-    Finds the closest integer to the input that is prime
-    with primitive root 2. 
-    If both directions are equidistant, outputs prime less than input.
+    Finds the closest integer to the input that is prime with
+    primitive root 2.
+    If both directions are equidistant, outputs the prime with
+    primitive root 2 less than the input.
 
     Parameters
     ----------

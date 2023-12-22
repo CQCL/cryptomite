@@ -4,7 +4,7 @@ independent, strings of bits to produce some error-perfect random bits.
 """
 from __future__ import annotations
 
-from math import floor
+from math import floor, log2
 from typing import cast
 
 from cryptomite.utils import BitT, BitsT, conv, log_2
@@ -15,14 +15,14 @@ __all__ = ['Toeplitz']
 class Toeplitz:
     """Toeplitz extractor"""
     def __init__(self, n: int, m: int):
-        """ Create a Toeplitz Extractor.
+        """Create a Circulant Extractor.
 
         Parameters
         ----------
         n : int
-            The input size (the number of columns in the matrix).
+            The length of the input bits.
         m : int
-            The output size (the number of rows in the matrix).
+            The length of the output bits.
         """
         self.n, self.m = n, m
 
@@ -32,9 +32,9 @@ class Toeplitz:
         Parameters
         ----------
         input1 : list of bits
-            The first list of bits.
+            The first list of bits, the 'input'.
         input2 : list of bits
-            The second list of bits.
+            The second list of bits, the '(weak) seed'.
 
         Returns
         -------
@@ -56,68 +56,93 @@ class Toeplitz:
 
     @staticmethod
     def from_params(
-            seed_length: int,
-            input_length: int,
-            seed_entropy: int,
-            input_entropy: int,
-            error: int) -> Toeplitz:
+            min_entropy1: int,
+            min_entropy2: int,
+            log_error: int,
+            input_length1: int,
+            input_length2: int,
+            markov_q_proof: bool,
+            verbose: bool = True) -> Toeplitz:
         """
-        Calculate the input size and output size for this extractor.
+        Calculate a valid input and output size for this extractor,
+        given the initial lengths and min-entropies of the input sources.
 
-        The entropy input is a lower bound on the min-entropy of the
-        related input string.
-        This function defines the input size and output size for this
-        seeded extractor.
+        The input_length must be prime with primitive root 2.
+        The entropy inputs are a lower bound on the :term:`min-entropy`
+        of the related input string.
 
         Parameters
         ----------
-        seed_length : int
-            The initial length of the seed.
-        input_length : int
-            The initial length of second input source.
-        seed_entropy : int
-            The min-entropy of the seed.
-            If the seed is uniform, this should equal
-            seed_length.
-        input_entropy : int
-            The min-entropy of second input source.
-        error : int
-            The acceptable maximum extractor error, in the form
-            error = b where extractor error = 2 ^ b.
+        min_entropy1 : float
+            The min-entropy of input source 1, the 'input'.
+        min_entropy2 : float
+            The min-entropy of input source 2, the '(weak) seed'.
+        log_error : float
+            The acceptable maximum extractor error, in the
+            form error = b where extractor error = :math:`2 ^ b`.
+        input_length1 : int
+            The initial length of input source 1.
+        input_length2 : int
+            The initial length of input source 2.
+        markov_q_proof : bool
+            Boolean indicator of whether the extractor parameters
+            should be calculated to account for being quantum-proof
+            in the Markov model or not.
 
         Returns
         -------
         Toeplitz
             The Toeplitz extractor.
         """
-        if error > 0:
-            raise Exception('Cannot extract with these parameters. '
+        if log_error > 0:
+            raise Exception('Cannot extract with these parameters.'
                             'Error must be < 0.')
-        if seed_length <= input_length:
-            raise Exception('Cannot extract with these parameters. '
-                            'Increase the seed length. '
+        if input_length2 <= input_length1:
+            raise Exception('Cannot extract with these parameters.'
+                            'Increase the seed length (input_length2).'
                             'The seed must be longer than the input.')
-        if seed_entropy >= seed_length:
-            output_length = input_entropy + 2 * error
-            assert output_length >= 0
-            if seed_length > output_length + input_length - 1:
-                seed_length = output_length + input_length - 1
-            if seed_length < output_length + input_length - 1:
-                output_length = seed_length - input_length + 1
-        if seed_entropy < seed_length:
-            output_length = floor(
-                1/3 * (input_entropy - 2 * (input_length - 1
-                       - seed_entropy) + 2 * error))
-            if seed_length > output_length + input_length - 1:
-                if seed_length > output_length + input_length - 1:
-                    penalty = 3*(seed_length - output_length
-                                 - input_length + 1)
-                    output_length = floor(output_length - penalty * 2/3)
-                    seed_length = seed_length - penalty
-            if seed_length < output_length + input_length - 1:
-                seed_length = seed_length - input_length + 1
-        assert seed_length == output_length + input_length - 1
+        if min_entropy2 >= input_length2:
+            output_length = min_entropy1 + 2 * log_error
+            if input_length2 >= output_length + input_length1 - 1:
+                input_length2 = output_length + input_length1 - 1
+            while input_length2 < output_length + input_length1 - 1:
+                input_length1 -= 1
+                min_entropy1 -= 1
+                output_length = min_entropy1 + 2 * log_error
+        if min_entropy2 < input_length2:
+            output_length = floor(1/2 * (min_entropy1 + min_entropy2
+                                         - input_length1 + 1
+                                         + 2 * log_error))
+            while input_length2 > output_length + input_length1 - 1:
+                input_length2 -= 1
+                min_entropy2 -= 1
+                output_length = floor(1/2 * (min_entropy1 + min_entropy2
+                                             - input_length1 + 1
+                                             + 2 * log_error))
+            while input_length2 < output_length + input_length1 - 1:
+                output_length -= 1
+        if markov_q_proof:
+            output_length = floor((1/6) * (min_entropy1 + min_entropy2
+                                           - input_length1 + 8 * log_error
+                                           + 9 - 4 * log2(3)))
+            while input_length2 > output_length + input_length1 - 1:
+                input_length2 -= 1
+                min_entropy2 -= 1
+                output_length = floor((1/6) * (min_entropy1 + min_entropy2
+                                               - input_length1 + 8 * log_error
+                                               + 9 - 4 * log2(3)))
+            while input_length2 < output_length + input_length1 - 1:
+                output_length -= 1
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
-                            'Increase input_entropy and/or seed_entropy.')
-        return Toeplitz(n=input_length, m=output_length)
+                            '''Increase min_entropy1 and/or min_entropy2 
+                            and/or log_error.''')
+        if verbose:
+            print('Min entropy1: ', min_entropy1,
+                  'Min entropy2: ', min_entropy2,
+                  'Log error: ', log_error,
+                  'Input length1: ', input_length1,
+                  'Input length2: ', input_length2,
+                  'Output length: ', output_length)
+            print('Adjust length of the input and (weak) seed accordingly')
+        return Toeplitz(n=input_length1, m=output_length)
