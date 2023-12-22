@@ -1,27 +1,27 @@
 """
-Dodis is a 2-source extractor that takes two equal length, independent,
-strings of bits to produce some error-perfect random bits.
+Circulant is a seeded extractor that takes an input of n - 1 bits and 
+a seed of n bits, where n is prime, to produce some error-perfect random bits.
 """
 from __future__ import annotations
 
 from math import floor, log2
 from typing import cast
 
-from cryptomite.utils import BitsT, conv, log_2, closest_na_set
+from cryptomite.utils import BitsT, conv, log_2, closest_prime
 
-__all__ = ['Dodis']
+__all__ = ['Circulant']
 
 
-class Dodis:
-    """ Dodis extractor based on [Dodis20]_. """
+class Circulant:
+    """ Circulant extractor based on [Foreman23]_. """
     def __init__(self, n: int, m: int):
-        """Create a Dodis Extractor.
+        """Create a Circulant Extractor.
 
         Parameters
         ----------
         n : int
-            The length of the two input bits.
-            *** This should be prime with primitive root 2. ***
+            The length of the (weak) seed bits.
+            *** This should be prime. ***
         m : int
             The length of the output bits.
         """
@@ -43,10 +43,11 @@ class Dodis:
             The extracted output.
         """
         n, m = self.n, self.m
-        assert len(input1) == len(input2) == n
+        assert len(input1) + 1 == len(input2) == n
         assert n >= m
         l = log_2(2 * n - 2)
         L = 1 << l
+        input1.append(0)
         input1, input2 = list(input1), list(input2)
         input1 = input1[0:1] + input1[1:][::-1] + [0] * (L - n)
         input2 = input2 + [0] * (L - len(input2))
@@ -63,7 +64,7 @@ class Dodis:
             input_length1: int,
             input_length2: int,
             markov_q_proof: bool,
-            verbose: bool = True) -> Dodis:
+            verbose: bool = True) -> Circulant:
         """
         Calculate a valid input and output size for this extractor,
         given the initial lengths and min-entropies of the input sources.
@@ -92,23 +93,23 @@ class Dodis:
 
         Returns
         -------
-        Dodis
-            The Dodis extractor.
+        Circulant
+            The Circulant extractor.
         """
         if log_error >= 0:
             raise Exception('Cannot extract with these parameters.'
                             'Error must be < 0.')
-        input_length = closest_na_set((input_length1 + input_length2)//2)
-        if input_length1 > input_length:
+        input_length = closest_prime((input_length1 + input_length2)//2)
+        if input_length1 > input_length - 1:
             min_entropy1 -= input_length1 - input_length
         if input_length2 > input_length:
             min_entropy2 -= input_length2 - input_length
         output_length = floor(min_entropy1 + min_entropy2
-                              - input_length + 1 + 2 * log_error)
+                              - input_length + 2 * log_error)
         if markov_q_proof:
             output_length = floor(0.2 * (min_entropy1 + min_entropy2
                                          - input_length)
-                                  + 8 * log_error + 9 - 4 * log2(3))
+                                  + 8 * log_error + 8 - 4 * log2(3))
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
                             'Increase min_entropy1 and/or min_entropy2.')
@@ -116,8 +117,8 @@ class Dodis:
             print('Adjusted entropy1: ', min_entropy1,
                   'Adjusted entropy2: ', min_entropy2,
                   'Log error: ', log_error,
-                  'Input length1: ', input_length, 
+                  'Input length1: ', input_length - 1,
                   'Input length2: ', input_length,
                   'Output length: ', output_length)
             print('Adjust length of input and (weak) seed accordingly')
-        return Dodis(n=input_length, m=output_length)
+        return Circulant(n=input_length, m=output_length)
