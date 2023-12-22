@@ -56,19 +56,19 @@ class Toeplitz:
 
     @staticmethod
     def from_params(
-            min_entropy1: int,
-            min_entropy2: int,
-            log_error: int,
+            min_entropy1: float,
+            min_entropy2: float,
+            log2_error: float,
             input_length1: int,
             input_length2: int,
             markov_q_proof: bool,
             verbose: bool = True) -> Toeplitz:
         """
         Calculate a valid input and output size for this extractor,
-        given the initial lengths and min-entropies of the input sources.
+        given the initial lengths and min-entropies of the input sources
+        and generate the associated extractor. 
 
-        The input_length must be prime with primitive root 2.
-        The entropy inputs are a lower bound on the :term:`min-entropy`
+        The min entropy inputs are a lower bound on the :term:`min-entropy`
         of the related input string.
 
         Parameters
@@ -77,13 +77,13 @@ class Toeplitz:
             The min-entropy of input source 1, the 'input'.
         min_entropy2 : float
             The min-entropy of input source 2, the '(weak) seed'.
-        log_error : float
+        log2_error : float
             The acceptable maximum extractor error, in the
             form error = b where extractor error = :math:`2 ^ b`.
         input_length1 : int
-            The initial length of input source 1.
+            The initial length of input source.
         input_length2 : int
-            The initial length of input source 2.
+            The initial length of the (weak) seed.
         markov_q_proof : bool
             Boolean indicator of whether the extractor parameters
             should be calculated to account for being quantum-proof
@@ -94,53 +94,53 @@ class Toeplitz:
         Toeplitz
             The Toeplitz extractor.
         """
-        if log_error > 0:
+        if log2_error > 0:
             raise Exception('Cannot extract with these parameters.'
-                            'Error must be < 0.')
+                            'log2_error must be < 0.')
         if input_length2 <= input_length1:
             raise Exception('Cannot extract with these parameters.'
                             'Increase the seed length (input_length2).'
                             'The seed must be longer than the input.')
         if min_entropy2 >= input_length2:
-            output_length = min_entropy1 + 2 * log_error
+            output_length = min_entropy1 + 2 * log2_error
             if input_length2 >= output_length + input_length1 - 1:
                 input_length2 = output_length + input_length1 - 1
             while input_length2 < output_length + input_length1 - 1:
                 input_length1 -= 1
                 min_entropy1 -= 1
-                output_length = min_entropy1 + 2 * log_error
+                output_length = min_entropy1 + 2 * log2_error
         if min_entropy2 < input_length2:
             output_length = floor(1/2 * (min_entropy1 + min_entropy2
                                          - input_length1 + 1
-                                         + 2 * log_error))
+                                         + 2 * log2_error))
             while input_length2 > output_length + input_length1 - 1:
                 input_length2 -= 1
                 min_entropy2 -= 1
                 output_length = floor(1/2 * (min_entropy1 + min_entropy2
                                              - input_length1 + 1
-                                             + 2 * log_error))
+                                             + 2 * log2_error))
             while input_length2 < output_length + input_length1 - 1:
                 output_length -= 1
         if markov_q_proof:
             output_length = floor((1/6) * (min_entropy1 + min_entropy2
-                                           - input_length1 + 8 * log_error
+                                           - input_length1 + 8 * log2_error
                                            + 9 - 4 * log2(3)))
             while input_length2 > output_length + input_length1 - 1:
                 input_length2 -= 1
                 min_entropy2 -= 1
                 output_length = floor((1/6) * (min_entropy1 + min_entropy2
-                                               - input_length1 + 8 * log_error
+                                               - input_length1 + 8 * log2_error
                                                + 9 - 4 * log2(3)))
             while input_length2 < output_length + input_length1 - 1:
                 output_length -= 1
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
-                            '''Increase min_entropy1 and/or min_entropy2 
-                            and/or log_error.''')
+                            '''Increase min_entropy1 and/or min_entropy2
+                            and/or log2_error.''')
         if verbose:
             print('Min entropy1: ', min_entropy1,
                   'Min entropy2: ', min_entropy2,
-                  'Log error: ', log_error,
+                  'Log error: ', log2_error,
                   'Input length1: ', input_length1,
                   'Input length2: ', input_length2,
                   'Output length: ', output_length)

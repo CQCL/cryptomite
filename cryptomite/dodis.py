@@ -57,19 +57,22 @@ class Dodis:
 
     @staticmethod
     def from_params(
-            min_entropy1: int,
-            min_entropy2: int,
-            log_error: int,
+            min_entropy1: float,
+            min_entropy2: float,
+            log2_error: float,
             input_length1: int,
             input_length2: int,
             markov_q_proof: bool,
             verbose: bool = True) -> Dodis:
         """
         Calculate a valid input and output size for this extractor,
-        given the initial lengths and min-entropies of the input sources.
+        given the initial lengths and min-entropies of the input sources
+        and generate the associated extractor. 
 
-        The input_length must be prime with primitive root 2.
-        The entropy inputs are a lower bound on the :term:`min-entropy`
+        The input_length must be prime with primitive root 2, else the 
+        code will chose a valid input_length choice and adjust the 
+        other parameters accordingly.
+        The min entropy inputs are a lower bound on the :term:`min-entropy`
         of the related input string.
 
         Parameters
@@ -78,13 +81,13 @@ class Dodis:
             The min-entropy of input source 1, the 'input'.
         min_entropy2 : float
             The min-entropy of input source 2, the '(weak) seed'.
-        log_error : float
+        log2_error : float
             The acceptable maximum extractor error, in the
             form error = b where extractor error = :math:`2 ^ b`.
         input_length1 : int
-            The initial length of input source 1.
+            The initial length of input source.
         input_length2 : int
-            The initial length of input source 2.
+            The initial length of the (weak) seed.
         markov_q_proof : bool
             Boolean indicator of whether the extractor parameters
             should be calculated to account for being quantum-proof
@@ -95,29 +98,29 @@ class Dodis:
         Dodis
             The Dodis extractor.
         """
-        if log_error >= 0:
+        if log2_error >= 0:
             raise Exception('Cannot extract with these parameters.'
-                            'Error must be < 0.')
+                            'log2_error must be < 0.')
         input_length = closest_na_set((input_length1 + input_length2)//2)
         if input_length1 > input_length:
             min_entropy1 -= input_length1 - input_length
         if input_length2 > input_length:
             min_entropy2 -= input_length2 - input_length
         output_length = floor(min_entropy1 + min_entropy2
-                              - input_length + 1 + 2 * log_error)
+                              - input_length + 1 + 2 * log2_error)
         if markov_q_proof:
             output_length = floor(0.2 * (min_entropy1 + min_entropy2
-                                         - input_length + 8 * log_error 
+                                         - input_length + 8 * log2_error
                                          + 9 - 4 * log2(3)))
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
                             '''Increase min_entropy1 and/or min_entropy2
-                            and/or log_error.''')
+                            and/or log2_error.''')
         if verbose:
             print('Min entropy1: ', min_entropy1,
                   'Min entropy2: ', min_entropy2,
-                  'Log error: ', log_error,
-                  'Input length1: ', input_length, 
+                  'Log error: ', log2_error,
+                  'Input length1: ', input_length,
                   'Input length2: ', input_length,
                   'Output length: ', output_length)
             print('Adjust length of the input and (weak) seed accordingly')
