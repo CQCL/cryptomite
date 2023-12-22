@@ -6,9 +6,11 @@ from __future__ import annotations
 from math import sqrt
 from typing import Literal, Sequence
 
-from cryptomite._cryptomite import NTT, mul_vec
+#from cryptomite._cryptomite import NTT, mul_vec
 
-__all__ = ['is_prime', 'prime_facto', 'na_set', 'von_neumann']
+__all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime', 
+           'closest_prime', 'previous_na_set', 'next_na_set', 
+           'closest_na_set', 'von_neumann']
 
 
 BitT = Literal[0, 1]

@@ -7,7 +7,7 @@ from __future__ import annotations
 from math import floor, log2
 from typing import cast
 
-from cryptomite.utils import BitsT, conv, log_2, na_set
+from cryptomite.utils import BitsT, conv, log_2, closest_na_set
 
 __all__ = ['Dodis']
 
@@ -61,12 +61,13 @@ class Dodis:
             entropy1: int,
             entropy2: int,
             error: int,
-            q_proof: bool) -> Dodis:
+            markov_q_proof: bool,
+            print_params: bool = True) -> Dodis:
         """
         Calculate the input size and output size for this 2-source
-        extractor.
+        extractor, optimising 
 
-        The input_length -1 must be in :py:func:`~.na_set`.
+        The input_length must be prime with primitive root 2.
         The entropy inputs are a lower bound on the :term:`min-entropy`
         of the related input string.
 
@@ -83,10 +84,10 @@ class Dodis:
         error : int
             The acceptable maximum extractor error, in the
             form error = b where extractor error = :math:`2 ^ b`.
-        q_proof : bool
+        markov_q_proof : bool
             Boolean indicator of whether the extractor parameters
-            should be calculated to account for quantum side
-            information or not.
+            should be calculated to account for being quantum-proof
+            in the Markov model or not.
 
         Returns
         -------
@@ -96,15 +97,23 @@ class Dodis:
         if error > 0:
             raise Exception('Cannot extract with these parameters.'
                             'Error must be < 0.')
-        input_length = na_set(min(input_length1, input_length2) - 1) + 1
-        entropy1 -= input_length1 - input_length
-        entropy2 -= input_length2 - input_length
-        output_length = floor(
-            entropy1 + entropy2 - input_length + 1 + 2 * error)
-        if q_proof:
+        input_length = closest_na_set((input_length1 + input_length2)//2)
+        if input_length1 > input_length:
+            entropy1 -= input_length1 - input_length
+        if input_length2 > input_length:
+            entropy2 -= input_length2 - input_length
+        output_length = floor(entropy1 + entropy2 
+                              - input_length + 1 + 2 * error)
+        if markov_q_proof:
             output_length = floor(0.2 * (entropy1 + entropy2 - input_length)
                                   + 8 * error + 9 - 4 * log2(3))
         if output_length <= 0:
             raise Exception('Cannot extract with these parameters. '
                             'Increase entropy1 and/or entropy2.')
+        if print_params:
+            print('Input length: ', input_length, 
+                  'Adjusted entropy1: ', entropy1,
+                  'Adjusted entropy2: ', entropy2,
+                  'Output length: ', output_length)
+            print('Adjust length of input and (weak) seed accordingly')
         return Dodis(n=input_length, m=output_length)
