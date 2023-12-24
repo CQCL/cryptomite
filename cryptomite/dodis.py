@@ -7,7 +7,7 @@ from __future__ import annotations
 from math import floor, log2
 from typing import cast
 
-from cryptomite.utils import BitsT, conv, log_2, closest_na_set
+from cryptomite.utils import BitsT, closest_na_set, conv, log_2
 
 __all__ = ['Dodis']
 
@@ -67,13 +67,13 @@ class Dodis:
         """
         Calculate a valid input and output size for this extractor,
         given the initial lengths and min-entropies of the input sources
-        and generate the associated extractor. 
+        and generate the associated extractor.
 
-        The input_length must be prime with primitive root 2, else the 
-        code will chose a valid input_length choice and adjust the 
+        The input_length must be prime with primitive root 2, else 
+        the code will chose a valid input_length choice and adjust the
         other parameters accordingly.
-        The min entropy inputs are a lower bound on the :term:`min-entropy`
-        of the related input string.
+        The min entropy inputs are a lower bound on the
+        :term:`min-entropy` of the related input string.
 
         Parameters
         ----------
@@ -113,8 +113,8 @@ class Dodis:
                                          - input_length + 8 * log2_error
                                          + 9 - 4 * log2(3)))
         if output_length <= 0:
-            raise Exception('Cannot extract with these parameters. '
-                            '''Increase min_entropy1 and/or min_entropy2
+            raise Exception('''Cannot extract with these parameters.
+                            Increase min_entropy1 and/or min_entropy2
                             and/or log2_error.''')
         if verbose:
             print('Min entropy1: ', min_entropy1,

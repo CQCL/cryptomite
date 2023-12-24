@@ -74,8 +74,8 @@ class Circulant:
         The input_length2 must be prime, else the code will chose a
         valid input_length2 choice and adjust the other parameters
         accordingly.
-        The min_entropy inputs are a lower bound on the :term:`min-entropy`
-        of the related input string.
+        The min_entropy inputs are a lower bound on the
+        :term:`min-entropy` of the related input string.
 
         Parameters
         ----------
