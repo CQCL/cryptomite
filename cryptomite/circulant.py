@@ -101,8 +101,8 @@ class Circulant:
             The Circulant extractor.
         """
         if log2_error >= 0:
-            raise Exception('''Cannot extract with these parameters.
-                            log2_error must be < 0.''')
+            raise Exception("""Cannot extract with these parameters.
+                            log2_error must be < 0.""")
         input_length = closest_prime((input_length1 + input_length2)//2)
         if input_length1 > input_length - 1:
             min_entropy1 -= input_length1 - input_length
@@ -115,9 +115,9 @@ class Circulant:
                                          - input_length + 8 * log2_error
                                          + 8 - 4 * log2(3)))
         if output_length <= 0:
-            raise Exception('''Cannot extract with these parameters.
+            raise Exception("""Cannot extract with these parameters.
                             Increase min_entropy1 and/or min_entropy2
-                            and/or log2_error.''')
+                            and/or log2_error.""")
         if verbose:
             print('Min entropy1: ', min_entropy1,
                   'Min entropy2: ', min_entropy2,

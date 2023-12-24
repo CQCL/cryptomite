@@ -102,11 +102,11 @@ class Trevisan:
             The Trevisan extractor.
         """
         if log2_error > 0:
-            raise Exception('''Cannot extract with these parameters.
-                            log2_error must be < 0.''')
+            raise Exception("""Cannot extract with these parameters.
+                            log2_error must be < 0.""")
         if min_entropy2 != input_length2:
-            raise Exception('''Cannot calcuate with these parameters.
-                            Set min_entropy2 = input_length2.''')
+            raise Exception("""Cannot calcuate with these parameters.
+                            Set min_entropy2 = input_length2.""")
         r = 2 * exp(1)
         m = min_entropy1 + 4 * log2_error - 6
         output_length = floor(min_entropy1 + 4 * log2_error
@@ -116,17 +116,17 @@ class Trevisan:
         a = max(1, ceil((log(output_length - r) - log(t - r))
                         / (log(r) - log(r-1))))
         if markov_q_proof:
-            m = (1/7) * (min_entropy1 + 6 - 6 * log2(3) +
-                         12 * log2_error)
-            output_length = floor((1/7) * (min_entropy1 + 6 - 6 * log2(3) +
-                                           12 * log2_error - 12 * log2(m)))
+            m = (1/7) * (min_entropy1 + 6 - 6 * log2(3)
+                         + 12 * log2_error)
+            output_length = floor((1/7) * (min_entropy1 + 6 - 6 * log2(3)
+                                           + 12 * log2_error - 12 * log2(m)))
             t = 2 * ceil(log2(input_length1) + 1
                          - 2 * log2_error + 2 * log2(2 * output_length))
             a = max(1, ceil((log(output_length - r) - log(t - r))
                             / (log(r) - log(r-1))))
         if input_length2 < 4 * a * t**2:
-            raise Exception('''Cannot extract with these parameters.
-                            Increase input_length2.''')
+            raise Exception("""Cannot extract with these parameters.
+                            Increase input_length2.""")
         input_length2 = 4 * a * t**2
         if verbose:
             print('Min entropy1: ', min_entropy1,
