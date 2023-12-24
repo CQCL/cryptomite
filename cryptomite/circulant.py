@@ -1,6 +1,7 @@
 """
-Circulant is a seeded extractor that takes an input of n - 1 bits and 
-a seed of n bits, where n is prime, to produce some error-perfect random bits.
+Circulant is a seeded extractor that takes an input of
+n - 1 bits and a seed of n bits, where n is prime, to
+produce some error-perfect random bits.
 """
 from __future__ import annotations
 
@@ -68,7 +69,7 @@ class Circulant:
         """
         Calculate a valid input and output size for this extractor,
         given the initial lengths and min-entropies of the input sources
-        and generate the associated extractor. 
+        and generate the associated extractor.
 
         The input_length2 must be prime, else the code will chose a valid
         input_length2 choice and adjust the other parameters accordingly.
