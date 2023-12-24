@@ -69,7 +69,7 @@ class Dodis:
         given the initial lengths and min-entropies of the input sources
         and generate the associated extractor.
 
-        The input_length must be prime with primitive root 2, else 
+        The input_length must be prime with primitive root 2, else
         the code will chose a valid input_length choice and adjust the
         other parameters accordingly.
         The min entropy inputs are a lower bound on the
@@ -99,8 +99,8 @@ class Dodis:
             The Dodis extractor.
         """
         if log2_error >= 0:
-            raise Exception('Cannot extract with these parameters.'
-                            'log2_error must be < 0.')
+            raise Exception('''Cannot extract with these parameters.
+                            log2_error must be < 0.''')
         input_length = closest_na_set((input_length1 + input_length2)//2)
         if input_length1 > input_length:
             min_entropy1 -= input_length1 - input_length

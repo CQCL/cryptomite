@@ -5,7 +5,7 @@ from __future__ import annotations
 
 __all__ = ['Trevisan']
 
-from math import ceil, log, log2, exp, floor
+from math import ceil, exp, floor, log, log2
 
 from cryptomite import _cryptomite
 
@@ -72,10 +72,11 @@ class Trevisan:
         given the initial lengths and min-entropies of the input sources
         and generate the associated extractor.
 
-        *** Note: at present, this function (for Trevisan) only supports when
-        input_length2 = min_entropy2, i.e. when the seed is uniform. ***
-        The min entropy inputs are a lower bound on the :term:`min-entropy`
-        of the related input string.
+        *** Note: at present, this function (for Trevisan) only supports
+        when input_length2 = min_entropy2, i.e. when the seed is
+        uniform. ***
+        The min entropy inputs are a lower bound on the
+        :term:`min-entropy` of the related input string.
 
         Parameters
         ----------
@@ -101,11 +102,11 @@ class Trevisan:
             The Trevisan extractor.
         """
         if log2_error > 0:
-            raise Exception('Cannot extract with these parameters.'
-                            'log2_error must be < 0.')
+            raise Exception('''Cannot extract with these parameters.
+                            log2_error must be < 0.''')
         if min_entropy2 != input_length2:
-            raise Exception('Cannot calcuate with these parameters.'
-                            'Set min_entropy2 = input_length2.')
+            raise Exception('''Cannot calcuate with these parameters.
+                            Set min_entropy2 = input_length2.''')
         r = 2 * exp(1)
         m = min_entropy1 + 4 * log2_error - 6
         output_length = floor(min_entropy1 + 4 * log2_error
@@ -114,26 +115,19 @@ class Trevisan:
                      - 2 * log2_error + 2 * log2(2 * output_length))
         a = max(1, ceil((log(output_length - r) - log(t - r))
                         / (log(r) - log(r-1))))
-        if input_length2 >= 4 * a * t**2:
-            input_length2 = 4 * a * t**2
-        if input_length2 < 4 * a * t**2:
-            raise Exception('Cannot extract with these parameters.'
-                            'Increase input_length2.')
         if markov_q_proof:
-            if min_entropy2 >= input_length2:
-                m = (1/7) * (min_entropy1 + 6 - 6 * log2(3) +
-                             12 * log2_error)
-                output_length = floor((1/7) * (min_entropy1 + 6 - 6 * log2(3) +
-                                               12 * log2_error - 4 * log2(m)))
-                t = 2 * ceil(log2(input_length1) + 1
-                             - 2 * log2_error + 2 * log2(2 * output_length))
-                a = max(1, ceil((log(output_length - r) - log(t - r))
-                                / (log(r) - log(r-1))))
-                if input_length2 >= 4 * a * t**2:
-                    input_length2 = 4 * a * t**2
-                if input_length2 < 4 * a * t**2:
-                    raise Exception('Cannot extract with these parameters.'
-                                    'Increase input_length2.')
+            m = (1/7) * (min_entropy1 + 6 - 6 * log2(3) +
+                         12 * log2_error)
+            output_length = floor((1/7) * (min_entropy1 + 6 - 6 * log2(3) +
+                                           12 * log2_error - 12 * log2(m)))
+            t = 2 * ceil(log2(input_length1) + 1
+                         - 2 * log2_error + 2 * log2(2 * output_length))
+            a = max(1, ceil((log(output_length - r) - log(t - r))
+                            / (log(r) - log(r-1))))
+        if input_length2 < 4 * a * t**2:
+            raise Exception('''Cannot extract with these parameters.
+                            Increase input_length2.''')
+        input_length2 = 4 * a * t**2
         if verbose:
             print('Min entropy1: ', min_entropy1,
                   'Min entropy2: ', min_entropy2,

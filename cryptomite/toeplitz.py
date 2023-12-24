@@ -66,10 +66,10 @@ class Toeplitz:
         """
         Calculate a valid input and output size for this extractor,
         given the initial lengths and min-entropies of the input sources
-        and generate the associated extractor. 
+        and generate the associated extractor.
 
-        The min entropy inputs are a lower bound on the :term:`min-entropy`
-        of the related input string.
+        The min entropy inputs are a lower bound on the
+        :term:`min-entropy` of the related input string.
 
         Parameters
         ----------
@@ -95,12 +95,12 @@ class Toeplitz:
             The Toeplitz extractor.
         """
         if log2_error > 0:
-            raise Exception('Cannot extract with these parameters.'
-                            'log2_error must be < 0.')
+            raise Exception('''Cannot extract with these parameters.
+                            log2_error must be < 0.''')
         if input_length2 <= input_length1:
-            raise Exception('Cannot extract with these parameters.'
-                            'Increase the seed length (input_length2).'
-                            'The seed must be longer than the input.')
+            raise Exception('''Cannot extract with these parameters.
+                            Increase the seed length (input_length2).
+                            The seed must be longer than the input.''')
         if min_entropy2 >= input_length2:
             output_length = min_entropy1 + 2 * log2_error
             if input_length2 >= output_length + input_length1 - 1:
@@ -134,8 +134,8 @@ class Toeplitz:
             while input_length2 < output_length + input_length1 - 1:
                 output_length -= 1
         if output_length <= 0:
-            raise Exception('Cannot extract with these parameters. '
-                            '''Increase min_entropy1 and/or min_entropy2
+            raise Exception('''Cannot extract with these parameters.
+                            Increase min_entropy1 and/or min_entropy2
                             and/or log2_error.''')
         if verbose:
             print('Min entropy1: ', min_entropy1,
