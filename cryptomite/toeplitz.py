@@ -119,8 +119,8 @@ class Toeplitz:
                 output_length = floor(1/2 * (min_entropy1 + min_entropy2
                                              - input_length1 + 1
                                              + 2 * log2_error))
-            while input_length2 < output_length + input_length1 - 1:
-                output_length -= 1
+            if input_length2 < output_length + input_length1 - 1:
+                output_length = input_length2 - input_length1 + 1
         if markov_q_proof:
             output_length = floor((1/6) * (min_entropy1 + min_entropy2
                                            - input_length1 + 8 * log2_error
@@ -131,8 +131,8 @@ class Toeplitz:
                 output_length = floor((1/6) * (min_entropy1 + min_entropy2
                                                - input_length1 + 8 * log2_error
                                                + 9 - 4 * log2(3)))
-            while input_length2 < output_length + input_length1 - 1:
-                output_length -= 1
+            if input_length2 < output_length + input_length1 - 1:
+                output_length = input_length2 - input_length1 + 1
         if output_length <= 0:
             raise Exception("""Cannot extract with these parameters.
                             Increase min_entropy1 and/or min_entropy2
