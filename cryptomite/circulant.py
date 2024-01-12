@@ -44,9 +44,9 @@ class Circulant:
             The extracted output.
         """
         n, m = self.n, self.m
-        assert len(input1) == len(input2) - 1 == n
+        assert len(input1) - 1 == len(input2) == n
         assert n >= m
-        l = log_2(2 * n)
+        l = log_2(2 * n - 2)
         L = 1 << l
         input1 = input1 + [0]
         input1, input2 = list(input1), list(input2)
