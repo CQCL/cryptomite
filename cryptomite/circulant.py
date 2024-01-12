@@ -21,8 +21,8 @@ class Circulant:
         Parameters
         ----------
         n : int
-            The length of the (weak) seed bits.
-            *** This should be prime. ***
+            The length of the input bits.
+            *** n + 1 should be prime. ***
         m : int
             The length of the output bits.
         """
@@ -44,9 +44,9 @@ class Circulant:
             The extracted output.
         """
         n, m = self.n, self.m
-        assert len(input1) + 1 == len(input2) == n
+        assert len(input1) == len(input2) - 1 == n
         assert n >= m
-        l = log_2(2 * n - 2)
+        l = log_2(2 * n)
         L = 1 << l
         input1 = input1 + [0]
         input1, input2 = list(input1), list(input2)
