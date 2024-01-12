@@ -48,7 +48,7 @@ class Circulant:
         assert n >= m
         l = log_2(2 * n - 2)
         L = 1 << l
-        input1 = input1 + [0]
+        input1.append(0)
         input1, input2 = list(input1), list(input2)
         input1 = input1[0:1] + input1[1:][::-1] + [0] * (L - n)
         input2 = input2 + [0] * (L - len(input2))
