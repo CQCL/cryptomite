@@ -21,8 +21,8 @@ class Circulant:
         Parameters
         ----------
         n : int
-            The length of the (weak) seed bits.
-            *** This should be prime. ***
+            The length of the input bits.
+            *** n + 1 should be prime. ***
         m : int
             The length of the output bits.
         """
