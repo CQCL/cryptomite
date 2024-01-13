@@ -4,6 +4,14 @@ API Reference
 Submodules
 ----------
 
+cryptomite.circulant module
+-----------------------
+
+.. automodule:: cryptomite.circulant
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 cryptomite.dodis module
 -----------------------
 

@@ -15,4 +15,4 @@ Bibliography
 
 .. [Mauer2012] W. Mauerer, C. Portmann, and V. B. Scholz, `A modular framework for randomness extraction based on Trevisan’s construction <https://arxiv.org/pdf/1212.0520.pdf>`_, Pre-print (2012)
 
-.. [Dodis20] Y. Dodis, A. Elbaz, R. Oliveira, and R. Raz, `Improved randomness extraction from two independent sources <https://link.springer.com/chapter/10.1007/978-3-540-27821-4_30>`_ in Proceedings RANDOM, vol. 3122, pp. 334–344 (2004)
+.. [Dodis2004] Y. Dodis, A. Elbaz, R. Oliveira, and R. Raz, `Improved randomness extraction from two independent sources <https://link.springer.com/chapter/10.1007/978-3-540-27821-4_30>`_ in Proceedings RANDOM, vol. 3122, pp. 334–344 (2004)

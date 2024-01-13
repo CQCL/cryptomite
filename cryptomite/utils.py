@@ -8,7 +8,9 @@ from typing import Literal, Sequence
 
 from cryptomite._cryptomite import NTT, mul_vec
 
-__all__ = ['is_prime', 'prime_facto', 'na_set', 'von_neumann']
+__all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime',
+           'closest_prime', 'previous_na_set', 'next_na_set',
+           'closest_na_set', 'von_neumann']
 
 
 BitT = Literal[0, 1]
@@ -31,11 +33,11 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
     Parameters
     ----------
         l : int
-            log_2 of the size of the convolution
+            log_2 of the size of the convolution.
         source1: list of int
-            first vector
+            first vector.
         source2: list of int
-            second vector
+            second vector.
 
     Returns
     -------
@@ -58,7 +60,7 @@ def is_prime(n: int) -> bool:
     Parameters
     ----------
         n : int
-            integer to check for primality
+            integer to check for primality.
 
     Returns
     -------
@@ -79,7 +81,7 @@ def prime_facto(n: int) -> tuple[list[int], list[int]]:
     Parameters
     ----------
         n : int
-            number to check
+            number to check.
 
     Returns
     -------
@@ -113,22 +115,99 @@ def prime_facto(n: int) -> tuple[list[int], list[int]]:
     return factors2, powers
 
 
-def na_set(k: int) -> int:
+def previous_prime(k: int) -> int:
     """
-    Ensure the number of runs falls within the correct set:
-    i.e. that we run enough times.
+    Finds the largest integer smaller than or equal to the input
+    that is prime.
 
     Parameters
     ----------
         k : int
-            number to check is in the set.
+            number to check is prime.
 
     Returns
     -------
         int :
-            This number +1 is in na_set.
+            prime.
     """
+    k -= 1
+    if k % 2 != 0:
+        k = k - 1
+    stop = False
+    while not stop:
+        stop = True
+        while not is_prime(k + 1):
+            k = k - 2
+    return k + 1
 
+
+def next_prime(k: int) -> int:
+    """
+    Finds the smallest integer larger than or equal to the input
+    that is prime.
+
+    Parameters
+    ----------
+        k : int
+            number to check is prime.
+
+    Returns
+    -------
+        int :
+            prime.
+    """
+    k -= 1
+    if k % 2 != 0:
+        k = k + 1
+    stop = False
+    while not stop:
+        stop = True
+        while not is_prime(k + 1):
+            k = k + 2
+    return k + 1
+
+
+def closest_prime(k: int) -> int:
+    """
+    Finds the closest integer to the input that is prime.
+    If both directions are equidistant, outputs the prime less
+    than the input.
+
+    Parameters
+    ----------
+        k : int
+            number to check is prime.
+
+    Returns
+    -------
+        int :
+            prime.
+    """
+    next_p = next_prime(k)
+    previous_p = previous_prime(k)
+    if next_p - k >= k - previous_p:
+        out = previous_p
+    else:
+        out = next_p
+    return out
+
+
+def previous_na_set(k: int) -> int:
+    """
+    Finds the largest integer smaller than the input that is prime
+    with primitive root 2.
+
+    Parameters
+    ----------
+        k : int
+            number to check is prime with primitive root 2.
+
+    Returns
+    -------
+        int :
+            prime with primitive root 2.
+    """
+    k -= 1
     if k % 2 != 0:
         k = k - 1
     stop = False
@@ -142,7 +221,65 @@ def na_set(k: int) -> int:
                 stop = False
                 k = k - 2
                 break
-    return k
+    return k + 1
+
+
+def next_na_set(k: int) -> int:
+    """
+    Finds the smallest integer larger than the input that is prime
+    with primitive root 2.
+
+    Parameters
+    ----------
+        k : int
+            number to check is prime with primitive root 2.
+
+    Returns
+    -------
+        int :
+            prime with primitive root 2.
+    """
+    k -= 1
+    if k % 2 != 0:
+        k = k + 1
+    stop = False
+    while not stop:
+        stop = True
+        while not is_prime(k + 1):
+            k = k + 2
+        primes, _ = prime_facto(k)
+        for prime in primes:
+            if pow(2, k // prime, k + 1) == 1:
+                stop = False
+                k = k + 2
+                break
+    return k + 1
+
+
+def closest_na_set(k: int) -> int:
+    """
+    Finds the closest integer to the input that is prime with
+    primitive root 2.
+    If both directions are equidistant, outputs the prime with
+    primitive root 2 less than the input.
+
+    Parameters
+    ----------
+        k : int
+            number to check is prime with primitive root 2.
+
+    Returns
+    -------
+        int :
+            prime with primitive root 2.
+    """
+    next_p = next_na_set(k)
+    previous_p = previous_na_set(k)
+    if next_p - k >= k - previous_p:
+        out = previous_p
+    else:
+        out = next_p
+    return out
 
 
 def von_neumann(bits: BitsT) -> BitsT:
