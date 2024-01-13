@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,6 +33,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> cryptomite
+            <img src="_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.1.1
@@ -48,6 +50,7 @@
 <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Selecting a Randomness Extractor</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#circulant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circulant</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a></li>
 <li class="toctree-l2"><a class="reference internal" href="#trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a></li>
@@ -114,11 +117,21 @@
 <p>In the following, we use the notation <span class="math notranslate nohighlight">\(n_1, n_2\)</span> to denote the length and <span class="math notranslate nohighlight">\(k_1, k_2\)</span> to denote the <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of
 any first or second input string respectively. Additionally, <span class="math notranslate nohighlight">\(m\)</span> denotes the length of an output string, <span class="math notranslate nohighlight">\(\epsilon\)</span>
 the extractor error and <span class="math notranslate nohighlight">\(O(.)\)</span> denotes the asymptotic behaviour of a function.</p>
+<section id="circulant">
+<h2><a class="reference internal" href="cryptomite.html#cryptomite.circulant.Circulant" title="cryptomite.circulant.Circulant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circulant</span></code></a><a class="headerlink" href="#circulant" title="Permalink to this headline"></a></h2>
+<p>The Circulant extractor is a <a class="reference internal" href="glossary.html#term-seeded-randomness-extractor"><span class="xref std std-term">seeded randomness extractor</span></a>, meaning that it requires two independent bit
+strings of randomness, where one is already (near-)perfectly random (called a seed).
+It requires the weak input to be of length <span class="math notranslate nohighlight">\(n_1 = n_2 - 1\)</span>, where the length of the seed <span class="math notranslate nohighlight">\(n_2\)</span> is prime
+and outputs approximately <span class="math notranslate nohighlight">\(m \approx k_1 + k_2 - n_1\)</span> when considering classical side information or in the quantum product-source model
+and <span class="math notranslate nohighlight">\(m \approx \frac{1}{5}(k_1 + k_2 - n_1)\)</span>.
+Our implementation of this extractor has near-linear computational complexity.</p>
+<p>This extractor is best suited to scenarios where a seeded extractor is required in both the classical and quantum side information setting.</p>
+</section>
 <section id="dodis">
 <h2><a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a><a class="headerlink" href="#dodis" title="Permalink to this headline"></a></h2>
 <p>The Dodis extractor is a <a class="reference internal" href="glossary.html#term-2-source-randomness-extractor"><span class="xref std std-term">2-source randomness extractor</span></a>, meaning that it requires two independent bit
 strings of randomness that only ‘contain’ entropy (as opposed to one or both being fully entropic).
-It requires equal length inputs (<span class="math notranslate nohighlight">\(n_1 = n_2\)</span>) that are prime with 2 as a primitive root (see <a class="reference internal" href="cryptomite.html#cryptomite.utils.na_set" title="cryptomite.utils.na_set"><code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code></a> in glossary)
+It requires equal length inputs (<span class="math notranslate nohighlight">\(n_1 = n_2\)</span>) that are prime with 2 as a primitive root (see <code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code> in glossary)
 and outputs approximately <span class="math notranslate nohighlight">\(m \approx k_1 + k_2 - n_1\)</span> when considering classical side information and <span class="math notranslate nohighlight">\(m \approx \frac{1}{5}(k_1 + k_2 - n_1)\)</span>.
 Our implementation of this extractor has near-linear computational complexity.</p>
 <p>This extractor is best suited to scenarios where a two-source extractor is required,

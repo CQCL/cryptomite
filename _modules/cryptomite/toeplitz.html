@@ -7,6 +7,7 @@
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -27,6 +28,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> cryptomite
+            <img src="../../_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.1.1
@@ -81,7 +83,7 @@
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">cast</span>
 
 <span class="kn">from</span> <span class="nn">cryptomite.utils</span> <span class="kn">import</span> <span class="n">BitT</span><span class="p">,</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">log_2</span>
@@ -92,14 +94,14 @@
 <div class="viewcode-block" id="Toeplitz"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.toeplitz.Toeplitz">[docs]</a><span class="k">class</span> <span class="nc">Toeplitz</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;Toeplitz extractor&quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Toeplitz.__init__"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.toeplitz.Toeplitz.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Create a Toeplitz Extractor.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Circulant Extractor.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        n : int</span>
-<span class="sd">            The input size (the number of columns in the matrix).</span>
+<span class="sd">            The length of the input bits.</span>
 <span class="sd">        m : int</span>
-<span class="sd">            The output size (the number of rows in the matrix).</span>
+<span class="sd">            The length of the output bits.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span></div>
 
@@ -109,9 +111,9 @@
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
 <span class="sd">        input1 : list of bits</span>
-<span class="sd">            The first list of bits.</span>
+<span class="sd">            The first list of bits, the &#39;input&#39;.</span>
 <span class="sd">        input2 : list of bits</span>
-<span class="sd">            The second list of bits.</span>
+<span class="sd">            The second list of bits, the &#39;(weak) seed&#39;.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
@@ -133,71 +135,96 @@
 
 <div class="viewcode-block" id="Toeplitz.from_params"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.toeplitz.Toeplitz.from_params">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span> <span class="nf">from_params</span><span class="p">(</span>
-            <span class="n">seed_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">input_length</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">seed_entropy</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">input_entropy</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">error</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Toeplitz</span><span class="p">:</span>
+            <span class="n">min_entropy1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">min_entropy2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">log2_error</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">input_length1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">input_length2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">markov_q_proof</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Toeplitz</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate the input size and output size for this extractor.</span>
+<span class="sd">        Calculate a valid input and output size for this extractor,</span>
+<span class="sd">        given the initial lengths and min-entropies of the input sources</span>
+<span class="sd">        and generate the associated extractor.</span>
 
-<span class="sd">        The entropy input is a lower bound on the min-entropy of the</span>
-<span class="sd">        related input string.</span>
-<span class="sd">        This function defines the input size and output size for this</span>
-<span class="sd">        seeded extractor.</span>
+<span class="sd">        The min entropy inputs are a lower bound on the</span>
+<span class="sd">        :term:`min-entropy` of the related input string.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        seed_length : int</span>
-<span class="sd">            The initial length of the seed.</span>
-<span class="sd">        input_length : int</span>
-<span class="sd">            The initial length of second input source.</span>
-<span class="sd">        seed_entropy : int</span>
-<span class="sd">            The min-entropy of the seed.</span>
-<span class="sd">            If the seed is uniform, this should equal</span>
-<span class="sd">            seed_length.</span>
-<span class="sd">        input_entropy : int</span>
-<span class="sd">            The min-entropy of second input source.</span>
-<span class="sd">        error : int</span>
-<span class="sd">            The acceptable maximum extractor error, in the form</span>
-<span class="sd">            error = b where extractor error = 2 ^ b.</span>
+<span class="sd">        min_entropy1 : float</span>
+<span class="sd">            The min-entropy of input source 1, the &#39;input&#39;.</span>
+<span class="sd">        min_entropy2 : float</span>
+<span class="sd">            The min-entropy of input source 2, the &#39;(weak) seed&#39;.</span>
+<span class="sd">        log2_error : float</span>
+<span class="sd">            The acceptable maximum extractor error, in the</span>
+<span class="sd">            form error = b where extractor error = :math:`2 ^ b`.</span>
+<span class="sd">        input_length1 : int</span>
+<span class="sd">            The initial length of input source.</span>
+<span class="sd">        input_length2 : int</span>
+<span class="sd">            The initial length of the (weak) seed.</span>
+<span class="sd">        markov_q_proof : bool</span>
+<span class="sd">            Boolean indicator of whether the extractor parameters</span>
+<span class="sd">            should be calculated to account for being quantum-proof</span>
+<span class="sd">            in the Markov model or not.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Toeplitz</span>
 <span class="sd">            The Toeplitz extractor.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">error</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot extract with these parameters. &#39;</span>
-                            <span class="s1">&#39;Error must be &lt; 0.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&lt;=</span> <span class="n">input_length</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot extract with these parameters. &#39;</span>
-                            <span class="s1">&#39;Increase the seed length. &#39;</span>
-                            <span class="s1">&#39;The seed must be longer than the input.&#39;</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">seed_entropy</span> <span class="o">&gt;=</span> <span class="n">seed_length</span><span class="p">:</span>
-            <span class="n">output_length</span> <span class="o">=</span> <span class="n">input_entropy</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">error</span>
-            <span class="k">assert</span> <span class="n">output_length</span> <span class="o">&gt;=</span> <span class="mi">0</span>
-            <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&gt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">seed_length</span> <span class="o">=</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span>
-            <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&lt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">output_length</span> <span class="o">=</span> <span class="n">seed_length</span> <span class="o">-</span> <span class="n">input_length</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">if</span> <span class="n">seed_entropy</span> <span class="o">&lt;</span> <span class="n">seed_length</span><span class="p">:</span>
-            <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span>
-                <span class="mi">1</span><span class="o">/</span><span class="mi">3</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_entropy</span> <span class="o">-</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span>
-                       <span class="o">-</span> <span class="n">seed_entropy</span><span class="p">)</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">error</span><span class="p">))</span>
-            <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&gt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&gt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                    <span class="n">penalty</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="p">(</span><span class="n">seed_length</span> <span class="o">-</span> <span class="n">output_length</span>
-                                 <span class="o">-</span> <span class="n">input_length</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
-                    <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">output_length</span> <span class="o">-</span> <span class="n">penalty</span> <span class="o">*</span> <span class="mi">2</span><span class="o">/</span><span class="mi">3</span><span class="p">)</span>
-                    <span class="n">seed_length</span> <span class="o">=</span> <span class="n">seed_length</span> <span class="o">-</span> <span class="n">penalty</span>
-            <span class="k">if</span> <span class="n">seed_length</span> <span class="o">&lt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-                <span class="n">seed_length</span> <span class="o">=</span> <span class="n">seed_length</span> <span class="o">-</span> <span class="n">input_length</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="k">assert</span> <span class="n">seed_length</span> <span class="o">==</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">log2_error</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cannot extract with these parameters.</span>
+<span class="s2">                            log2_error must be &lt; 0.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">input_length2</span> <span class="o">&lt;=</span> <span class="n">input_length1</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cannot extract with these parameters.</span>
+<span class="s2">                            Increase the seed length (input_length2).</span>
+<span class="s2">                            The seed must be longer than the input.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">min_entropy2</span> <span class="o">&gt;=</span> <span class="n">input_length2</span><span class="p">:</span>
+            <span class="n">output_length</span> <span class="o">=</span> <span class="n">min_entropy1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span>
+            <span class="k">if</span> <span class="n">input_length2</span> <span class="o">&gt;=</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_length2</span> <span class="o">=</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span>
+            <span class="k">while</span> <span class="n">input_length2</span> <span class="o">&lt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_length1</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">min_entropy1</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">output_length</span> <span class="o">=</span> <span class="n">min_entropy1</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span>
+        <span class="k">if</span> <span class="n">min_entropy2</span> <span class="o">&lt;</span> <span class="n">input_length2</span><span class="p">:</span>
+            <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
+                                         <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">1</span>
+                                         <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span><span class="p">))</span>
+            <span class="k">while</span> <span class="n">input_length2</span> <span class="o">&gt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_length2</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">min_entropy2</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="mi">2</span> <span class="o">*</span> <span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
+                                             <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">1</span>
+                                             <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span><span class="p">))</span>
+            <span class="k">if</span> <span class="n">input_length2</span> <span class="o">&lt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">output_length</span> <span class="o">=</span> <span class="n">input_length2</span> <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">markov_q_proof</span><span class="p">:</span>
+            <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
+                                           <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">log2_error</span>
+                                           <span class="o">+</span> <span class="mi">9</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+            <span class="k">while</span> <span class="n">input_length2</span> <span class="o">&gt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">input_length2</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">min_entropy2</span> <span class="o">-=</span> <span class="mi">1</span>
+                <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">((</span><span class="mi">1</span><span class="o">/</span><span class="mi">6</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
+                                               <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">log2_error</span>
+                                               <span class="o">+</span> <span class="mi">9</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
+            <span class="k">if</span> <span class="n">input_length2</span> <span class="o">&lt;</span> <span class="n">output_length</span> <span class="o">+</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">output_length</span> <span class="o">=</span> <span class="n">input_length2</span> <span class="o">-</span> <span class="n">input_length1</span> <span class="o">+</span> <span class="mi">1</span>
         <span class="k">if</span> <span class="n">output_length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Cannot extract with these parameters. &#39;</span>
-                            <span class="s1">&#39;Increase input_entropy and/or seed_entropy.&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">input_length</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">output_length</span><span class="p">)</span></div></div>
+            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cannot extract with these parameters.</span>
+<span class="s2">                            Increase min_entropy1 and/or min_entropy2</span>
+<span class="s2">                            and/or log2_error.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Min entropy1: &#39;</span><span class="p">,</span> <span class="n">min_entropy1</span><span class="p">,</span>
+                  <span class="s1">&#39;Min entropy2: &#39;</span><span class="p">,</span> <span class="n">min_entropy2</span><span class="p">,</span>
+                  <span class="s1">&#39;Log error: &#39;</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span>
+                  <span class="s1">&#39;Input length1: &#39;</span><span class="p">,</span> <span class="n">input_length1</span><span class="p">,</span>
+                  <span class="s1">&#39;Input length2: &#39;</span><span class="p">,</span> <span class="n">input_length2</span><span class="p">,</span>
+                  <span class="s1">&#39;Output length: &#39;</span><span class="p">,</span> <span class="n">output_length</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Adjust length of the input and (weak) seed accordingly&#39;</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">input_length1</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">output_length</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>

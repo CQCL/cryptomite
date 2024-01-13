@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -32,6 +33,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> cryptomite
+            <img src="_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.1.1
@@ -50,6 +52,7 @@
 <li class="toctree-l1"><a class="reference internal" href="gettingstarted.html">Selecting a Randomness Extractor</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#cryptomite-circulant-module">cryptomite.circulant module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.dodis">cryptomite.dodis module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.toeplitz">cryptomite.toeplitz module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.trevisan">cryptomite.trevisan module</a></li>
@@ -116,6 +119,98 @@
 <section id="submodules">
 <h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
 </section>
+<section id="cryptomite-circulant-module">
+<h2>cryptomite.circulant module<a class="headerlink" href="#cryptomite-circulant-module" title="Permalink to this headline"></a></h2>
+<span class="target" id="module-cryptomite.circulant"></span><p>Circulant is a seeded extractor that takes an input of
+n - 1 bits and a seed of n bits, where n is prime, to
+produce some error-perfect random bits.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.circulant.Circulant">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.circulant.</span></span><span class="sig-name descname"><span class="pre">Circulant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.circulant.Circulant" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Circulant extractor based on <span id="id1">[Foreman23]</span>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.circulant.Circulant.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.circulant.Circulant.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Create a Circulant Extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.
+<strong>* n + 1 should be prime. *</strong></p>
+</dd>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.circulant.Circulant.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.circulant.Circulant.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Extract randomness.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
+</dd>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bits</dt><dd><p>The extracted output.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.circulant.Circulant.from_params">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.circulant.Circulant" title="cryptomite.circulant.Circulant"><span class="pre">cryptomite.circulant.Circulant</span></a></span></span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.circulant.Circulant.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p>The input_length2 must be prime, else the code will chose a
+valid input_length2 choice and adjust the other parameters
+accordingly.
+The min_entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
+</dd>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
+</dd>
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
+</dd>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
+</dd>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Circulant</dt><dd><p>The Circulant extractor.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-cryptomite.dodis">
 <span id="cryptomite-dodis-module"></span><h2>cryptomite.dodis module<a class="headerlink" href="#module-cryptomite.dodis" title="Permalink to this headline"></a></h2>
 <p>Dodis is a 2-source extractor that takes two equal length, independent,
@@ -124,7 +219,7 @@ strings of bits to produce some error-perfect random bits.</p>
 <dt class="sig sig-object py" id="cryptomite.dodis.Dodis">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.dodis.</span></span><span class="sig-name descname"><span class="pre">Dodis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Dodis extractor based on <a class="reference internal" href="bibliography.html#dodis20" id="id1"><span>[Dodis20]</span></a>.</p>
+<p>Dodis extractor based on <a class="reference internal" href="bibliography.html#dodis2004" id="id2"><span>[Dodis2004]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.dodis.Dodis.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.__init__" title="Permalink to this definition"></a></dt>
@@ -132,7 +227,8 @@ strings of bits to produce some error-perfect random bits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.
+<strong>* This should be prime with primitive root 2. *</strong></p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
@@ -148,9 +244,9 @@ strings of bits to produce some error-perfect random bits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -165,29 +261,32 @@ strings of bits to produce some error-perfect random bits.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.dodis.Dodis.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><span class="pre">cryptomite.dodis.Dodis</span></a></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this 2-source
-extractor.</p>
-<p>The input_length -1 must be in <a class="reference internal" href="#cryptomite.utils.na_set" title="cryptomite.utils.na_set"><code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code></a>.
-The entropy inputs are a lower bound on the <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a>
-of the related input string.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><span class="pre">cryptomite.dodis.Dodis</span></a></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.dodis.Dodis.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p>The input_length must be prime with primitive root 2, else
+the code will chose a valid input_length choice and adjust the
+other parameters accordingly.
+The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 1.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 2.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>entropy1</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 1.</p>
-</dd>
-<dt><strong>entropy2</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 2.</p>
-</dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
 form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
-should be calculated to account for quantum side
-information or not.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
+</dd>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>
@@ -215,13 +314,13 @@ independent, strings of bits to produce some error-perfect random bits.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Create a Toeplitz Extractor.</p>
+<dd><p>Create a Circulant Extractor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The input size (the number of columns in the matrix).</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.</p>
 </dd>
-<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The output size (the number of rows in the matrix).</p>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
 </dl>
 </dd>
@@ -235,9 +334,9 @@ independent, strings of bits to produce some error-perfect random bits.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -252,27 +351,29 @@ independent, strings of bits to produce some error-perfect random bits.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><span class="pre">cryptomite.toeplitz.Toeplitz</span></a></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this extractor.</p>
-<p>The entropy input is a lower bound on the min-entropy of the
-related input string.
-This function defines the input size and output size for this
-seeded extractor.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><span class="pre">cryptomite.toeplitz.Toeplitz</span></a></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p>The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
-If the seed is uniform, this should equal
-seed_length.</p>
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
 </dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
-error = b where extractor error = 2 ^ b.</p>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>
@@ -295,7 +396,7 @@ error = b where extractor error = 2 ^ b.</p>
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.trevisan.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id2"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id3"><span>[Mauer2012]</span></a>.</p>
+<p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id3"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id4"><span>[Mauer2012]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.__init__" title="Permalink to this definition"></a></dt>
@@ -304,8 +405,7 @@ error = b where extractor error = 2 ^ b.</p>
 seed bits and outputs <cite>m</cite> bits with total worst case error of
 <cite>max_eps</cite>. The parameters for the weak designs and 1-bit
 extractors are computed from <cite>n</cite>, <cite>k</cite>, and <cite>max_eps</cite>. To use
-the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite> and call
-the method <cite>get_seed_length()</cite> to get the required seed length.</p>
+the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -326,14 +426,14 @@ the method <cite>get_seed_length()</cite> to get the required seed length.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.extract">
-<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.extract" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.extract" title="Permalink to this definition"></a></dt>
 <dd><p>Load the source and the seed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>source</strong><span class="classifier">list of bool</span></dt><dd><p>The input bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">list of bool</span></dt><dd><p>The seed bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -348,27 +448,32 @@ the method <cite>get_seed_length()</cite> to get the required seed length.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this extractor.</p>
-<p>The entropy input is a lower bound on the min-entropy of the
-related input string.
-This function defines the input size and output size for this
-seeded extractor.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p><strong>* Note: at present, this function (for Trevisan) only supports
+when input_length2 = min_entropy2, i.e. when the seed is
+uniform. *</strong>
+The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
-If the seed is uniform, this should equal
-seed_length.</p>
+<dt><strong>log_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
 </dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
-error = b where extractor error = 2 ^ b.</p>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>
@@ -388,13 +493,58 @@ error = b where extractor error = 2 ^ b.</p>
 <span id="cryptomite-utils-module"></span><h2>cryptomite.utils module<a class="headerlink" href="#module-cryptomite.utils" title="Permalink to this headline"></a></h2>
 <p>This is a module.</p>
 <dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.closest_na_set">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">closest_na_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#closest_na_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.closest_na_set" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the closest integer to the input that is prime with
+primitive root 2.
+If both directions are equidistant, outputs the prime with
+primitive root 2 less than the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime with primitive root 2.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>prime with primitive root 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.closest_prime">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">closest_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#closest_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.closest_prime" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the closest integer to the input that is prime.
+If both directions are equidistant, outputs the prime less
+than the input.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>prime.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
 <dt class="sig sig-object py" id="cryptomite.utils.is_prime">
 <span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">is_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">bool</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#is_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.is_prime" title="Permalink to this definition"></a></dt>
 <dd><p>Checks an integer for primality.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>integer to check for primality</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>integer to check for primality.</p>
 </dd>
 </dl>
 </dd>
@@ -407,20 +557,83 @@ error = b where extractor error = 2 ^ b.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="cryptomite.utils.na_set">
-<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">na_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#na_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.na_set" title="Permalink to this definition"></a></dt>
-<dd><p>Ensure the number of runs falls within the correct set:
-i.e. that we run enough times.</p>
+<dt class="sig sig-object py" id="cryptomite.utils.next_na_set">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">next_na_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#next_na_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.next_na_set" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the smallest integer larger than the input that is prime
+with primitive root 2.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is in the set.</p>
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime with primitive root 2.</p>
 </dd>
 </dl>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
-<dt>int :</dt><dd><p>This number +1 is in na_set.</p>
+<dt>int :</dt><dd><p>prime with primitive root 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.next_prime">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">next_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#next_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.next_prime" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the smallest integer larger than or equal to the input
+that is prime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>prime.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.previous_na_set">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">previous_na_set</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#previous_na_set"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.previous_na_set" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the largest integer smaller than the input that is prime
+with primitive root 2.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime with primitive root 2.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>prime with primitive root 2.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="cryptomite.utils.previous_prime">
+<span class="sig-prename descclassname"><span class="pre">cryptomite.utils.</span></span><span class="sig-name descname"><span class="pre">previous_prime</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="reference internal" href="_modules/cryptomite/utils.html#previous_prime"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.utils.previous_prime" title="Permalink to this definition"></a></dt>
+<dd><p>Finds the largest integer smaller than or equal to the input
+that is prime.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>k</strong><span class="classifier">int</span></dt><dd><p>number to check is prime.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>int :</dt><dd><p>prime.</p>
 </dd>
 </dl>
 </dd>
@@ -435,7 +648,7 @@ It is required for the later function: na_set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>number to check</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>number to check.</p>
 </dd>
 </dl>
 </dd>
@@ -461,7 +674,7 @@ It is required for the later function: na_set.</p>
 <dt class="sig sig-object py" id="cryptomite.Dodis">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Dodis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Dodis" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Dodis extractor based on <a class="reference internal" href="bibliography.html#dodis20" id="id4"><span>[Dodis20]</span></a>.</p>
+<p>Dodis extractor based on <a class="reference internal" href="bibliography.html#dodis2004" id="id5"><span>[Dodis2004]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Dodis.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Dodis.__init__" title="Permalink to this definition"></a></dt>
@@ -469,7 +682,8 @@ It is required for the later function: na_set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.
+<strong>* This should be prime with primitive root 2. *</strong></p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
@@ -485,9 +699,9 @@ It is required for the later function: na_set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -502,29 +716,32 @@ It is required for the later function: na_set.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Dodis.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><span class="pre">cryptomite.dodis.Dodis</span></a></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Dodis.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this 2-source
-extractor.</p>
-<p>The input_length -1 must be in <a class="reference internal" href="#cryptomite.utils.na_set" title="cryptomite.utils.na_set"><code class="xref py py-func docutils literal notranslate"><span class="pre">na_set()</span></code></a>.
-The entropy inputs are a lower bound on the <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a>
-of the related input string.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><span class="pre">cryptomite.dodis.Dodis</span></a></span></span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Dodis.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p>The input_length must be prime with primitive root 2, else
+the code will chose a valid input_length choice and adjust the
+other parameters accordingly.
+The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 1.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source 2.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>entropy1</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 1.</p>
-</dd>
-<dt><strong>entropy2</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of input source 2.</p>
-</dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
 form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
-should be calculated to account for quantum side
-information or not.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
+</dd>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>
@@ -547,13 +764,13 @@ information or not.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Toeplitz.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Toeplitz.__init__" title="Permalink to this definition"></a></dt>
-<dd><p>Create a Toeplitz Extractor.</p>
+<dd><p>Create a Circulant Extractor.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The input size (the number of columns in the matrix).</p>
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.</p>
 </dd>
-<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The output size (the number of rows in the matrix).</p>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
 </dl>
 </dd>
@@ -567,9 +784,9 @@ information or not.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -584,27 +801,29 @@ information or not.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Toeplitz.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><span class="pre">cryptomite.toeplitz.Toeplitz</span></a></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Toeplitz.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this extractor.</p>
-<p>The entropy input is a lower bound on the min-entropy of the
-related input string.
-This function defines the input size and output size for this
-seeded extractor.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><span class="pre">cryptomite.toeplitz.Toeplitz</span></a></span></span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Toeplitz.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p>The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
-If the seed is uniform, this should equal
-seed_length.</p>
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
 </dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
-error = b where extractor error = 2 ^ b.</p>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>
@@ -623,7 +842,7 @@ error = b where extractor error = 2 ^ b.</p>
 <dt class="sig sig-object py" id="cryptomite.Trevisan">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id5"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id6"><span>[Mauer2012]</span></a>.</p>
+<p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id6"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id7"><span>[Mauer2012]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.__init__" title="Permalink to this definition"></a></dt>
@@ -632,8 +851,7 @@ error = b where extractor error = 2 ^ b.</p>
 seed bits and outputs <cite>m</cite> bits with total worst case error of
 <cite>max_eps</cite>. The parameters for the weak designs and 1-bit
 extractors are computed from <cite>n</cite>, <cite>k</cite>, and <cite>max_eps</cite>. To use
-the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite> and call
-the method <cite>get_seed_length()</cite> to get the required seed length.</p>
+the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite>.</p>
 <dl class="field-list">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl>
@@ -654,14 +872,14 @@ the method <cite>get_seed_length()</cite> to get the required seed length.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.extract">
-<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">source</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.extract" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.extract" title="Permalink to this definition"></a></dt>
 <dd><p>Load the source and the seed.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>source</strong><span class="classifier">list of bool</span></dt><dd><p>The input bits.</p>
+<dt><strong>input1</strong><span class="classifier">list of bits</span></dt><dd><p>The first list of bits, the ‘input’.</p>
 </dd>
-<dt><strong>seed</strong><span class="classifier">list of bool</span></dt><dd><p>The seed bits.</p>
+<dt><strong>input2</strong><span class="classifier">list of bits</span></dt><dd><p>The second list of bits, the ‘(weak) seed’.</p>
 </dd>
 </dl>
 </dd>
@@ -676,27 +894,32 @@ the method <cite>get_seed_length()</cite> to get the required seed length.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">seed_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_entropy</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate the input size and output size for this extractor.</p>
-<p>The entropy input is a lower bound on the min-entropy of the
-related input string.
-This function defines the input size and output size for this
-seeded extractor.</p>
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.from_params" title="Permalink to this definition"></a></dt>
+<dd><p>Calculate a valid input and output size for this extractor,
+given the initial lengths and min-entropies of the input sources
+and generate the associated extractor.</p>
+<p><strong>* Note: at present, this function (for Trevisan) only supports
+when input_length2 = min_entropy2, i.e. when the seed is
+uniform. *</strong>
+The min entropy inputs are a lower bound on the
+<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
-<dt><strong>seed_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of the seed.</p>
+<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
 </dd>
-<dt><strong>input_length</strong><span class="classifier">int</span></dt><dd><p>The initial length of second input source.</p>
+<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>seed_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of the seed.
-If the seed is uniform, this should equal
-seed_length.</p>
+<dt><strong>log_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
-<dt><strong>input_entropy</strong><span class="classifier">int</span></dt><dd><p>The min-entropy of second input source.</p>
+<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
 </dd>
-<dt><strong>error</strong><span class="classifier">int</span></dt><dd><p>The acceptable maximum extractor error, in the form
-error = b where extractor error = 2 ^ b.</p>
+<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
+</dd>
+<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
+should be calculated to account for being quantum-proof
+in the Markov model or not.</p>
 </dd>
 </dl>
 </dd>

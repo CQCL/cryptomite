@@ -7,6 +7,7 @@
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
   <!--[if lt IE 9]>
     <script src="../../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -27,6 +28,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="../../index.html" class="icon icon-home"> cryptomite
+            <img src="../../_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.1.1
@@ -85,7 +87,9 @@
 
 <span class="kn">from</span> <span class="nn">cryptomite._cryptomite</span> <span class="kn">import</span> <span class="n">NTT</span><span class="p">,</span> <span class="n">mul_vec</span>
 
-<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;prime_facto&#39;</span><span class="p">,</span> <span class="s1">&#39;na_set&#39;</span><span class="p">,</span> <span class="s1">&#39;von_neumann&#39;</span><span class="p">]</span>
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;prime_facto&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;next_prime&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;closest_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_na_set&#39;</span><span class="p">,</span> <span class="s1">&#39;next_na_set&#39;</span><span class="p">,</span>
+           <span class="s1">&#39;closest_na_set&#39;</span><span class="p">,</span> <span class="s1">&#39;von_neumann&#39;</span><span class="p">]</span>
 
 
 <span class="n">BitT</span> <span class="o">=</span> <span class="n">Literal</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">]</span>
@@ -108,11 +112,11 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        l : int</span>
-<span class="sd">            log_2 of the size of the convolution</span>
+<span class="sd">            log_2 of the size of the convolution.</span>
 <span class="sd">        source1: list of int</span>
-<span class="sd">            first vector</span>
+<span class="sd">            first vector.</span>
 <span class="sd">        source2: list of int</span>
-<span class="sd">            second vector</span>
+<span class="sd">            second vector.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -135,7 +139,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        n : int</span>
-<span class="sd">            integer to check for primality</span>
+<span class="sd">            integer to check for primality.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -156,7 +160,7 @@
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        n : int</span>
-<span class="sd">            number to check</span>
+<span class="sd">            number to check.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
@@ -190,22 +194,99 @@
     <span class="k">return</span> <span class="n">factors2</span><span class="p">,</span> <span class="n">powers</span></div>
 
 
-<div class="viewcode-block" id="na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.na_set">[docs]</a><span class="k">def</span> <span class="nf">na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="previous_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_prime">[docs]</a><span class="k">def</span> <span class="nf">previous_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">    Ensure the number of runs falls within the correct set:</span>
-<span class="sd">    i.e. that we run enough times.</span>
+<span class="sd">    Finds the largest integer smaller than or equal to the input</span>
+<span class="sd">    that is prime.</span>
 
 <span class="sd">    Parameters</span>
 <span class="sd">    ----------</span>
 <span class="sd">        k : int</span>
-<span class="sd">            number to check is in the set.</span>
+<span class="sd">            number to check is prime.</span>
 
 <span class="sd">    Returns</span>
 <span class="sd">    -------</span>
 <span class="sd">        int :</span>
-<span class="sd">            This number +1 is in na_set.</span>
+<span class="sd">            prime.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">:</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
 
+
+<div class="viewcode-block" id="next_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_prime">[docs]</a><span class="k">def</span> <span class="nf">next_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the smallest integer larger than or equal to the input</span>
+<span class="sd">    that is prime.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number to check is prime.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int :</span>
+<span class="sd">            prime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">:</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="closest_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_prime">[docs]</a><span class="k">def</span> <span class="nf">closest_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the closest integer to the input that is prime.</span>
+<span class="sd">    If both directions are equidistant, outputs the prime less</span>
+<span class="sd">    than the input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number to check is prime.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int :</span>
+<span class="sd">            prime.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">next_p</span> <span class="o">=</span> <span class="n">next_prime</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">previous_p</span> <span class="o">=</span> <span class="n">previous_prime</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">next_p</span> <span class="o">-</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">previous_p</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">previous_p</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">next_p</span>
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+<div class="viewcode-block" id="previous_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_na_set">[docs]</a><span class="k">def</span> <span class="nf">previous_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the largest integer smaller than the input that is prime</span>
+<span class="sd">    with primitive root 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number to check is prime with primitive root 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int :</span>
+<span class="sd">            prime with primitive root 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
     <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
         <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">1</span>
     <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
@@ -219,7 +300,65 @@
                 <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
                 <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">-</span> <span class="mi">2</span>
                 <span class="k">break</span>
-    <span class="k">return</span> <span class="n">k</span></div>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="next_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_na_set">[docs]</a><span class="k">def</span> <span class="nf">next_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the smallest integer larger than the input that is prime</span>
+<span class="sd">    with primitive root 2.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number to check is prime with primitive root 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int :</span>
+<span class="sd">            prime with primitive root 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">k</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">k</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="k">while</span> <span class="ow">not</span> <span class="n">stop</span><span class="p">:</span>
+        <span class="n">stop</span> <span class="o">=</span> <span class="kc">True</span>
+        <span class="k">while</span> <span class="ow">not</span> <span class="n">is_prime</span><span class="p">(</span><span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+            <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span>
+        <span class="n">primes</span><span class="p">,</span> <span class="n">_</span> <span class="o">=</span> <span class="n">prime_facto</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">prime</span> <span class="ow">in</span> <span class="n">primes</span><span class="p">:</span>
+            <span class="k">if</span> <span class="nb">pow</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="n">k</span> <span class="o">//</span> <span class="n">prime</span><span class="p">,</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+                <span class="n">stop</span> <span class="o">=</span> <span class="kc">False</span>
+                <span class="n">k</span> <span class="o">=</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">2</span>
+                <span class="k">break</span>
+    <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
+
+
+<div class="viewcode-block" id="closest_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_na_set">[docs]</a><span class="k">def</span> <span class="nf">closest_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Finds the closest integer to the input that is prime with</span>
+<span class="sd">    primitive root 2.</span>
+<span class="sd">    If both directions are equidistant, outputs the prime with</span>
+<span class="sd">    primitive root 2 less than the input.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">        k : int</span>
+<span class="sd">            number to check is prime with primitive root 2.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">        int :</span>
+<span class="sd">            prime with primitive root 2.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">next_p</span> <span class="o">=</span> <span class="n">next_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="n">previous_p</span> <span class="o">=</span> <span class="n">previous_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">next_p</span> <span class="o">-</span> <span class="n">k</span> <span class="o">&gt;=</span> <span class="n">k</span> <span class="o">-</span> <span class="n">previous_p</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">previous_p</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">out</span> <span class="o">=</span> <span class="n">next_p</span>
+    <span class="k">return</span> <span class="n">out</span></div>
 
 
 <div class="viewcode-block" id="von_neumann"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.von_neumann">[docs]</a><span class="k">def</span> <span class="nf">von_neumann</span><span class="p">(</span><span class="n">bits</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>

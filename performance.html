@@ -8,6 +8,7 @@
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="_static/favicon.png"/>
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -30,6 +31,7 @@
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
             <a href="index.html" class="icon icon-home"> cryptomite
+            <img src="_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
                 0.1.1
@@ -109,7 +111,7 @@ The varying degrees of computational efficiency for the extractors of <a class="
 <p>Some observations performance observations are:</p>
 <ul class="simple">
 <li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.utils.von_neumann" title="cryptomite.utils.von_neumann"><code class="xref py py-func docutils literal notranslate"><span class="pre">von_neumann()</span></code></a> extractor is able to output at speeds above 7Mbit/s.</p></li>
-<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a> and <a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractors are able to output at speeds of up to 1Mbit/s. The generation speed is faster for shorter input lengths.</p></li>
+<li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.circulant.Circulant" title="cryptomite.circulant.Circulant"><code class="xref py py-class docutils literal notranslate"><span class="pre">Circulant</span></code></a>, <a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a> and <a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractors are able to output at speeds of up to 1Mbit/s. The generation speed is faster for shorter input lengths.</p></li>
 <li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor can generate output at speeds comparable to the <a class="reference internal" href="cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> and <a class="reference internal" href="cryptomite.html#cryptomite.dodis.Dodis" title="cryptomite.dodis.Dodis"><code class="xref py py-class docutils literal notranslate"><span class="pre">Dodis</span></code></a> extractors only when the input size is extremely short.</p></li>
 <li><p>The <a class="reference internal" href="cryptomite.html#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><code class="xref py py-class docutils literal notranslate"><span class="pre">Trevisan</span></code></a> extractor unable to generate a non-vanishing bits/second rate for input lengths greater than approximately 30,000.</p></li>
 </ul>
