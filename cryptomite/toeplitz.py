@@ -78,7 +78,7 @@ class Toeplitz:
         min_entropy2 : float
             The min-entropy of input source 2, the '(weak) seed'.
         log2_error : float
-            The acceptable maximum extractor error, in the
+            The maximum acceptable extractor error, in the
             form error = b where extractor error = :math:`2 ^ b`.
         input_length1 : int
             The initial length of input source.

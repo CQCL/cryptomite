@@ -21,7 +21,7 @@ class Dodis:
         ----------
         n : int
             The length of the two input bits.
-            *** This should be prime with primitive root 2. ***
+            ** This should be prime with primitive root 2. **
         m : int
             The length of the output bits.
         """
