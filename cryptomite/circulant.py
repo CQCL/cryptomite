@@ -22,7 +22,7 @@ class Circulant:
         ----------
         n : int
             The length of the input bits.
-            *** n + 1 should be prime. ***
+            ** n + 1 should be prime. **
         m : int
             The length of the output bits.
         """
