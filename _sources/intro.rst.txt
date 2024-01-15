@@ -15,6 +15,6 @@ Recent years have seen major advances in theoretical and experimental quantum cr
 demonstrations and even commercialized products. 
 All of these require a suitable randomness extractor with the appropriate implementation complexity, loss/error and security.
 
-To facilitate these advances, we have developed :code:`cryptomite`, a software library with multiple randomness extractor implementations.
+To facilitate these advances, we have developed :code:`Cryptomite`, a software library with multiple randomness extractor implementations.
 This software library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
 providing a trade-off of features that suits numerous practical use cases today. 

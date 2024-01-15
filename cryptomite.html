@@ -137,7 +137,7 @@ produce some error-perfect random bits.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.
-<strong>* n + 1 should be prime. *</strong></p>
+** n + 1 should be prime. **</p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
@@ -228,7 +228,7 @@ strings of bits to produce some error-perfect random bits.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.
-<strong>* This should be prime with primitive root 2. *</strong></p>
+** This should be prime with primitive root 2. **</p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
@@ -364,7 +364,7 @@ and generate the associated extractor.</p>
 </dd>
 <dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The maximum acceptable extractor error, in the
 form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
 <dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
@@ -391,33 +391,25 @@ in the Markov model or not.</p>
 </section>
 <section id="module-cryptomite.trevisan">
 <span id="cryptomite-trevisan-module"></span><h2>cryptomite.trevisan module<a class="headerlink" href="#module-cryptomite.trevisan" title="Permalink to this headline"></a></h2>
-<p>This is a module.</p>
+<p>Trevisan is a seeded extractor that takes two differing length,
+independent, strings of bits to produce some error-perfect random bits.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.trevisan.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.trevisan.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id3"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id4"><span>[Mauer2012]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create a Trevisan Extractor.</p>
-<p>The extractor accepts <cite>n</cite> input bits of min-entropy <cite>k</cite> and <cite>d</cite>
-seed bits and outputs <cite>m</cite> bits with total worst case error of
-<cite>max_eps</cite>. The parameters for the weak designs and 1-bit
-extractors are computed from <cite>n</cite>, <cite>k</cite>, and <cite>max_eps</cite>. To use
-the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite>.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><blockquote>
-<div><p>The number of input bits.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>k<span class="classifier">float</span></dt><dd><p>The amount of min-entropy in the input bits.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.</p>
 </dd>
-<dt>max_eps<span class="classifier">float</span></dt><dd><p>The total worst case error.</p>
+<dt><strong>k</strong><span class="classifier">float</span></dt><dd><p>The total min-entropy of the input bits.</p>
 </dd>
-</dl>
+<dt><strong>error</strong><span class="classifier">float</span></dt><dd><p>The maximum acceptable extractor error.</p>
 </dd>
 </dl>
 </dd>
@@ -427,7 +419,7 @@ the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.extract">
 <span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.extract" title="Permalink to this definition"></a></dt>
-<dd><p>Load the source and the seed.</p>
+<dd><p>Extract randomness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -440,46 +432,6 @@ the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of bool</dt><dd><p>The output bits from the extractor.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate a valid input and output size for this extractor,
-given the initial lengths and min-entropies of the input sources
-and generate the associated extractor.</p>
-<p><strong>* Note: at present, this function (for Trevisan) only supports
-when input_length2 = min_entropy2, i.e. when the seed is
-uniform. *</strong>
-The min entropy inputs are a lower bound on the
-<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
-</dd>
-<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
-</dd>
-<dt><strong>log_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
-form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
-</dd>
-<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
-</dd>
-<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
-</dd>
-<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
-should be calculated to account for being quantum-proof
-in the Markov model or not.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>Trevisan</dt><dd><p>The Trevisan extractor.</p>
 </dd>
 </dl>
 </dd>
@@ -683,7 +635,7 @@ It is required for the later function: na_set.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
 <dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the two input bits.
-<strong>* This should be prime with primitive root 2. *</strong></p>
+** This should be prime with primitive root 2. **</p>
 </dd>
 <dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the output bits.</p>
 </dd>
@@ -814,7 +766,7 @@ and generate the associated extractor.</p>
 </dd>
 <dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
 </dd>
-<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
+<dt><strong>log2_error</strong><span class="classifier">float</span></dt><dd><p>The maximum acceptable extractor error, in the
 form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
 </dd>
 <dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
@@ -840,30 +792,21 @@ in the Markov model or not.</p>
 
 <dl class="py class">
 <dt class="sig sig-object py" id="cryptomite.Trevisan">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Trevisan extractor based on <a class="reference internal" href="bibliography.html#trev2001" id="id6"><span>[Trev2001]</span></a> and <a class="reference internal" href="bibliography.html#mauer2012" id="id7"><span>[Mauer2012]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.__init__">
-<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_eps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.__init__" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Create a Trevisan Extractor.</p>
-<p>The extractor accepts <cite>n</cite> input bits of min-entropy <cite>k</cite> and <cite>d</cite>
-seed bits and outputs <cite>m</cite> bits with total worst case error of
-<cite>max_eps</cite>. The parameters for the weak designs and 1-bit
-extractors are computed from <cite>n</cite>, <cite>k</cite>, and <cite>max_eps</cite>. To use
-the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps</cite>.</p>
-<dl class="field-list">
+<dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl>
-<dt><strong>n</strong><span class="classifier">int</span></dt><dd><blockquote>
-<div><p>The number of input bits.</p>
-</div></blockquote>
-<dl class="simple">
-<dt>k<span class="classifier">float</span></dt><dd><p>The amount of min-entropy in the input bits.</p>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n</strong><span class="classifier">int</span></dt><dd><p>The length of the input bits.</p>
 </dd>
-<dt>max_eps<span class="classifier">float</span></dt><dd><p>The total worst case error.</p>
+<dt><strong>k</strong><span class="classifier">float</span></dt><dd><p>The total min-entropy of the input bits.</p>
 </dd>
-</dl>
+<dt><strong>error</strong><span class="classifier">float</span></dt><dd><p>The maximum acceptable extractor error.</p>
 </dd>
 </dl>
 </dd>
@@ -873,7 +816,7 @@ the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.extract">
 <span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.extract" title="Permalink to this definition"></a></dt>
-<dd><p>Load the source and the seed.</p>
+<dd><p>Extract randomness.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><dl class="simple">
@@ -886,46 +829,6 @@ the Trevisan extractor, provide <cite>n</cite>, <cite>k</cite> and <cite>max_eps
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><dl class="simple">
 <dt>list of bool</dt><dd><p>The output bits from the extractor.</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
-<dt class="sig sig-object py" id="cryptomite.Trevisan.from_params">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_params</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">min_entropy1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_entropy2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">log2_error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input_length2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">markov_q_proof</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">verbose</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#cryptomite.trevisan.Trevisan" title="cryptomite.trevisan.Trevisan"><span class="pre">cryptomite.trevisan.Trevisan</span></a></span></span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.from_params"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.from_params" title="Permalink to this definition"></a></dt>
-<dd><p>Calculate a valid input and output size for this extractor,
-given the initial lengths and min-entropies of the input sources
-and generate the associated extractor.</p>
-<p><strong>* Note: at present, this function (for Trevisan) only supports
-when input_length2 = min_entropy2, i.e. when the seed is
-uniform. *</strong>
-The min entropy inputs are a lower bound on the
-<a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of the related input string.</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>min_entropy1</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 1, the ‘input’.</p>
-</dd>
-<dt><strong>min_entropy2</strong><span class="classifier">float</span></dt><dd><p>The min-entropy of input source 2, the ‘(weak) seed’.</p>
-</dd>
-<dt><strong>log_error</strong><span class="classifier">float</span></dt><dd><p>The acceptable maximum extractor error, in the
-form error = b where extractor error = <span class="math notranslate nohighlight">\(2 ^ b\)</span>.</p>
-</dd>
-<dt><strong>input_length1</strong><span class="classifier">int</span></dt><dd><p>The initial length of input source.</p>
-</dd>
-<dt><strong>input_length2</strong><span class="classifier">int</span></dt><dd><p>The initial length of the (weak) seed.</p>
-</dd>
-<dt><strong>markov_q_proof</strong><span class="classifier">bool</span></dt><dd><p>Boolean indicator of whether the extractor parameters
-should be calculated to account for being quantum-proof
-in the Markov model or not.</p>
-</dd>
-</dl>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><dl class="simple">
-<dt>Trevisan</dt><dd><p>The Trevisan extractor.</p>
 </dd>
 </dl>
 </dd>
