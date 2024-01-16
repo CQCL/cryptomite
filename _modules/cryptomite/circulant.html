@@ -79,8 +79,8 @@
   <h1>Source code for cryptomite.circulant</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">Circulant is a seeded extractor that takes an input of</span>
-<span class="sd">n - 1 bits and a seed of n bits, where n is prime, to</span>
-<span class="sd">produce some error-perfect random bits.</span>
+<span class="sd">n bits and a seed of n + 1 bits, where n + 1 is prime,</span>
+<span class="sd">to produce some error-perfect random bits.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
 
@@ -93,7 +93,7 @@
 
 
 <div class="viewcode-block" id="Circulant"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant">[docs]</a><span class="k">class</span> <span class="nc">Circulant</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Circulant extractor based on [Foreman23]_. &quot;&quot;&quot;</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Circulant extractor based on [For2024]_. &quot;&quot;&quot;</span>
 <div class="viewcode-block" id="Circulant.__init__"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant.__init__">[docs]</a>    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Circulant Extractor.</span>
 
