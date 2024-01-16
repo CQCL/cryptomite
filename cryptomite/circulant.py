@@ -1,7 +1,7 @@
 """
 Circulant is a seeded extractor that takes an input of
-n - 1 bits and a seed of n bits, where n is prime, to
-produce some error-perfect random bits.
+n bits and a seed of n + 1 bits, where n + 1 is prime,
+to produce some error-perfect random bits.
 """
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ __all__ = ['Circulant']
 
 
 class Circulant:
-    """ Circulant extractor based on [Foreman23]_. """
+    """ Circulant extractor based on [For2024]_. """
     def __init__(self, n: int, m: int):
         """Create a Circulant Extractor.
 
