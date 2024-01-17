@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Randomness Extraction for Random Number Generation &mdash; cryptomite 0.1.1 documentation</title>
+  <title>Basic Usage &mdash; cryptomite 0.1.1 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -24,7 +24,7 @@
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
     <link rel="next" title="Glossary" href="../glossary.html" />
-    <link rel="prev" title="Privacy Amplification for Quantum Key Distribution" href="quantum-key-distribution.html" /> 
+    <link rel="prev" title="Example Usage" href="../notebooks.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -52,14 +52,11 @@
 <li class="toctree-l1"><a class="reference internal" href="../gettingstarted.html">Selecting a Randomness Extractor</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../cryptomite.html">API Reference</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../performance.html">Performance</a></li>
-<li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Examples</a><ul class="current">
-<li class="toctree-l2"><a class="reference internal" href="quantum-key-distribution.html">Privacy Amplification for Quantum Key Distribution</a></li>
-<li class="toctree-l2 current"><a class="current reference internal" href="#">Randomness Extraction for Random Number Generation</a><ul>
-<li class="toctree-l3"><a class="reference internal" href="#Semi-Device-Independent-Heterodyne-Based-QRNG">Semi-Device-Independent Heterodyne-Based QRNG</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Extensions">Extensions</a><ul>
-<li class="toctree-l4"><a class="reference internal" href="#Extension-1:-Dodis-Extraction">Extension 1: Dodis Extraction</a></li>
-</ul>
-</li>
+<li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Example Usage</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">Basic Usage</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#Quick-Start">Quick Start</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Generating-an-extractor">Generating an extractor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Extraction">Extraction</a></li>
 </ul>
 </li>
 </ul>
@@ -82,10 +79,10 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
-          <li><a href="../notebooks.html">Examples</a> &raquo;</li>
-      <li>Randomness Extraction for Random Number Generation</li>
+          <li><a href="../notebooks.html">Example Usage</a> &raquo;</li>
+      <li>Basic Usage</li>
       <li class="wy-breadcrumbs-aside">
-            <a href="../_sources/examples/quantum-random-number-generation.ipynb.txt" rel="nofollow"> View page source</a>
+            <a href="../_sources/examples/example.ipynb.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -363,84 +360,81 @@ div.rendered_html tbody tr:hover {
     text-align: unset;
 }
 </style>
-<section id="Randomness-Extraction-for-Random-Number-Generation">
-<h1>Randomness Extraction for Random Number Generation<a class="headerlink" href="#Randomness-Extraction-for-Random-Number-Generation" title="Permalink to this headline"></a></h1>
-<p>In quantum random number generation (QRNG), randomness extraction is used to ensure the final output is only from the randomness certified by some estimation process, which accounts for adversarial information. Here, we give an example of how our library can be used off-the-shelf in this scenario.</p>
-<section id="Semi-Device-Independent-Heterodyne-Based-QRNG">
-<h2>Semi-Device-Independent Heterodyne-Based QRNG<a class="headerlink" href="#Semi-Device-Independent-Heterodyne-Based-QRNG" title="Permalink to this headline"></a></h2>
-<p>We consider the semi-device-independent quantum random number generator based on heterodyne detection <a class="reference internal" href="../bibliography.html#atvv2021" id="id1"><span>[ATVV2021]</span></a>.
-This protocol is a semi-device-independent QRNG based on heterodyne detection that assumes an upper
-bound on the amount of energy generated states have, avoiding an identically and independently distribution type assumption on generated states.
-The protocol security is considered against classical side information only, so the randomness extractor need only be classical-proof.</p>
-<p>The experimental demonstration uses the <a class="reference internal" href="../cryptomite.html#cryptomite.toeplitz.Toeplitz" title="cryptomite.toeplitz.Toeplitz"><code class="xref py py-class docutils literal notranslate"><span class="pre">Toeplitz</span></code></a> extractor, with an input length of <span class="math notranslate nohighlight">\(n = 6500000000\)</span>,
-input <span class="xref std std-term">min-entropy</span> of <span class="math notranslate nohighlight">\(k= 581295000\)</span>, output length of <span class="math notranslate nohighlight">\(m = 581294933\)</span>, extractor error of <span class="math notranslate nohighlight">\(\epsilon = 10^{-10}\)</span> and
-seed length <span class="math notranslate nohighlight">\(d = 7081294932\)</span>.</p>
+<section id="Basic-Usage">
+<h1>Basic Usage<a class="headerlink" href="#Basic-Usage" title="Permalink to this headline"></a></h1>
+<p>In this notebook, we give a few examples of how to use <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> and accompanying utility functions.</p>
+<section id="Quick-Start">
+<h2>Quick Start<a class="headerlink" href="#Quick-Start" title="Permalink to this headline"></a></h2>
+<p>:code:<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cryptomite</span></code></p>
+</section>
+<section id="Generating-an-extractor">
+<h2>Generating an extractor<a class="headerlink" href="#Generating-an-extractor" title="Permalink to this headline"></a></h2>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code>, extractors can be generated directly by giving the input length (in bits) :code:<code class="docutils literal notranslate"><span class="pre">n</span></code> and output length (in bits) :code:<code class="docutils literal notranslate"><span class="pre">m</span></code>, or for the Trevisan extractor, giving the input length :code:<code class="docutils literal notranslate"><span class="pre">n</span></code>, output length :code:<code class="docutils literal notranslate"><span class="pre">m</span></code> and maximum error, :code:<code class="docutils literal notranslate"><span class="pre">error</span></code>. We generate all the extractors of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> below, for an example :code:<code class="docutils literal notranslate"><span class="pre">n</span></code>, :code:<code class="docutils literal notranslate"><span class="pre">m</span></code>, :code:<code class="docutils literal notranslate"><span class="pre">error</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log2</span><span class="p">,</span> <span class="n">floor</span>
-<span class="k">def</span> <span class="nf">randomness_extraction</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">,</span> <span class="n">n</span> <span class="o">=</span> <span class="mi">6500000000</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="mi">581294933</span><span class="p">):</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Perform randomness extraction for example QRNG.</span>
-
-<span class="sd">    Parameters</span>
-<span class="sd">    ----------</span>
-<span class="sd">    seed_bits : list of (uniformly random) bits statistically</span>
-<span class="sd">    independently of the bits generated in the protocol.</span>
-<span class="sd">    raw_randomness : list of bits from</span>
-<span class="sd">    the results of measurements in the QRNG</span>
-<span class="sd">    protocol based on heterodyne measurements.</span>
-<span class="sd">    n: integer, the number of raw randomness bits.</span>
-<span class="sd">    m: integer, the number of extractable bits, given</span>
-<span class="sd">    the error and min-entropy.</span>
-
-<span class="sd">    Returns</span>
-<span class="sd">    -------</span>
-<span class="sd">    list of bits</span>
-<span class="sd">    The extracted output, which is</span>
-<span class="sd">    the shared secret key.</span>
-<span class="sd">    &quot;&quot;&quot;</span>
-    <span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">,</span> <span class="n">raw_randomness</span><span class="p">)</span>
+<span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mf">0.0001</span>
+<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Circulant</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </section>
-<section id="Extensions">
-<h2>Extensions<a class="headerlink" href="#Extensions" title="Permalink to this headline"></a></h2>
-<p>The experimental demonstration above admits some improvements with our library:</p>
-<section id="Extension-1:-Dodis-Extraction">
-<h3>Extension 1: Dodis Extraction<a class="headerlink" href="#Extension-1:-Dodis-Extraction" title="Permalink to this headline"></a></h3>
-<p>This change gives a significant reduction in the size of the required uniform seed and a marginally quicker implementation.
-There is a slight cost to this, which is adjusting <span class="math notranslate nohighlight">\(n = 6.5 \cdot 10^9\)</span> to <span class="math notranslate nohighlight">\(n^{\mathsf{Dodis}} = 6499999931\)</span>.
-This results in an output length of <span class="math notranslate nohighlight">\(581'294'865\)</span>.
-Overall, for a reduction of <span class="math notranslate nohighlight">\(581'294'932\)</span> uniform seed bits, the price to pay is a loss of <span class="math notranslate nohighlight">\(68\)</span> output bits.
-We implement this below.</p>
+<section id="Extraction">
+<h2>Extraction<a class="headerlink" href="#Extraction" title="Permalink to this headline"></a></h2>
+<p>Now the extractors have been generated, we show how to perform extraction. The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits. Note that each extractor of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> requires a different amount of seed bits, the calculation of this is left to the user (manually or using our :code:<code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions) and denoted :code:<code class="docutils literal notranslate"><span class="pre">seed_length</span></code> in the following example code. In this example, we generate both the input string
+and the (weak) seed using :code:<code class="docutils literal notranslate"><span class="pre">randint</span></code> function from the :code:<code class="docutils literal notranslate"><span class="pre">random</span></code> Python library - which a user would replace with their desired generation methods:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
 </div>
-<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
-<span class="k">def</span> <span class="nf">randomness_extraction_dodis</span><span class="p">(</span>
-        <span class="n">seed_bits</span><span class="p">,</span>
-        <span class="n">raw_key_bits</span><span class="p">,</span>
-        <span class="n">input_entropy</span> <span class="o">=</span> <span class="mi">581295000</span><span class="p">,</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">log2</span><span class="p">(</span><span class="mi">10</span><span class="o">**</span><span class="p">(</span><span class="o">-</span><span class="mi">10</span><span class="p">))):</span>
-    <span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span>
-        <span class="n">seed_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
-        <span class="n">input_length</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">raw_key_bits</span><span class="p">),</span>
-        <span class="n">seed_entropy</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">),</span>
-        <span class="n">input_entropy</span> <span class="o">=</span> <span class="n">input_entropy</span><span class="p">,</span>
-        <span class="n">error</span> <span class="o">=</span> <span class="n">error</span><span class="p">)</span>
-
-    <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="n">dodis</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="n">dodis</span><span class="o">.</span><span class="n">m</span>
-    <span class="k">return</span> <span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">seed_bits</span><span class="p">[:</span><span class="n">n</span><span class="p">],</span> <span class="n">raw_key_bits</span><span class="p">[:</span><span class="n">m</span><span class="p">])</span>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">random</span> <span class="kn">import</span> <span class="n">randint</span>
+<span class="n">input_bits</span> <span class="o">=</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
+<span class="n">circulant</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
+<span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
+<span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
+<span class="n">trevisan</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
-</section>
+<p>Alternatively, all <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the :code:<code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions. This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example</p>
+<div class="nbinput nblast docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+</pre></div>
+</div>
+<div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">cryptomite</span>
+<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">log2</span>
+<span class="n">input_length</span><span class="p">,</span> <span class="n">seed_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span>
+<span class="n">input_entropy</span><span class="p">,</span> <span class="n">seed_entropy</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span>
+<span class="n">error</span> <span class="o">=</span> <span class="mf">0.00001</span>
+<span class="n">markov_q_proof</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">log2_error</span> <span class="o">=</span> <span class="n">log2</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
+<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">circulant</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
+                                             <span class="n">seed_entropy</span><span class="p">,</span>
+                                             <span class="n">log2_error</span><span class="p">,</span>
+                                             <span class="n">input_length</span><span class="p">,</span>
+                                             <span class="n">seed_length</span><span class="p">,</span>
+                                             <span class="n">markov_q_proof</span><span class="p">)</span>
+<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
+                                     <span class="n">seed_entropy</span><span class="p">,</span>
+                                     <span class="n">log2_error</span><span class="p">,</span>
+                                     <span class="n">input_length</span><span class="p">,</span>
+                                     <span class="n">seed_length</span><span class="p">,</span>
+                                     <span class="n">markov_q_proof</span><span class="p">)</span>
+<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
+                                           <span class="n">seed_entropy</span><span class="p">,</span>
+                                           <span class="n">log2_error</span><span class="p">,</span>
+                                           <span class="n">input_length</span><span class="p">,</span>
+                                           <span class="n">seed_length</span><span class="p">,</span>
+                                           <span class="n">markov_q_proof</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>In this case, a <strong>valid</strong> extractor is generated from the specified parameters (i.e. one that adheres to the required input and seed length criteria for that extractor). Any changes to input length, seed length, input entropy and seed entropy printed.</p>
 </section>
 </section>
 
@@ -448,7 +442,7 @@ We implement this below.</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="quantum-key-distribution.html" class="btn btn-neutral float-left" title="Privacy Amplification for Quantum Key Distribution" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../notebooks.html" class="btn btn-neutral float-left" title="Example Usage" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="../glossary.html" class="btn btn-neutral float-right" title="Glossary" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
