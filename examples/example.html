@@ -57,6 +57,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#Quick-Start">Quick Start</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Generating-an-extractor">Generating an extractor</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#Extraction">Extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Using-the-from_params-Utility-functions">Using the from_params Utility functions</a></li>
 </ul>
 </li>
 </ul>
@@ -365,11 +366,11 @@ div.rendered_html tbody tr:hover {
 <p>In this notebook, we give a few examples of how to use <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> and accompanying utility functions.</p>
 <section id="Quick-Start">
 <h2>Quick Start<a class="headerlink" href="#Quick-Start" title="Permalink to this headline"></a></h2>
-<p>:code:<code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cryptomite</span></code></p>
+<p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cryptomite</span></code></p>
 </section>
 <section id="Generating-an-extractor">
 <h2>Generating an extractor<a class="headerlink" href="#Generating-an-extractor" title="Permalink to this headline"></a></h2>
-<p>Using <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code>, extractors can be generated directly by giving the input length (in bits) :code:<code class="docutils literal notranslate"><span class="pre">n</span></code> and output length (in bits) :code:<code class="docutils literal notranslate"><span class="pre">m</span></code>, or for the Trevisan extractor, giving the input length :code:<code class="docutils literal notranslate"><span class="pre">n</span></code>, output length :code:<code class="docutils literal notranslate"><span class="pre">m</span></code> and maximum error, :code:<code class="docutils literal notranslate"><span class="pre">error</span></code>. We generate all the extractors of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> below, for an example :code:<code class="docutils literal notranslate"><span class="pre">n</span></code>, :code:<code class="docutils literal notranslate"><span class="pre">m</span></code>, :code:<code class="docutils literal notranslate"><span class="pre">error</span></code>:</p>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code>, extractors can be generated directly by giving the input length (in bits) <code class="docutils literal notranslate"><span class="pre">n</span></code> and output length (in bits) <code class="docutils literal notranslate"><span class="pre">m</span></code>, or for the Trevisan extractor, giving the input length <code class="docutils literal notranslate"><span class="pre">n</span></code>, output length <code class="docutils literal notranslate"><span class="pre">m</span></code> and maximum error,<code class="docutils literal notranslate"><span class="pre">error</span></code>. We generate all the extractors of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> below, for an example <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
@@ -386,8 +387,8 @@ div.rendered_html tbody tr:hover {
 </section>
 <section id="Extraction">
 <h2>Extraction<a class="headerlink" href="#Extraction" title="Permalink to this headline"></a></h2>
-<p>Now the extractors have been generated, we show how to perform extraction. The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits. Note that each extractor of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> requires a different amount of seed bits, the calculation of this is left to the user (manually or using our :code:<code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions) and denoted :code:<code class="docutils literal notranslate"><span class="pre">seed_length</span></code> in the following example code. In this example, we generate both the input string
-and the (weak) seed using :code:<code class="docutils literal notranslate"><span class="pre">randint</span></code> function from the :code:<code class="docutils literal notranslate"><span class="pre">random</span></code> Python library - which a user would replace with their desired generation methods:</p>
+<p>Now the extractors have been generated, we show how to perform extraction. The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits. Note that each extractor of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> requires a different amount of seed bits, the calculation of this is left to the user (manually or using our <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions) and denoted <code class="docutils literal notranslate"><span class="pre">seed_length</span></code> in the following example code. In this example, we generate both the input string and the (weak)
+seed using <code class="docutils literal notranslate"><span class="pre">randint</span></code> function from the <code class="docutils literal notranslate"><span class="pre">random</span></code> Python library - which a user would replace with their desired generation methods:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
 </pre></div>
@@ -401,7 +402,10 @@ and the (weak) seed using :code:<code class="docutils literal notranslate"><span
 </pre></div>
 </div>
 </div>
-<p>Alternatively, all <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the :code:<code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions. This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example</p>
+</section>
+<section id="Using-the-from_params-Utility-functions">
+<h2>Using the from_params Utility functions<a class="headerlink" href="#Using-the-from_params-Utility-functions" title="Permalink to this headline"></a></h2>
+<p>Alternatively, all <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions. This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>

@@ -18,7 +18,7 @@
    "source": [
     "## Quick Start\n",
     "\n",
-    ":code:`pip install cryptomite`"
+    "``pip install cryptomite``"
    ]
   },
   {
@@ -28,8 +28,8 @@
    "source": [
     "## Generating an extractor\n",
     "\n",
-    "Using ``Cryptomite``, extractors can be generated directly by giving the input length (in bits) :code:`n` and output length (in bits) :code:`m`, or for the Trevisan extractor, giving the input length :code:`n`, output length :code:`m` and maximum error, :code:`error`.\n",
-    "We generate all the extractors of ``Cryptomite`` below, for an example :code:`n`, :code:`m`, :code:`error`:\n"
+    "Using ``Cryptomite``, extractors can be generated directly by giving the input length (in bits) ``n`` and output length (in bits) ``m``, or for the Trevisan extractor, giving the input length ``n``, output length ``m`` and maximum error,``error``.\n",
+    "We generate all the extractors of ``Cryptomite`` below, for an example ``n``, ``m``, ``error``:\n"
    ]
   },
   {
@@ -56,8 +56,8 @@
     "\n",
     "Now the extractors have been generated, we show how to perform extraction. \n",
     "The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits.\n",
-    "Note that each extractor of ``Cryptomite`` requires a different amount of seed bits, the calculation of this is left to the user (manually or using our :code:`from_params` utility functions) and denoted :code:`seed_length` in the following example code.\n",
-    "In this example, we generate both the input string and the (weak) seed using :code:`randint` function from the :code:`random` Python library - which a user would replace with their desired generation methods:"
+    "Note that each extractor of ``Cryptomite`` requires a different amount of seed bits, the calculation of this is left to the user (manually or using our ``from_params`` utility functions) and denoted ``seed_length`` in the following example code.\n",
+    "In this example, we generate both the input string and the (weak) seed using ``randint`` function from the ``random`` Python library - which a user would replace with their desired generation methods:"
    ]
   },
   {
@@ -82,7 +82,9 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "Alternatively, all ``Cryptomite`` extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the :code:`from_params` utility functions. \n",
+    "## Using the from_params Utility functions\n",
+    "\n",
+    "Alternatively, all ``Cryptomite`` extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the ``from_params`` utility functions. \n",
     "This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example"
    ]
   },
