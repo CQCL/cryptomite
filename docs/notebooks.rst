@@ -1,6 +1,6 @@
 .. _sec-examples:
 
-Examples
+Example Usage
 ========
 
 Here we give examples of using ``Cryptomite``:
