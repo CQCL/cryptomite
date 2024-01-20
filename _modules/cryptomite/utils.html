@@ -85,7 +85,7 @@
 <span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
 <span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">cryptomite._cryptomite</span> <span class="kn">import</span> <span class="n">NTT</span><span class="p">,</span> <span class="n">mul_vec</span>
+<span class="kn">from</span> <span class="nn">cryptomite._cryptomite</span> <span class="kn">import</span> <span class="n">BigNTT</span><span class="p">,</span> <span class="n">NTT</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;prime_facto&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;next_prime&#39;</span><span class="p">,</span>
            <span class="s1">&#39;closest_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_na_set&#39;</span><span class="p">,</span> <span class="s1">&#39;next_na_set&#39;</span><span class="p">,</span>
@@ -124,12 +124,12 @@
 <span class="sd">    &quot;&quot;&quot;</span>
     <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">l</span>
     <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">source1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">source2</span><span class="p">)</span> <span class="o">==</span> <span class="n">L</span>
-    <span class="n">ntt</span> <span class="o">=</span> <span class="n">NTT</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
-    <span class="n">ntt_source1</span> <span class="o">=</span> <span class="n">ntt</span><span class="o">.</span><span class="n">ntt</span><span class="p">(</span><span class="n">source1</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">ntt_source2</span> <span class="o">=</span> <span class="n">ntt</span><span class="o">.</span><span class="n">ntt</span><span class="p">(</span><span class="n">source2</span><span class="p">,</span> <span class="kc">False</span><span class="p">)</span>
-    <span class="n">mul_source</span> <span class="o">=</span> <span class="n">mul_vec</span><span class="p">(</span><span class="n">ntt_source1</span><span class="p">,</span> <span class="n">ntt_source2</span><span class="p">)</span>
-    <span class="n">conv_output</span> <span class="o">=</span> <span class="n">ntt</span><span class="o">.</span><span class="n">ntt</span><span class="p">(</span><span class="n">mul_source</span><span class="p">,</span> <span class="kc">True</span><span class="p">)</span>
-    <span class="k">return</span> <span class="n">conv_output</span>
+    <span class="n">ntt</span> <span class="o">=</span> <span class="n">BigNTT</span><span class="p">(</span><span class="n">l</span><span class="p">)</span> <span class="k">if</span> <span class="n">l</span> <span class="o">&gt;</span> <span class="mi">30</span> <span class="k">else</span> <span class="n">NTT</span><span class="p">(</span><span class="n">l</span><span class="p">)</span>
+    <span class="c1"># ntt_source1 = ntt.ntt(source1, False)</span>
+    <span class="c1"># ntt_source2 = ntt.ntt(source2, False)</span>
+    <span class="c1"># mul_source = ntt.mul_vec(ntt_source1, ntt_source2)</span>
+    <span class="c1"># conv_output = ntt.ntt(mul_source, True)</span>
+    <span class="k">return</span> <span class="n">ntt</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">source1</span><span class="p">,</span> <span class="n">source2</span><span class="p">)</span>
 
 
 <div class="viewcode-block" id="is_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.is_prime">[docs]</a><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>

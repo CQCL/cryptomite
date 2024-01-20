@@ -17,4 +17,4 @@ Bibliography
 
 .. [Dodis2004] Y. Dodis, A. Elbaz, R. Oliveira, and R. Raz, `Improved randomness extraction from two independent sources <https://link.springer.com/chapter/10.1007/978-3-540-27821-4_30>`_ in Proceedings RANDOM, vol. 3122, pp. 334–344 (2004)
 
-.. [For2024] C. Foreman, R. Yeung, A. Edgington et al. `Cryptomite: A versatile and user-friendly library of randomness extractors`_, Pre-print (2024)
+.. [For2024] C. Foreman, R. Yeung, A. Edgington et al. `Cryptomite: A versatile and user-friendly library of randomness extractors`, Pre-print (2024)

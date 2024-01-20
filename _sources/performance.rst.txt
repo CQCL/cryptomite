@@ -1,5 +1,5 @@
 Performance
-==========
+===========
 
 To demonstrate the capabilities of :py:mod:`Cryptomite`, we perform some bench-marking on a MacBook Pro personal laptop (with 2 GHz quad-core Intel i5 processor with 16GB RAM).
 The speed (throughput) for the standard versions of :py:mod:`Cryptomite` extractors are evidenced in the following figure. 
