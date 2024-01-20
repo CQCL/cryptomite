@@ -11,6 +11,7 @@ uint32_t add(uint32_t a, uint32_t b) {
     c += b;
     uint64_t d = c - P;
     uint64_t e = d >> 32;
+    // return d if d >= 0 else c
     return (c&e) | (d&~e);
 }
 
@@ -24,20 +25,13 @@ static uint32_t sub(uint32_t a, uint32_t b) {
     c -= b;
     uint64_t d = c + P;
     uint64_t e = c >> 32;
+    // return c if c >= 0 else d
     return (c&~e) | (d&e);
 }
 
 uint32_t mul(uint32_t a, uint32_t b) {
     uint64_t n = a; n*= b;
     return n % P;
-}
-
-std::vector<uint32_t> mul_vec(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b) {
-    std::vector<uint32_t> c(a.size());
-    for (uint32_t i = 0; i < a.size(); i++) {
-        c[i] = mul(a[i], b[i]);
-    }
-    return c;
 }
 
 /**
@@ -144,4 +138,17 @@ std::vector<uint32_t> NTT::ntt(const std::vector<uint32_t> &x, bool inverse) {
         }
     }
     return y;
+}
+
+std::vector<uint32_t> NTT::mul_vec(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b) {
+    std::vector<uint32_t> c(a.size());
+    for (uint32_t i = 0; i < a.size(); i++) {
+        c[i] = mul(a[i], b[i]);
+    }
+    return c;
+}
+
+std::vector<uint32_t> NTT::conv(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b) {
+    std::vector<uint32_t> c = mul_vec(ntt(a, false), ntt(b, false));
+    return ntt(c, true);
 }

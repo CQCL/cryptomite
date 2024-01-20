@@ -6,7 +6,7 @@ from __future__ import annotations
 from math import sqrt
 from typing import Literal, Sequence
 
-from cryptomite._cryptomite import NTT, mul_vec
+from cryptomite._cryptomite import BigNTT, NTT
 
 __all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime',
            'closest_prime', 'previous_na_set', 'next_na_set',
@@ -45,12 +45,12 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
     """
     L = 1 << l
     assert len(source1) == len(source2) == L
-    ntt = NTT(l)
-    ntt_source1 = ntt.ntt(source1, False)
-    ntt_source2 = ntt.ntt(source2, False)
-    mul_source = mul_vec(ntt_source1, ntt_source2)
-    conv_output = ntt.ntt(mul_source, True)
-    return conv_output
+    ntt = BigNTT(l) if l > 30 else NTT(l)
+    # ntt_source1 = ntt.ntt(source1, False)
+    # ntt_source2 = ntt.ntt(source2, False)
+    # mul_source = ntt.mul_vec(ntt_source1, ntt_source2)
+    # conv_output = ntt.ntt(mul_source, True)
+    return ntt.conv(source1, source2)
 
 
 def is_prime(n: int) -> bool:

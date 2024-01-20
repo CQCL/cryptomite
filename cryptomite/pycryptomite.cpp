@@ -1,6 +1,7 @@
 #include <pybind11/pybind11.h>
 #include <pybind11/stl.h>
 #include <ntt.h>
+#include <bigntt.h>
 #include <trevisan.cpp>
 
 
@@ -27,7 +28,13 @@ PYBIND11_MODULE(_cryptomite, m) {
 
     py::class_<NTT>(m, "NTT")
         .def(py::init<int>())
-        .def("ntt", &NTT::ntt);
+        .def("ntt", &NTT::ntt)
+        .def("mul_vec", &NTT::mul_vec)
+        .def("conv", &NTT::conv);
 
-    m.def("mul_vec", &mul_vec);
+    py::class_<BigNTT>(m, "BigNTT")
+        .def(py::init<int>())
+        .def("ntt", &BigNTT::ntt)
+        .def("mul_vec", &BigNTT::mul_vec)
+        .def("conv", &BigNTT::conv);
 }
