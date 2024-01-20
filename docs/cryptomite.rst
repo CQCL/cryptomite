@@ -5,7 +5,7 @@ Submodules
 ----------
 
 cryptomite.circulant module
------------------------
+---------------------------
 
 .. automodule:: cryptomite.circulant
    :members:
