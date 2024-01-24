@@ -1,5 +1,12 @@
 # cryptomite
 
+![Build Status](https://github.com/CQCL/cryptomite/actions/workflows/build_test.yml/badge.svg)
+[![PyPI version](https://img.shields.io/pypi/v/cryptomite)](//pypi.org/project/cryptomite)
+[![Downloads](https://static.pepy.tech/badge/cryptomite)](https://pepy.tech/project/cryptomite)
+[![Downloads](https://static.pepy.tech/badge/cryptomite/month)](https://pepy.tech/project/cryptomite)
+<!-- [![arXiv](https://img.shields.io/badge/arXiv-xxxx.xxxxx-green)](//arxiv.org/abs/xxxx.xxxxx) -->
+
+
 ![image](https://github.com/CQCL/cryptomite/assets/13847804/671c8eec-0f2a-46b0-92ba-3a0c040492e8)
 
 `cryptomite` is a modular, extensible high-level Python library 
