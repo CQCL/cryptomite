@@ -7,12 +7,12 @@
 #define G 5 // primitive root mod P
 
 uint64_t add(uint64_t a, uint64_t b) {
-    __int128_t c = a;
-    c += b;
-    __int128_t d = c - P;
-    __int128_t e = d >> 64;
-    // return d if d >= 0 else c
-    return (c&e) | (d&~e);
+    uint64_t c = a + b;
+    if (c >= P) {
+        c -= P;
+    }
+
+    return c;
 }
 
 /**
@@ -21,17 +21,21 @@ uint64_t add(uint64_t a, uint64_t b) {
  * @pre a,b < P
  */
 static uint64_t sub(uint64_t a, uint64_t b) {
-    __int128_t c = a;
-    c -= b;
-    __int128_t d = c + P;
-    __int128_t e = c >> 64;
-    // return c if c >= 0 else d
-    return (c&~e) | (d&e);
+    uint64_t c = a - b;
+    if (a < b) {
+        c += P;
+    }
+
+    return c;
 }
 
 uint64_t mul(uint64_t a, uint64_t b) {
-    __int128_t n = a; n*= b;
-    return n % P;
+    // correct if a,b,P < 2^57
+    uint64_t c = (double)a * b / P;
+    int64_t ans = int64_t(a * b - c * P) % int64_t(P);
+    if (ans < 0)
+        ans += P;
+    return ans;
 }
 
 /**

@@ -96,18 +96,6 @@ jobs:
     runs-on: windows-2019
     steps:
     - uses: actions/checkout@v2
-    # https://github.com/egor-tensin/setup-mingw/issues/17
-    - name: Set up MinGW
-      uses: egor-tensin/setup-mingw@v2.2.0
-      with:
-        version: 12.2.0
-    - name: Set environment variables for compiler
-      env:
-        CC: x86_64-w64-mingw32-gcc
-        CXX: x86_64-w64-mingw32-g++
-      run: |
-        echo "CC=${CC}" >> $GITHUB_ENV
-        echo "CXX=${CXX}" >> $GITHUB_ENV
     - name: set up python 3.8
       uses: actions/setup-python@v2
       with:
