@@ -12,7 +12,9 @@
 `cryptomite` is a modular, extensible high-level Python library 
 for randomness extractions, created by Quantinuum's Quantum Cryptography team. 
 At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
-providing a trade-off of features that suits numerous practical use cases today.
+providing a trade-off of features that suits numerous practical use cases.
+
+The library is available for non-commercial use only, see the license for details.
 
 The performance critical parts of the library (e.g. NTT) are implemented in C++, but the rest of the
 library (e.g. parameter estimation) is implemented in Python for accessibility and ease of installation.
