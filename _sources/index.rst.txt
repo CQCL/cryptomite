@@ -32,7 +32,7 @@ qcrypto@quantinuum.com
 How to Cite
 ===========
 If you use :py:mod:`cryptomite` in your research, please cite the accompanying paper
-`Cryptomite: A versatile and user-friendly library of randomness extractors <https://arxiv.org/abs/2402.09481>'.
+`Cryptomite: A versatile and user-friendly library of randomness extractors <https://arxiv.org/abs/2402.09481>`_.
 
 
 .. toctree::
