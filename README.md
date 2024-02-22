@@ -65,3 +65,17 @@ cmake .
 make
 test/runTest
 ```
+
+## How to Cite
+If you use `cryptomite` in your research, please cite the accompanying [paper](https://arxiv.org/abs/2402.09481):
+
+```
+@misc{foreman2024cryptomite,
+      title={Cryptomite: A versatile and user-friendly library of randomness extractors}, 
+      author={Cameron Foreman and Richie Yeung and Alec Edgington and Florian J. Curchod},
+      year={2024},
+      eprint={2402.09481},
+      archivePrefix={arXiv},
+      primaryClass={cs.CR}
+}
+```
