@@ -4,7 +4,7 @@
 [![PyPI version](https://img.shields.io/pypi/v/cryptomite)](//pypi.org/project/cryptomite)
 [![Downloads](https://static.pepy.tech/badge/cryptomite)](https://pepy.tech/project/cryptomite)
 [![Downloads](https://static.pepy.tech/badge/cryptomite/month)](https://pepy.tech/project/cryptomite)
-<!-- [![arXiv](https://img.shields.io/badge/arXiv-xxxx.xxxxx-green)](//arxiv.org/abs/xxxx.xxxxx) -->
+[![arXiv](https://img.shields.io/badge/arXiv-2402.09481-green)](//arxiv.org/abs/2402.09481)
 
 
 ![image](https://github.com/CQCL/cryptomite/assets/13847804/671c8eec-0f2a-46b0-92ba-3a0c040492e8)
@@ -12,7 +12,8 @@
 `cryptomite` is a modular, extensible high-level Python library 
 for randomness extractions, created by Quantinuum's Quantum Cryptography team. 
 At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
-providing a trade-off of features that suits numerous practical use cases.
+providing a trade-off of features that suits numerous practical use cases. Find out more information in our accompanying [paper](https://arxiv.org/abs/2402.09481).
+
 
 The library is available for non-commercial use only, see the license for details.
 
