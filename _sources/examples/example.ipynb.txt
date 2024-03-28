@@ -8,7 +8,8 @@
    "source": [
     "# Basic Usage\n",
     "\n",
-    "In this notebook, we give a few examples of how to use ``Cryptomite`` and accompanying utility functions."
+    "In this notebook, we give a few examples of how to use ``Cryptomite`` and accompanying utility functions. \n",
+    "A similar, more introductory, guide to getting started can be found in this [blog post](https://medium.com/quantinuum/introducing-cryptomite-randomness-extraction-simplified-857fc2f87673)."
    ]
   },
   {
