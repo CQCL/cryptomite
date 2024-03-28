@@ -13,6 +13,8 @@
 for randomness extractions, created by Quantinuum's Quantum Cryptography team. 
 At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
 providing a trade-off of features that suits numerous practical use cases. Find out more information in our accompanying [paper](https://arxiv.org/abs/2402.09481).
+For additional examples of usage and guidance on getting started with Cryptomite, see our related [blog post](https://medium.com/quantinuum/introducing-cryptomite-randomness-extraction-simplified-857fc2f87673)
+and repository [documentation](https://cqcl.github.io/cryptomite/).
 
 
 The library is available for non-commercial use only, see the license for details.
