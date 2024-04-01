@@ -23,8 +23,8 @@ release = version = __version__
 
 
 project = 'cryptomite'
-copyright = '2021, 2022, 2023, Cambridge Quantum Computing Ltd.'
-author = 'Cambridge Quantum Team'
+copyright = '2024 Quantinuum Limited'
+author = 'Quantinuum Quantum Cryptography Team'
 
 # -- General configuration ---------------------------------------------------
 
