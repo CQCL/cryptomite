@@ -10,17 +10,16 @@
 ![image](https://github.com/CQCL/cryptomite/assets/13847804/671c8eec-0f2a-46b0-92ba-3a0c040492e8)
 
 `cryptomite` is a modular, extensible high-level Python library 
-for randomness extractions, created by Quantinuum's Quantum Cryptography team. 
-At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized and numerically precise
-providing a trade-off of features that suits numerous practical use cases. Find out more information in our accompanying [paper](https://arxiv.org/abs/2402.09481).
+of randomness extractors, created by Quantinuum's Quantum Cryptography team. 
+At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized for performance and numerically precise
+providing a trade-off of features that suit numerous practical use cases. Find more information in our accompanying [paper](https://arxiv.org/abs/2402.09481).
 For additional examples of usage and guidance on getting started with Cryptomite, see our related [blog post](https://medium.com/quantinuum/introducing-cryptomite-randomness-extraction-simplified-857fc2f87673)
 and repository [documentation](https://cqcl.github.io/cryptomite/).
 
 
-The library is available for non-commercial use only, see the license for details.
+The library is available for non-commercial use only; see the [license](https://github.com/CQCL/cryptomite/blob/main/LICENSE) for details.
 
-The performance critical parts of the library (e.g. NTT) are implemented in C++, but the rest of the
-library (e.g. parameter estimation) is implemented in Python for accessibility and ease of installation.
+The performance-critical parts of the library (e.g. the number theoretic transform) are implemented in C++, while the rest of the library (e.g. parameter estimation) is implemented in Python for accessibility and ease of installation.
 
 The package is available for Python 3.8 and higher on Mac, Windows and Linux. To install, type:
 
