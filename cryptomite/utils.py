@@ -284,4 +284,4 @@ def closest_na_set(k: int) -> int:
 
 def von_neumann(bits: BitsT) -> BitsT:
     """ Extract using Von-Neumann extractor. """
-    return [x for x, y in zip(bits[::2], bits[1::2]) if x == y]
+    return [x for x, y in zip(bits[::2], bits[1::2]) if x != y]
