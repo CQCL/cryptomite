@@ -27,7 +27,7 @@ jobs:
         path: wheelhouse/
   build_macos_wheels:
     name: build macos wheels
-    runs-on: macos-11
+    runs-on: macos-13
     steps:
     - uses: actions/checkout@v2
     - name: set up python 3.8
