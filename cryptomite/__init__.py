@@ -1,11 +1,11 @@
 
 __all__ = [
-    'circulant'
+    'circulant',
     'dodis',
     'toeplitz',
     'trevisan',
     'utils',
-    'Circulant'
+    'Circulant',
     'Dodis',
     'Toeplitz',
     'Trevisan',
@@ -19,4 +19,4 @@ from cryptomite.toeplitz import Toeplitz
 from cryptomite.trevisan import Trevisan
 from cryptomite.utils import von_neumann
 
-__version__ = '0.1.2'
+__version__ = '0.2.0'
