@@ -10,7 +10,7 @@ from cryptomite._cryptomite import BigNTT, NTT
 
 __all__ = ['is_prime', 'prime_facto', 'previous_prime', 'next_prime',
            'closest_prime', 'previous_na_set', 'next_na_set',
-           'closest_na_set', 'von_neumann']
+           'closest_na_set', 'suggest_extractor', 'von_neumann']
 
 
 BitT = Literal[0, 1]
@@ -279,6 +279,40 @@ def closest_na_set(k: int) -> int:
         out = previous_p
     else:
         out = next_p
+    return out
+
+
+def suggest_extractor(input_length1: int, exchangeable_sequence: bool, 
+                      efficiency_required: bool) -> str:
+    """
+    Suggests the best extractor for a user, based on Fig.2 
+    from the technical paper. 
+
+    Parameters
+    ----------
+        input_length1 : int
+            The initial length of input source.
+            
+        exchangeable_sequence : bool
+            Boolean input indicating whether the source forms an exchangeable
+            sequence. 
+        
+        efficiency_required : bool
+            Boolean input indicating whether the user requires efficient 
+            extraction. 
+
+    Returns
+    -------
+        string :
+            The suggested extractor.
+    """
+    if exchangeable_sequence:
+        out = 'Von Neumann'
+    else: 
+        if n1 <= 10**6 or efficiency_required:
+            out = 'Circulant'
+        else:
+            out = 'Trevisan'
     return out
 
 
