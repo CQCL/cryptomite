@@ -293,8 +293,8 @@ def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
         input_length1 : int
             The initial length of input source.
         exchangeable_sequence : bool
-            Boolean input indicating whether the source forms an exchangeable
-            sequence.
+            Boolean input indicating whether the source forms an 
+            exchangeable sequence.
         efficiency_required : bool
             Boolean input indicating whether the user requires efficient
             extraction.
