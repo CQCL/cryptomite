@@ -282,24 +282,22 @@ def closest_na_set(k: int) -> int:
     return out
 
 
-def suggest_extractor(input_length1: int, exchangeable_sequence: bool, 
+def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
                       efficiency_required: bool) -> str:
     """
-    Suggests the best extractor for a user, based on Fig.2 
-    from the technical paper. 
+    Suggests the best extractor for a user, based on Fig.2
+    from the technical paper.
 
     Parameters
     ----------
         input_length1 : int
             The initial length of input source.
-            
         exchangeable_sequence : bool
             Boolean input indicating whether the source forms an exchangeable
-            sequence. 
-        
+            sequence.
         efficiency_required : bool
-            Boolean input indicating whether the user requires efficient 
-            extraction. 
+            Boolean input indicating whether the user requires efficient
+            extraction.
 
     Returns
     -------
@@ -308,8 +306,8 @@ def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
     """
     if exchangeable_sequence:
         out = 'Von Neumann'
-    else: 
-        if n1 <= 10**6 or efficiency_required:
+    else:
+        if input_length1 <= 10**6 or efficiency_required:
             out = 'Circulant'
         else:
             out = 'Trevisan'
