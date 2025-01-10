@@ -12,7 +12,7 @@
 `cryptomite` is a modular, extensible high-level Python library 
 of randomness extractors, created by Quantinuum's Quantum Cryptography team. 
 At a high level, the library offers state-of-the-art randomness extractors that are easy to use, optimized for performance and numerically precise
-providing a trade-off of features that suit numerous practical use cases. Find more information in our accompanying [paper](https://arxiv.org/abs/2402.09481).
+providing a trade-off of features that suit numerous practical use cases. Find more information in our accompanying [paper](https://quantum-journal.org/papers/q-2025-01-08-1584/).
 For additional examples of usage and guidance on getting started with Cryptomite, see our related [blog post](https://medium.com/quantinuum/introducing-cryptomite-randomness-extraction-simplified-857fc2f87673)
 and repository [documentation](https://cqcl.github.io/cryptomite/).
 
@@ -72,12 +72,17 @@ test/runTest
 If you use `cryptomite` in your research, please cite the accompanying [paper](https://arxiv.org/abs/2402.09481):
 
 ```
-@misc{foreman2024cryptomite,
-      title={Cryptomite: A versatile and user-friendly library of randomness extractors}, 
-      author={Cameron Foreman and Richie Yeung and Alec Edgington and Florian J. Curchod},
-      year={2024},
-      eprint={2402.09481},
-      archivePrefix={arXiv},
-      primaryClass={cs.CR}
+@article{Foreman2025cryptomite,
+  doi = {10.22331/q-2025-01-08-1584},
+  url = {https://doi.org/10.22331/q-2025-01-08-1584},
+  title = {Cryptomite: {A} versatile and user-friendly library of randomness extractors},
+  author = {Foreman, Cameron and Yeung, Richie and Edgington, Alec and Curchod, Florian J.},
+  journal = {{Quantum}},
+  issn = {2521-327X},
+  publisher = {{Verein zur F{\"{o}}rderung des Open Access Publizierens in den Quantenwissenschaften}},
+  volume = {9},
+  pages = {1584},
+  month = jan,
+  year = {2025}
 }
 ```
