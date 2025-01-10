@@ -80,12 +80,12 @@
 <span></span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">This is a module.</span>
 <span class="sd">&quot;&quot;&quot;</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">annotations</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span> <span class="nn">math</span> <span class="kn">import</span> <span class="n">sqrt</span>
-<span class="kn">from</span> <span class="nn">typing</span> <span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">sqrt</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Literal</span><span class="p">,</span> <span class="n">Sequence</span>
 
-<span class="kn">from</span> <span class="nn">cryptomite._cryptomite</span> <span class="kn">import</span> <span class="n">BigNTT</span><span class="p">,</span> <span class="n">NTT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cryptomite._cryptomite</span><span class="w"> </span><span class="kn">import</span> <span class="n">BigNTT</span><span class="p">,</span> <span class="n">NTT</span>
 
 <span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;is_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;prime_facto&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;next_prime&#39;</span><span class="p">,</span>
            <span class="s1">&#39;closest_prime&#39;</span><span class="p">,</span> <span class="s1">&#39;previous_na_set&#39;</span><span class="p">,</span> <span class="s1">&#39;next_na_set&#39;</span><span class="p">,</span>
@@ -96,7 +96,7 @@
 <span class="n">BitsT</span> <span class="o">=</span> <span class="n">Sequence</span><span class="p">[</span><span class="n">BitT</span><span class="p">]</span>
 
 
-<span class="k">def</span> <span class="nf">log_2</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">log_2</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Take the base 2 logarithm of an integer. &quot;&quot;&quot;</span>
     <span class="n">x</span> <span class="o">=</span> <span class="mi">0</span>
     <span class="k">while</span> <span class="n">n</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
@@ -105,7 +105,7 @@
     <span class="k">return</span> <span class="n">x</span>
 
 
-<span class="k">def</span> <span class="nf">conv</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">source1</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">source2</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">conv</span><span class="p">(</span><span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">source1</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="n">source2</span><span class="p">:</span> <span class="n">Sequence</span><span class="p">[</span><span class="nb">int</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Perform a cyclic convolution of size 2^l.</span>
 
@@ -132,7 +132,7 @@
     <span class="k">return</span> <span class="n">ntt</span><span class="o">.</span><span class="n">conv</span><span class="p">(</span><span class="n">source1</span><span class="p">,</span> <span class="n">source2</span><span class="p">)</span>
 
 
-<div class="viewcode-block" id="is_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.is_prime">[docs]</a><span class="k">def</span> <span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<div class="viewcode-block" id="is_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.is_prime">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">is_prime</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Checks an integer for primality.</span>
 
@@ -152,7 +152,7 @@
     <span class="k">return</span> <span class="kc">True</span></div>
 
 
-<div class="viewcode-block" id="prime_facto"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.prime_facto">[docs]</a><span class="k">def</span> <span class="nf">prime_facto</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
+<div class="viewcode-block" id="prime_facto"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.prime_facto">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">prime_facto</span><span class="p">(</span><span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">],</span> <span class="nb">list</span><span class="p">[</span><span class="nb">int</span><span class="p">]]:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Defines the factors of the prime numbers used.</span>
 <span class="sd">    It is required for the later function: na_set.</span>
@@ -194,7 +194,7 @@
     <span class="k">return</span> <span class="n">factors2</span><span class="p">,</span> <span class="n">powers</span></div>
 
 
-<div class="viewcode-block" id="previous_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_prime">[docs]</a><span class="k">def</span> <span class="nf">previous_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="previous_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_prime">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">previous_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the largest integer smaller than or equal to the input</span>
 <span class="sd">    that is prime.</span>
@@ -220,7 +220,7 @@
     <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="next_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_prime">[docs]</a><span class="k">def</span> <span class="nf">next_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="next_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_prime">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">next_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the smallest integer larger than or equal to the input</span>
 <span class="sd">    that is prime.</span>
@@ -246,7 +246,7 @@
     <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="closest_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_prime">[docs]</a><span class="k">def</span> <span class="nf">closest_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="closest_prime"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_prime">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">closest_prime</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the closest integer to the input that is prime.</span>
 <span class="sd">    If both directions are equidistant, outputs the prime less</span>
@@ -271,7 +271,7 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="previous_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_na_set">[docs]</a><span class="k">def</span> <span class="nf">previous_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="previous_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.previous_na_set">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">previous_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the largest integer smaller than the input that is prime</span>
 <span class="sd">    with primitive root 2.</span>
@@ -303,7 +303,7 @@
     <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="next_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_na_set">[docs]</a><span class="k">def</span> <span class="nf">next_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="next_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.next_na_set">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">next_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the smallest integer larger than the input that is prime</span>
 <span class="sd">    with primitive root 2.</span>
@@ -335,7 +335,7 @@
     <span class="k">return</span> <span class="n">k</span> <span class="o">+</span> <span class="mi">1</span></div>
 
 
-<div class="viewcode-block" id="closest_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_na_set">[docs]</a><span class="k">def</span> <span class="nf">closest_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<div class="viewcode-block" id="closest_na_set"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.closest_na_set">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">closest_na_set</span><span class="p">(</span><span class="n">k</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Finds the closest integer to the input that is prime with</span>
 <span class="sd">    primitive root 2.</span>
@@ -361,7 +361,7 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="suggest_extractor"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.suggest_extractor">[docs]</a><span class="k">def</span> <span class="nf">suggest_extractor</span><span class="p">(</span><span class="n">input_length1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">exchangeable_sequence</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+<div class="viewcode-block" id="suggest_extractor"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.suggest_extractor">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">suggest_extractor</span><span class="p">(</span><span class="n">input_length1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">exchangeable_sequence</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
                       <span class="n">efficiency_required</span><span class="p">:</span> <span class="nb">bool</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">    Suggests the best extractor for a user, based on Fig.2</span>
@@ -393,7 +393,7 @@
     <span class="k">return</span> <span class="n">out</span></div>
 
 
-<div class="viewcode-block" id="von_neumann"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.von_neumann">[docs]</a><span class="k">def</span> <span class="nf">von_neumann</span><span class="p">(</span><span class="n">bits</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
+<div class="viewcode-block" id="von_neumann"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.utils.von_neumann">[docs]</a><span class="k">def</span><span class="w"> </span><span class="nf">von_neumann</span><span class="p">(</span><span class="n">bits</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
 <span class="w">    </span><span class="sd">&quot;&quot;&quot; Extract using Von-Neumann extractor. &quot;&quot;&quot;</span>
     <span class="k">return</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">bits</span><span class="p">[::</span><span class="mi">2</span><span class="p">],</span> <span class="n">bits</span><span class="p">[</span><span class="mi">1</span><span class="p">::</span><span class="mi">2</span><span class="p">])</span> <span class="k">if</span> <span class="n">x</span> <span class="o">!=</span> <span class="n">y</span><span class="p">]</span></div>
 </pre></div>
