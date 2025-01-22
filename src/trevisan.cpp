@@ -228,11 +228,6 @@ TrevisanConfig::TrevisanConfig(int n, int k, double max_eps) : n(n) {
     // make t a power of 2 for weak design
     log_t = (int) ceil(log2(t_req));
     t = 1 << log_t;
-
-    cout << "Trevisan Config:" << endl;
-    cout << "max_eps " << max_eps << endl;
-    cout << "m " << m << endl;
-    cout << "log_t " << log_t << endl;
 }
 
 Trevisan::Trevisan(TrevisanConfig config)
