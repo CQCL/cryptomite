@@ -7,7 +7,7 @@ At a high level, the library offers state-of-the-art randomness extractors that 
 providing a trade-off of features suitable for a wide variety of practical applications.
 
 The performance critical parts of the library (e.g. NTT) are implemented in C++, but the rest of the
-library (e.g. parameter estimation) is implemented in Python for accessibility and ease of installation.
+library (e.g. parameter estimation) is implemented in Python for accessibility and ease of use.
 
 The package is available for Python 3.8 and higher on Mac, Windows and Linux. To install, type:
 

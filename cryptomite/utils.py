@@ -18,7 +18,19 @@ BitsT = Sequence[BitT]
 
 
 def log_2(n: int) -> int:
-    """ Take the base 2 logarithm of an integer. """
+    """
+    Take the ceiling of the base 2 logarithm of an integer.
+
+    Parameters
+    ----------
+    n : int
+        The input integer.
+
+    Returns
+    -------
+    int
+        The ceiling of the base 2 logarithm of n.
+    """
     x = 0
     while n > 0:
         n >>= 1
@@ -32,16 +44,17 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
 
     Parameters
     ----------
-        l : int
-            log_2 of the size of the convolution.
-        source1: list of int
-            first vector.
-        source2: list of int
-            second vector.
+    l : int
+        The base 2 logarithm of the size of the convolution.
+    source1: list of int
+        The first input vector.
+    source2: list of int
+        The second input vector.
 
     Returns
     -------
-        list[int] : The convolved output.
+    list[int]
+        The output of the convolution.
     """
     L = 1 << l
     assert len(source1) == len(source2) == L
@@ -55,18 +68,18 @@ def conv(l: int, source1: Sequence[int], source2: Sequence[int]) -> list[int]:
 
 def is_prime(n: int) -> bool:
     """
-    Checks an integer for primality.
+    Checks whether an integer is prime.
 
     Parameters
     ----------
-        n : int
-            integer to check for primality.
+    n : int
+        The integer to check for primality.
 
     Returns
     -------
-        bool : Whether n is prime.
+    bool
+        Whether n is prime.
     """
-
     for i in range(2, round(sqrt(n)) + 1):
         if n % i == 0:
             return False
@@ -75,18 +88,18 @@ def is_prime(n: int) -> bool:
 
 def prime_facto(n: int) -> tuple[list[int], list[int]]:
     """
-    Defines the factors of the prime numbers used.
+    Factorizes an integer into its prime factors and their powers.
     It is required for the later function: na_set.
 
     Parameters
     ----------
-        n : int
-            number to check.
+    n : int
+        The integer to check.
 
     Returns
     -------
-        list :
-            Returns factors and powers.
+    list
+        A list representing the prime factorization of n.
     """
     factors = []
     i = 2
@@ -107,28 +120,25 @@ def prime_facto(n: int) -> tuple[list[int], list[int]]:
         if factors[i] == factors[i - 1]:
             powers[p] = powers[p] + 1
         if factors[i] != factors[i - 1]:
-            # sz = sz + 1
             powers.append(1)
             p = p + 1
             factors2.append(factors[i])
-
     return factors2, powers
 
 
 def previous_prime(k: int) -> int:
     """
-    Finds the largest integer smaller than or equal to the input
-    that is prime.
+    Finds the largest prime number less than or equal to the given input.
 
     Parameters
     ----------
-        k : int
-            number to check is prime.
+    k : int
+        The upper limit for checking prime numbers.
 
     Returns
     -------
-        int :
-            prime.
+    int
+        The largest prime number less than or equal to k.
     """
     k -= 1
     if k % 2 != 0:
@@ -143,18 +153,17 @@ def previous_prime(k: int) -> int:
 
 def next_prime(k: int) -> int:
     """
-    Finds the smallest integer larger than or equal to the input
-    that is prime.
+    Finds the smallest prime number greater than or equal to the given input.
 
     Parameters
     ----------
-        k : int
-            number to check is prime.
+    k : int
+        The lower limit for checking prime numbers.
 
     Returns
     -------
-        int :
-            prime.
+    int
+        The smallest prime number greater than or equal to k.
     """
     k -= 1
     if k % 2 != 0:
@@ -169,19 +178,15 @@ def next_prime(k: int) -> int:
 
 def closest_prime(k: int) -> int:
     """
-    Finds the closest integer to the input that is prime.
-    If both directions are equidistant, outputs the prime less
-    than the input.
+    Finds the closest prime number to the given input.
 
-    Parameters
-    ----------
-        k : int
-            number to check is prime.
+    k : int
+        The input value to find the closest prime number to.
 
     Returns
     -------
-        int :
-            prime.
+    int
+        The closest prime number to k.
     """
     next_p = next_prime(k)
     previous_p = previous_prime(k)
@@ -194,18 +199,20 @@ def closest_prime(k: int) -> int:
 
 def previous_na_set(k: int) -> int:
     """
-    Finds the largest integer smaller than the input that is prime
-    with primitive root 2.
+    Finds the largest prime number with primitive root 2
+    less than or equal to the given input.
 
     Parameters
     ----------
-        k : int
-            number to check is prime with primitive root 2.
+    k : int
+        The upper limit for checking prime numbers with
+        primitive root 2.
 
     Returns
     -------
-        int :
-            prime with primitive root 2.
+    int
+        The largest prime number with primitive root 2
+        less than or equal to k.
     """
     k -= 1
     if k % 2 != 0:
@@ -226,18 +233,20 @@ def previous_na_set(k: int) -> int:
 
 def next_na_set(k: int) -> int:
     """
-    Finds the smallest integer larger than the input that is prime
-    with primitive root 2.
+    Finds the smallest prime number with primitive root 2
+    greater than or equal to the given input.
 
     Parameters
     ----------
-        k : int
-            number to check is prime with primitive root 2.
+    k : int
+        The lower limit for checking prime numbers with
+        primitive root 2.
 
     Returns
     -------
-        int :
-            prime with primitive root 2.
+    int
+        The smallest prime number with primitive root 2
+        greater than or equal to k.
     """
     k -= 1
     if k % 2 != 0:
@@ -258,20 +267,17 @@ def next_na_set(k: int) -> int:
 
 def closest_na_set(k: int) -> int:
     """
-    Finds the closest integer to the input that is prime with
-    primitive root 2.
-    If both directions are equidistant, outputs the prime with
-    primitive root 2 less than the input.
+    Finds the closest prime number to the given input.
 
-    Parameters
-    ----------
-        k : int
-            number to check is prime with primitive root 2.
+    k : int
+        The input value to find the closest prime
+        with primitive root 2 to.
 
     Returns
     -------
-        int :
-            prime with primitive root 2.
+    int
+        The closest prime number with primitive root 2
+        to k.
     """
     next_p = next_na_set(k)
     previous_p = previous_na_set(k)
@@ -282,7 +288,7 @@ def closest_na_set(k: int) -> int:
     return out
 
 
-def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
+def suggest_extractor(n_1: int, exchangeable_sequence: bool,
                       efficiency_required: bool) -> str:
     """
     Suggests the best extractor for a user, based on Fig.2
@@ -290,24 +296,24 @@ def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
 
     Parameters
     ----------
-        input_length1 : int
-            The initial length of input source.
-        exchangeable_sequence : bool
-            Boolean input indicating whether the source forms an
-            exchangeable sequence.
-        efficiency_required : bool
-            Boolean input indicating whether the user requires efficient
-            extraction.
+    n_1 : int
+        The length of the first input (in bits).
+    exchangeable_sequence : bool
+        Boolean input indicating whether the source forms an
+        exchangeable sequence.
+    efficiency_required : bool
+        Boolean input indicating whether the user requires efficient
+        extraction.
 
     Returns
     -------
-        string :
-            The suggested extractor.
+    string
+        The suggested extractor.
     """
     if exchangeable_sequence:
         out = 'Von Neumann'
     else:
-        if input_length1 <= 10**6 or efficiency_required:
+        if n_1 <= 10**6 or efficiency_required:
             out = 'Circulant'
         else:
             out = 'Trevisan'
@@ -315,5 +321,5 @@ def suggest_extractor(input_length1: int, exchangeable_sequence: bool,
 
 
 def von_neumann(bits: BitsT) -> BitsT:
-    """ Extract using Von-Neumann extractor. """
+    """ Perform extraction using Von-Neumann extractor. """
     return [x for x, y in zip(bits[::2], bits[1::2]) if x != y]

@@ -1,6 +1,8 @@
 """
-Dodis is a 2-source extractor that takes two equal length, independent,
-strings of bits to produce some error-perfect random bits.
+The Dodis et al. extractor [Dodis2004]_ takes two equal length inputs,
+each of length `n = n_1 = n_2'. This implementation is based on the
+improved cyclic shift matrices construction from [For2020]_, which
+requires n to be prime with primitive root 2.
 """
 from __future__ import annotations
 
@@ -13,34 +15,37 @@ __all__ = ['Dodis']
 
 
 class Dodis:
-    """ Dodis extractor based on [Dodis2004]_. """
+    """ Dodis et al. extractor [Dodis2004]_, with implementation
+        based on [For2020, For2024]_."""
     def __init__(self, n: int, m: int):
-        """Create a Dodis Extractor.
+        """
+        Initialize a Dodis extractor.
 
         Parameters
         ----------
         n : int
-            The length of the two input bits.
-            ** This should be prime with primitive root 2. **
+            The length of the first input (in bits).
+            **Note:** n must be prime with primitive root 2.
         m : int
-            The length of the output bits.
+            The length of the extractor output (in bits).
         """
         self.n, self.m = n, m
 
     def extract(self, input1: BitsT, input2: BitsT) -> BitsT:
-        """ Extract randomness.
+        """
+        Perform randomness extraction.
 
         Parameters
         ----------
-        input1 : list of bits
-            The first list of bits, the 'input'.
-        input2 : list of bits
-            The second list of bits, the '(weak) seed'.
+        input1 : list of bits (0s and 1s)
+            The first input (the 'weak input'), consisting of n bits.
+        input2 : list of bits (0s and 1s)
+            The second input (the '(weak) seed'), consisting of n bits.
 
         Returns
         -------
-        list of bits
-            The extracted output.
+        list of bits (0s and 1s)
+            The extractor output bits, of length m.
         """
         n, m = self.n, self.m
         assert len(input1) == len(input2) == n
@@ -57,71 +62,91 @@ class Dodis:
 
     @staticmethod
     def from_params(
-            min_entropy1: float,
-            min_entropy2: float,
+            n_1: int,
+            k_1: float,
+            n_2: int,
+            k_2: float,
             log2_error: float,
-            input_length1: int,
-            input_length2: int,
-            markov_q_proof: bool,
+            q_proof: bool,
             verbose: bool = True) -> Dodis:
         """
-        Calculate a valid input and output size for this extractor,
-        given the initial lengths and min-entropies of the input sources
-        and generate the associated extractor.
-
-        The input_length must be prime with primitive root 2, else
-        the code will chose a valid input_length choice and adjust the
-        other parameters accordingly.
-        The min entropy inputs are a lower bound on the
-        :term:`min-entropy` of the related input string.
+        Generate a Dodis et al. extractor with valid parameters
+        based on input constraints.
 
         Parameters
         ----------
-        min_entropy1 : float
-            The min-entropy of input source 1, the 'input'.
-        min_entropy2 : float
-            The min-entropy of input source 2, the '(weak) seed'.
+        n_1 : int
+            The length of the first input (in bits).
+        k_1 : float
+            The min-entropy of the first input.
+        n_2 : int
+            The length of the second input (in bits).
+        k_2 : float
+            The min-entropy of the second input.
         log2_error : float
-            The acceptable maximum extractor error, in the
-            form error = b where extractor error = :math:`2 ^ b`.
-        input_length1 : int
-            The initial length of input source.
-        input_length2 : int
-            The initial length of the (weak) seed.
-        markov_q_proof : bool
-            Boolean indicator of whether the extractor parameters
-            should be calculated to account for being quantum-proof
-            in the Markov model or not.
+            The logarithm (base 2) of the acceptable extractor error.
+            Must be negative, as the extractor error is 2^log2_error.
+        q_proof : bool
+            If True, adjusts parameters to ensure quantum-proof extraction
+            in the Markov and product sources models (see [For2024]_).
+        verbose : bool
+            If True, prints the parameters used for extraction (default: True).
 
         Returns
         -------
         Dodis
-            The Dodis extractor.
+            A configured Dodis et al. extractor.
+
+        Raises
+        ------
+        ValueError
+            If the output length is non-positive.
+
+        Notes
+        -----
+        - If n is not prime with primitive root 2, the function
+          selects the closest prime with primitive root 2 and
+          adjusts the other parameters accordingly,
         """
-        if log2_error >= 0:
-            raise Exception("""Cannot extract with these parameters.
-                            log2_error must be < 0.""")
-        input_length = closest_na_set((input_length1 + input_length2)//2)
-        if input_length1 > input_length:
-            min_entropy1 -= input_length1 - input_length
-        if input_length2 > input_length:
-            min_entropy2 -= input_length2 - input_length
-        output_length = floor(min_entropy1 + min_entropy2
-                              - input_length + 1 + 2 * log2_error)
-        if markov_q_proof:
-            output_length = floor(0.2 * (min_entropy1 + min_entropy2
-                                         - input_length + 8 * log2_error
-                                         + 9 - 4 * log2(3)))
-        if output_length <= 0:
-            raise Exception("""Cannot extract with these parameters.
-                            Increase min_entropy1 and/or min_entropy2
-                            and/or log2_error.""")
+        assert log2_error <= 0
+
+        # Find the closest prime with primitive root 2
+        # to the average of input lengths.
+        n_adjusted = closest_na_set((n_1 + n_2) // 2)
+
+        # Adjust min-entropy values if input lengths exceed the
+        # computed prime with primitive root 2.
+        k_1_adjusted = k_1 - max(0, n_1 - n_adjusted)
+        k_2_adjusted = k_2 - max(0, n_2 - n_adjusted)
+
+        # Compute the output length based on entropy constraints and
+        # extraction error.
+        if q_proof:
+            m = floor(0.2 * (k_1_adjusted + (k_2_adjusted
+                      - n_adjusted) + 8 * log2_error
+                      + 9 - 4 * log2(3)))
+        else:
+            m = floor(k_1 + (k_2 - n_adjusted)
+                      + 1 + 2 * log2_error)
+
+        # Ensure the output length is valid.
+        if m <= 0:
+            raise ValueError(
+                "Cannot extract with these parameters. "
+                "Increase k_1, k_2, or log2_error."
+            )
+
+        # Print parameter details (if verbose).
         if verbose:
-            print('Min entropy1: ', min_entropy1,
-                  'Min entropy2: ', min_entropy2,
-                  'Log error: ', log2_error,
-                  'Input length1: ', input_length,
-                  'Input length2: ', input_length,
-                  'Output length: ', output_length)
-            print('Adjust length of the input and (weak) seed accordingly')
-        return Dodis(n=input_length, m=output_length)
+            print(
+                f"--- New Dodis et al. Extractor Parameters ---\n"
+                f"Input Length 1 (n_1): {n_adjusted}, "
+                f"Min Entropy of Input 1 (k_1): {k_1_adjusted}, "
+                f"Input Length 2 (n_2): {n_adjusted}, "
+                f"Min Entropy of Input 2 (k_2): {k_2_adjusted}, "
+                f"Output Length (m): {m}, "
+                f"Extraction Error (log2_error): {log2_error}. "
+            )
+            print("""Adjust the length of the input
+                  and (weak) seed accordingly.""")
+        return Dodis(n_adjusted, m)

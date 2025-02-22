@@ -23,7 +23,7 @@ release = version = __version__
 
 
 project = 'cryptomite'
-copyright = '2024 Quantinuum Limited'
+copyright = '2025 Quantinuum Limited'
 author = 'Quantinuum Quantum Cryptography Team'
 
 # -- General configuration ---------------------------------------------------

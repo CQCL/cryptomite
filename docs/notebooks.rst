@@ -3,7 +3,7 @@
 Example Usage
 =============
 
-Here we give examples of using ``cryptomite``:
+Here's how to get started with ``cryptomite``:
 
 .. toctree::
 

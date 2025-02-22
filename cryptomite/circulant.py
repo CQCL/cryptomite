@@ -1,11 +1,10 @@
 """
-Circulant is a seeded extractor that takes an input of
-n bits and a seed of n + 1 bits, where n + 1 is prime,
-to produce some error-perfect random bits.
+The Circulant extractor [For2024]_ takes an input of `n_1' bits and
+a (weak) seed of `n_1 + 1' bits, where `n_1 + 1' is prime.
 """
 from __future__ import annotations
 
-from math import floor, log2
+from math import floor
 from typing import cast
 
 from cryptomite.utils import BitsT, closest_prime, conv, log_2
@@ -14,117 +13,140 @@ __all__ = ['Circulant']
 
 
 class Circulant:
-    """ Circulant extractor based on [For2024]_. """
-    def __init__(self, n: int, m: int):
-        """Create a Circulant Extractor.
+    """ Circulant extractor based on [For2024]_."""
+    def __init__(self, n_1: int, m: int):
+        """
+        Initialize a Circulant extractor.
 
         Parameters
         ----------
-        n : int
-            The length of the input bits.
-            ** n + 1 should be prime. **
+        n_1 : int
+            The length of the first input (in bits).
+            **Note:** n_1 + 1 must be prime.
         m : int
-            The length of the output bits.
+            The length of the extractor output (in bits).
         """
-        self.n, self.m = n, m
+        self.n_1, self.m = n_1, m
 
     def extract(self, input1: BitsT, input2: BitsT) -> BitsT:
-        """ Extract randomness.
+        """
+        Perform randomness extraction.
 
         Parameters
         ----------
-        input1 : list of bits
-            The first list of bits, the 'input'.
-        input2 : list of bits
-            The second list of bits, the '(weak) seed'.
+        input1 : list of bits (0s and 1s)
+            The first input (the 'weak input'), consisting of n_1 bits.
+        input2 : list of bits (0s and 1s)
+            The second input (the '(weak) seed'), consisting
+            of n_2 = n_1 + 1 bits.
 
         Returns
         -------
-        list of bits
-            The extracted output.
+        list of bits (0s and 1s)
+            The extractor output bits, of length m.
         """
-        n, m = self.n, self.m
-        assert len(input1) == len(input2) - 1 == n
-        assert n >= m
-        n = n + 1
-        l = log_2(2 * n - 2)
-        L = 1 << l
+        n_1, m = self.n_1, self.m
+        assert len(input1) == len(input2) - 1 == n_1
+        assert n_1 >= m
         input1 = input1 + [0]
+        n_1 += 1
         input1, input2 = list(input1), list(input2)
-        input1 = input1[0:1] + input1[1:][::-1] + [0] * (L - n)
+        l = log_2(2 * n_1 - 2)
+        L = 1 << l
+        input1 = input1[0:1] + input1[1:][::-1] + [0] * (L - n_1)
         input2 = input2 + [0] * (L - len(input2))
         conv_output = conv(l, input1, input2)
         output: BitsT = cast(BitsT, [
-            (conv_output[i] + conv_output[i + n]) & 1 for i in range(m)])
+            (conv_output[i] + conv_output[i + n_1]) & 1 for i in range(m)])
         return output
 
     @staticmethod
     def from_params(
-            min_entropy1: float,
-            min_entropy2: float,
+            n_1: int,
+            k_1: float,
+            n_2: int,
+            k_2: float,
             log2_error: float,
-            input_length1: int,
-            input_length2: int,
-            markov_q_proof: bool,
+            q_proof: bool,
             verbose: bool = True) -> Circulant:
         """
-        Calculate a valid input and output size for this extractor,
-        given the initial lengths and min-entropies of the input sources
-        and generate the associated extractor.
-
-        The input_length2 must be prime, else the code will chose a
-        valid input_length2 choice and adjust the other parameters
-        accordingly.
-        The min_entropy inputs are a lower bound on the
-        :term:`min-entropy` of the related input string.
+        Generate a Circulant extractor with valid parameters
+        based on input constraints.
 
         Parameters
         ----------
-        min_entropy1 : float
-            The min-entropy of input source 1, the 'input'.
-        min_entropy2 : float
-            The min-entropy of input source 2, the '(weak) seed'.
+        n_1 : int
+            The length of the first input (in bits).
+        k_1 : float
+            The min-entropy of the first input.
+        n_2 : int
+            The length of the second input (in bits).
+        k_2 : float
+            The min-entropy of the second input.
         log2_error : float
-            The acceptable maximum extractor error, in the
-            form error = b where extractor error = :math:`2 ^ b`.
-        input_length1 : int
-            The initial length of input source.
-        input_length2 : int
-            The initial length of the (weak) seed.
-        markov_q_proof : bool
-            Boolean indicator of whether the extractor parameters
-            should be calculated to account for being quantum-proof
-            in the Markov model or not.
+            The logarithm (base 2) of the acceptable extractor error.
+            Must be negative, as the extractor error is 2^log2_error.
+        q_proof : bool
+            If True, adjusts parameters to ensure quantum-proof extraction
+            in the Markov and product sources models (see [For2024]_).
+        verbose : bool
+            If True, prints the parameters used for extraction (default: True).
 
         Returns
         -------
         Circulant
-            The Circulant extractor.
+            A configured Circulant extractor.
+
+        Raises
+        ------
+        ValueError
+            If the output length is non-positive.
+
+        Notes
+        -----
+        - If n_2 is not prime, the function selects the closest prime and
+          adjusts the other parameters accordingly.
+        - For this extractor, the output length remains the same when it is
+          classical-proof, quantum-proof in the product sources model, and
+          quantum-proof in the Markov model (see [For2024]_).
         """
-        if log2_error >= 0:
-            raise Exception("""Cannot extract with these parameters.
-                            log2_error must be < 0.""")
-        input_length = closest_prime((input_length1 + input_length2)//2)
-        if input_length1 > input_length - 1:
-            min_entropy1 -= input_length1 - input_length
-        if input_length2 > input_length:
-            min_entropy2 -= input_length2 - input_length
-        output_length = floor(min_entropy1 + min_entropy2
-                              - input_length + 2 * log2_error)
-        if markov_q_proof:
-            output_length = floor(0.2 * (min_entropy1 + min_entropy2
-                                         - input_length + 8 * log2_error
-                                         + 8 - 4 * log2(3)))
-        if output_length <= 0:
-            raise Exception("""Cannot extract with these parameters.
-                            Increase min_entropy1 and/or min_entropy2
-                            and/or log2_error.""")
+        assert log2_error <= 0
+
+        # Find the closest prime to the average of input lengths.
+        n_2_adjusted = closest_prime((n_1 + n_2) // 2)
+
+        # Adjust min-entropy values if input lengths exceed the computed prime.
+        k_1_adjusted = k_1 - max(0, n_1 - (n_2_adjusted - 1))
+        k_2_adjusted = k_2 - max(0, n_2 - n_2_adjusted)
+
+        # Compute the output length based on entropy constraints and
+        # extraction error.
+        if q_proof:
+            m = floor(k_1_adjusted + (k_2_adjusted - n_2_adjusted)
+                      + 2 * log2_error)
+        else:
+            m = floor(k_1_adjusted + (k_2_adjusted - n_2_adjusted)
+                      + 2 * log2_error)
+
+        # Ensure the output length is valid.
+        if m <= 0:
+            raise ValueError(
+                "Cannot extract with these parameters. "
+                "Increase k_1, k_2, or log2_error."
+            )
+
+        # Print parameter details (if verbose).
         if verbose:
-            print('Min entropy1: ', min_entropy1,
-                  'Min entropy2: ', min_entropy2,
-                  'Log error: ', log2_error,
-                  'Input length1: ', input_length - 1,
-                  'Input length2: ', input_length,
-                  'Output length: ', output_length)
-            print('Adjust length of the input and (weak) seed accordingly')
-        return Circulant(n=input_length, m=output_length)
+            print(
+                f"--- New Circulant Extractor Parameters ---\n"
+                f"Input Length 1 (n_1): {n_2_adjusted-1}, "
+                f"Min Entropy of Input 1 (k_1): {k_1_adjusted}, "
+                f"Input Length 2 (n_2): {n_2_adjusted}, "
+                f"Min Entropy of Input 2 (k_2): {k_2_adjusted}, "
+                f"Output Length (m): {m}, "
+                f"Extraction Error (log2_error): {log2_error}. "
+            )
+            print("""Adjust the length of the input
+                  and (weak) seed accordingly.""")
+
+        return Circulant(n_2_adjusted - 1, m)
