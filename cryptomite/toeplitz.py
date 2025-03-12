@@ -15,8 +15,10 @@ __all__ = ['Toeplitz']
 
 
 class Toeplitz:
-    """Toeplitz extractor with implementation
-       based on [For2024]_."""
+    """
+    Toeplitz extractor with implementation
+    based on [For2024]_.
+    """
     def __init__(self, n_1: int, m: int):
         """
         Initialize a Toeplitz extractor.

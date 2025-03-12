@@ -13,7 +13,9 @@ __all__ = ['Circulant']
 
 
 class Circulant:
-    """ Circulant extractor based on [For2024]_."""
+    """
+    Circulant extractor based on [For2024]_.
+    """
     def __init__(self, n_1: int, m: int):
         """
         Initialize a Circulant extractor.

@@ -321,5 +321,7 @@ def suggest_extractor(n_1: int, exchangeable_sequence: bool,
 
 
 def von_neumann(bits: BitsT) -> BitsT:
-    """ Perform extraction using Von-Neumann extractor. """
+    """
+    Perform extraction using Von-Neumann extractor.
+    """
     return [x for x, y in zip(bits[::2], bits[1::2]) if x != y]

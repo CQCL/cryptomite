@@ -15,8 +15,10 @@ __all__ = ['Dodis']
 
 
 class Dodis:
-    """ Dodis et al. extractor [Dodis2004]_, with implementation
-        based on [For2020, For2024]_."""
+    """
+    Dodis et al. extractor [Dodis2004]_, with implementation
+    based on [For2020, For2024]_.
+    """
     def __init__(self, n: int, m: int):
         """
         Initialize a Dodis extractor.
@@ -106,7 +108,7 @@ class Dodis:
         -----
         - If n is not prime with primitive root 2, the function
           selects the closest prime with primitive root 2 and
-          adjusts the other parameters accordingly,
+          adjusts the other parameters accordingly.
         """
         assert log2_error <= 0
 

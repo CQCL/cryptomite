@@ -12,8 +12,10 @@ from cryptomite import _cryptomite
 
 
 class Trevisan:
-    """Trevisan extractor [Trev2001]_ with implementation
-       based on [Mauer2012]_ and [For2024]_."""
+    """
+    Trevisan extractor [Trev2001]_ with implementation
+    based on [Mauer2012]_ and [For2024]_.
+    """
     def __init__(self, n: int, k: float, error: float):
         """Initialize a Trevisan Extractor.
 
