@@ -118,8 +118,8 @@ class Toeplitz:
         # Ensure the second input is longer than the first.
         if n_2 <= n_1:
             raise ValueError(
-                "The second input must be longer than the first."
-                "Re-order the inputs or increase n_2."
+                'The second input must be longer than the first.'
+                'Re-order the inputs or increase n_2.'
             )
 
         n_2_adjusted = n_2
@@ -140,8 +140,8 @@ class Toeplitz:
         # Ensure the output length is valid.
         if m <= 0:
             raise ValueError(
-                "Cannot extract with these parameters. "
-                "Increase k_1, k_2, or log2_error."
+                'Cannot extract with these parameters. '
+                'Increase k_1, k_2, or log2_error.'
             )
 
         # Adjust the relevant parameters.
@@ -151,13 +151,13 @@ class Toeplitz:
         # Print parameter details (if verbose).
         if verbose:
             print(
-                f"--- New Circulant Extractor Parameters ---\n"
-                f"Input Length 1 (n_1): {n_1}, "
-                f"Min Entropy of Input 1 (k_1): {k_1}, "
-                f"Input Length 2 (n_2): {n_2_adjusted}, "
-                f"Min Entropy of Input 2 (k_2): {k_2_adjusted}, "
-                f"Output Length (m): {m}, "
-                f"Extraction Error (log2_error): {log2_error}. "
+                f'--- New Circulant Extractor Parameters ---\n'
+                f'Input Length 1 (n_1): {n_1}, '
+                f'Min Entropy of Input 1 (k_1): {k_1}, '
+                f'Input Length 2 (n_2): {n_2_adjusted}, '
+                f'Min Entropy of Input 2 (k_2): {k_2_adjusted}, '
+                f'Output Length (m): {m}, '
+                f'Extraction Error (log2_error): {log2_error}. '
             )
             print("""Adjust the length of the input
                   and (weak) seed accordingly.""")

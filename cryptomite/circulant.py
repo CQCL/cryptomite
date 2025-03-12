@@ -133,20 +133,20 @@ class Circulant:
         # Ensure the output length is valid.
         if m <= 0:
             raise ValueError(
-                "Cannot extract with these parameters. "
-                "Increase k_1, k_2, or log2_error."
+                'Cannot extract with these parameters. '
+                'Increase k_1, k_2, or log2_error.'
             )
 
         # Print parameter details (if verbose).
         if verbose:
             print(
-                f"--- New Circulant Extractor Parameters ---\n"
-                f"Input Length 1 (n_1): {n_2_adjusted-1}, "
-                f"Min Entropy of Input 1 (k_1): {k_1_adjusted}, "
-                f"Input Length 2 (n_2): {n_2_adjusted}, "
-                f"Min Entropy of Input 2 (k_2): {k_2_adjusted}, "
-                f"Output Length (m): {m}, "
-                f"Extraction Error (log2_error): {log2_error}. "
+                f'--- New Circulant Extractor Parameters ---\n'
+                f'Input Length 1 (n_1): {n_2_adjusted-1}, '
+                f'Min Entropy of Input 1 (k_1): {k_1_adjusted}, '
+                f'Input Length 2 (n_2): {n_2_adjusted}, '
+                f'Min Entropy of Input 2 (k_2): {k_2_adjusted}, '
+                f'Output Length (m): {m}, '
+                f'Extraction Error (log2_error): {log2_error}. '
             )
             print("""Adjust the length of the input
                   and (weak) seed accordingly.""")
