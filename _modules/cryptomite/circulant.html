@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>cryptomite.circulant &mdash; cryptomite 0.2.2 documentation</title>
+  <title>cryptomite.circulant &mdash; cryptomite 0.2.3 documentation</title>
       <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
@@ -31,7 +31,7 @@
             <img src="../../_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
@@ -78,13 +78,12 @@
              
   <h1>Source code for cryptomite.circulant</h1><div class="highlight"><pre>
 <span></span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">Circulant is a seeded extractor that takes an input of</span>
-<span class="sd">n bits and a seed of n + 1 bits, where n + 1 is prime,</span>
-<span class="sd">to produce some error-perfect random bits.</span>
+<span class="sd">The Circulant extractor [For2024]_ takes an input of `n_1&#39; bits and</span>
+<span class="sd">a (weak) seed of `n_1 + 1&#39; bits, where `n_1 + 1&#39; is prime.</span>
 <span class="sd">&quot;&quot;&quot;</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
 
-<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">floor</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
 
 <span class="kn">from</span><span class="w"> </span><span class="nn">cryptomite.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">closest_prime</span><span class="p">,</span> <span class="n">conv</span><span class="p">,</span> <span class="n">log_2</span>
@@ -93,120 +92,145 @@
 
 
 <div class="viewcode-block" id="Circulant"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Circulant</span><span class="p">:</span>
-<span class="w">    </span><span class="sd">&quot;&quot;&quot; Circulant extractor based on [For2024]_. &quot;&quot;&quot;</span>
-<div class="viewcode-block" id="Circulant.__init__"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot;Create a Circulant Extractor.</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Circulant extractor based on [For2024]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+<div class="viewcode-block" id="Circulant.__init__"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Circulant extractor.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        n : int</span>
-<span class="sd">            The length of the input bits.</span>
-<span class="sd">            ** n + 1 should be prime. **</span>
+<span class="sd">        n_1 : int</span>
+<span class="sd">            The length of the first input (in bits).</span>
+<span class="sd">            **Note:** n_1 + 1 must be prime.</span>
 <span class="sd">        m : int</span>
-<span class="sd">            The length of the output bits.</span>
+<span class="sd">            The length of the extractor output (in bits).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">n</span><span class="p">,</span> <span class="n">m</span></div>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">n_1</span><span class="p">,</span> <span class="n">m</span></div>
 
 <div class="viewcode-block" id="Circulant.extract"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant.extract">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input1</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">input2</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
-<span class="w">        </span><span class="sd">&quot;&quot;&quot; Extract randomness.</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform randomness extraction.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        input1 : list of bits</span>
-<span class="sd">            The first list of bits, the &#39;input&#39;.</span>
-<span class="sd">        input2 : list of bits</span>
-<span class="sd">            The second list of bits, the &#39;(weak) seed&#39;.</span>
+<span class="sd">        input1 : list of bits (0s and 1s)</span>
+<span class="sd">            The first input (the &#39;weak input&#39;), consisting of n_1 bits.</span>
+<span class="sd">        input2 : list of bits (0s and 1s)</span>
+<span class="sd">            The second input (the &#39;(weak) seed&#39;), consisting</span>
+<span class="sd">            of n_2 = n_1 + 1 bits.</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
-<span class="sd">        list of bits</span>
-<span class="sd">            The extracted output.</span>
+<span class="sd">        list of bits (0s and 1s)</span>
+<span class="sd">            The extractor output bits, of length m.</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">n</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
-        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">n</span>
-        <span class="k">assert</span> <span class="n">n</span> <span class="o">&gt;=</span> <span class="n">m</span>
-        <span class="n">n</span> <span class="o">=</span> <span class="n">n</span> <span class="o">+</span> <span class="mi">1</span>
-        <span class="n">l</span> <span class="o">=</span> <span class="n">log_2</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
-        <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">l</span>
+        <span class="n">n_1</span><span class="p">,</span> <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n_1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">m</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span> <span class="o">==</span> <span class="nb">len</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">n_1</span>
+        <span class="k">assert</span> <span class="n">n_1</span> <span class="o">&gt;=</span> <span class="n">m</span>
         <span class="n">input1</span> <span class="o">=</span> <span class="n">input1</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">n_1</span> <span class="o">+=</span> <span class="mi">1</span>
         <span class="n">input1</span><span class="p">,</span> <span class="n">input2</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">input1</span><span class="p">),</span> <span class="nb">list</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span>
-        <span class="n">input1</span> <span class="o">=</span> <span class="n">input1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">input1</span><span class="p">[</span><span class="mi">1</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="n">n</span><span class="p">)</span>
+        <span class="n">l</span> <span class="o">=</span> <span class="n">log_2</span><span class="p">(</span><span class="mi">2</span> <span class="o">*</span> <span class="n">n_1</span> <span class="o">-</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">L</span> <span class="o">=</span> <span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="n">l</span>
+        <span class="n">input1</span> <span class="o">=</span> <span class="n">input1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="n">input1</span><span class="p">[</span><span class="mi">1</span><span class="p">:][::</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="n">n_1</span><span class="p">)</span>
         <span class="n">input2</span> <span class="o">=</span> <span class="n">input2</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">L</span> <span class="o">-</span> <span class="nb">len</span><span class="p">(</span><span class="n">input2</span><span class="p">))</span>
         <span class="n">conv_output</span> <span class="o">=</span> <span class="n">conv</span><span class="p">(</span><span class="n">l</span><span class="p">,</span> <span class="n">input1</span><span class="p">,</span> <span class="n">input2</span><span class="p">)</span>
         <span class="n">output</span><span class="p">:</span> <span class="n">BitsT</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">BitsT</span><span class="p">,</span> <span class="p">[</span>
-            <span class="p">(</span><span class="n">conv_output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">conv_output</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)])</span>
+            <span class="p">(</span><span class="n">conv_output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">+</span> <span class="n">conv_output</span><span class="p">[</span><span class="n">i</span> <span class="o">+</span> <span class="n">n_1</span><span class="p">])</span> <span class="o">&amp;</span> <span class="mi">1</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">m</span><span class="p">)])</span>
         <span class="k">return</span> <span class="n">output</span></div>
 
 <div class="viewcode-block" id="Circulant.from_params"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.circulant.Circulant.from_params">[docs]</a>    <span class="nd">@staticmethod</span>
     <span class="k">def</span><span class="w"> </span><span class="nf">from_params</span><span class="p">(</span>
-            <span class="n">min_entropy1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">min_entropy2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">k_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+            <span class="n">n_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+            <span class="n">k_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
             <span class="n">log2_error</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
-            <span class="n">input_length1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">input_length2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
-            <span class="n">markov_q_proof</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
+            <span class="n">q_proof</span><span class="p">:</span> <span class="nb">bool</span><span class="p">,</span>
             <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Circulant</span><span class="p">:</span>
 <span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
-<span class="sd">        Calculate a valid input and output size for this extractor,</span>
-<span class="sd">        given the initial lengths and min-entropies of the input sources</span>
-<span class="sd">        and generate the associated extractor.</span>
-
-<span class="sd">        The input_length2 must be prime, else the code will chose a</span>
-<span class="sd">        valid input_length2 choice and adjust the other parameters</span>
-<span class="sd">        accordingly.</span>
-<span class="sd">        The min_entropy inputs are a lower bound on the</span>
-<span class="sd">        :term:`min-entropy` of the related input string.</span>
+<span class="sd">        Generate a Circulant extractor with valid parameters</span>
+<span class="sd">        based on input constraints.</span>
 
 <span class="sd">        Parameters</span>
 <span class="sd">        ----------</span>
-<span class="sd">        min_entropy1 : float</span>
-<span class="sd">            The min-entropy of input source 1, the &#39;input&#39;.</span>
-<span class="sd">        min_entropy2 : float</span>
-<span class="sd">            The min-entropy of input source 2, the &#39;(weak) seed&#39;.</span>
+<span class="sd">        n_1 : int</span>
+<span class="sd">            The length of the first input (in bits).</span>
+<span class="sd">        k_1 : float</span>
+<span class="sd">            The min-entropy of the first input.</span>
+<span class="sd">        n_2 : int</span>
+<span class="sd">            The length of the second input (in bits).</span>
+<span class="sd">        k_2 : float</span>
+<span class="sd">            The min-entropy of the second input.</span>
 <span class="sd">        log2_error : float</span>
-<span class="sd">            The acceptable maximum extractor error, in the</span>
-<span class="sd">            form error = b where extractor error = :math:`2 ^ b`.</span>
-<span class="sd">        input_length1 : int</span>
-<span class="sd">            The initial length of input source.</span>
-<span class="sd">        input_length2 : int</span>
-<span class="sd">            The initial length of the (weak) seed.</span>
-<span class="sd">        markov_q_proof : bool</span>
-<span class="sd">            Boolean indicator of whether the extractor parameters</span>
-<span class="sd">            should be calculated to account for being quantum-proof</span>
-<span class="sd">            in the Markov model or not.</span>
+<span class="sd">            The logarithm (base 2) of the acceptable extractor error.</span>
+<span class="sd">            Must be negative, as the extractor error is 2^log2_error.</span>
+<span class="sd">        q_proof : bool</span>
+<span class="sd">            If True, adjusts parameters to ensure quantum-proof extraction</span>
+<span class="sd">            in the Markov and product sources models (see [For2024]_).</span>
+<span class="sd">        verbose : bool</span>
+<span class="sd">            If True, prints the parameters used for extraction (default: True).</span>
 
 <span class="sd">        Returns</span>
 <span class="sd">        -------</span>
 <span class="sd">        Circulant</span>
-<span class="sd">            The Circulant extractor.</span>
+<span class="sd">            A configured Circulant extractor.</span>
+
+<span class="sd">        Raises</span>
+<span class="sd">        ------</span>
+<span class="sd">        ValueError</span>
+<span class="sd">            If the output length is non-positive.</span>
+
+<span class="sd">        Notes</span>
+<span class="sd">        -----</span>
+<span class="sd">        - If n_2 is not prime, the function selects the closest prime and</span>
+<span class="sd">          adjusts the other parameters accordingly.</span>
+<span class="sd">        - For this extractor, the output length remains the same when it is</span>
+<span class="sd">          classical-proof, quantum-proof in the product sources model, and</span>
+<span class="sd">          quantum-proof in the Markov model (see [For2024]_).</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="k">if</span> <span class="n">log2_error</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cannot extract with these parameters.</span>
-<span class="s2">                            log2_error must be &lt; 0.&quot;&quot;&quot;</span><span class="p">)</span>
-        <span class="n">input_length</span> <span class="o">=</span> <span class="n">closest_prime</span><span class="p">((</span><span class="n">input_length1</span> <span class="o">+</span> <span class="n">input_length2</span><span class="p">)</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">input_length1</span> <span class="o">&gt;</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
-            <span class="n">min_entropy1</span> <span class="o">-=</span> <span class="n">input_length1</span> <span class="o">-</span> <span class="n">input_length</span>
-        <span class="k">if</span> <span class="n">input_length2</span> <span class="o">&gt;</span> <span class="n">input_length</span><span class="p">:</span>
-            <span class="n">min_entropy2</span> <span class="o">-=</span> <span class="n">input_length2</span> <span class="o">-</span> <span class="n">input_length</span>
-        <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
-                              <span class="o">-</span> <span class="n">input_length</span> <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span><span class="p">)</span>
-        <span class="k">if</span> <span class="n">markov_q_proof</span><span class="p">:</span>
-            <span class="n">output_length</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="mf">0.2</span> <span class="o">*</span> <span class="p">(</span><span class="n">min_entropy1</span> <span class="o">+</span> <span class="n">min_entropy2</span>
-                                         <span class="o">-</span> <span class="n">input_length</span> <span class="o">+</span> <span class="mi">8</span> <span class="o">*</span> <span class="n">log2_error</span>
-                                         <span class="o">+</span> <span class="mi">8</span> <span class="o">-</span> <span class="mi">4</span> <span class="o">*</span> <span class="n">log2</span><span class="p">(</span><span class="mi">3</span><span class="p">)))</span>
-        <span class="k">if</span> <span class="n">output_length</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
-            <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Cannot extract with these parameters.</span>
-<span class="s2">                            Increase min_entropy1 and/or min_entropy2</span>
-<span class="s2">                            and/or log2_error.&quot;&quot;&quot;</span><span class="p">)</span>
+        <span class="k">assert</span> <span class="n">log2_error</span> <span class="o">&lt;=</span> <span class="mi">0</span>
+
+        <span class="c1"># Find the closest prime to the average of input lengths.</span>
+        <span class="n">n_2_adjusted</span> <span class="o">=</span> <span class="n">closest_prime</span><span class="p">((</span><span class="n">n_1</span> <span class="o">+</span> <span class="n">n_2</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+
+        <span class="c1"># Adjust min-entropy values if input lengths exceed the computed prime.</span>
+        <span class="n">k_1_adjusted</span> <span class="o">=</span> <span class="n">k_1</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_1</span> <span class="o">-</span> <span class="p">(</span><span class="n">n_2_adjusted</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+        <span class="n">k_2_adjusted</span> <span class="o">=</span> <span class="n">k_2</span> <span class="o">-</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">n_2</span> <span class="o">-</span> <span class="n">n_2_adjusted</span><span class="p">)</span>
+
+        <span class="c1"># Compute the output length based on entropy constraints and</span>
+        <span class="c1"># extraction error.</span>
+        <span class="k">if</span> <span class="n">q_proof</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">k_1_adjusted</span> <span class="o">+</span> <span class="p">(</span><span class="n">k_2_adjusted</span> <span class="o">-</span> <span class="n">n_2_adjusted</span><span class="p">)</span>
+                      <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="n">floor</span><span class="p">(</span><span class="n">k_1_adjusted</span> <span class="o">+</span> <span class="p">(</span><span class="n">k_2_adjusted</span> <span class="o">-</span> <span class="n">n_2_adjusted</span><span class="p">)</span>
+                      <span class="o">+</span> <span class="mi">2</span> <span class="o">*</span> <span class="n">log2_error</span><span class="p">)</span>
+
+        <span class="c1"># Ensure the output length is valid.</span>
+        <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span>
+                <span class="s1">&#39;Cannot extract with these parameters. &#39;</span>
+                <span class="s1">&#39;Increase k_1, k_2, or log2_error.&#39;</span>
+            <span class="p">)</span>
+
+        <span class="c1"># Print parameter details (if verbose).</span>
         <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Min entropy1: &#39;</span><span class="p">,</span> <span class="n">min_entropy1</span><span class="p">,</span>
-                  <span class="s1">&#39;Min entropy2: &#39;</span><span class="p">,</span> <span class="n">min_entropy2</span><span class="p">,</span>
-                  <span class="s1">&#39;Log error: &#39;</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span>
-                  <span class="s1">&#39;Input length1: &#39;</span><span class="p">,</span> <span class="n">input_length</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span>
-                  <span class="s1">&#39;Input length2: &#39;</span><span class="p">,</span> <span class="n">input_length</span><span class="p">,</span>
-                  <span class="s1">&#39;Output length: &#39;</span><span class="p">,</span> <span class="n">output_length</span><span class="p">)</span>
-            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Adjust length of the input and (weak) seed accordingly&#39;</span><span class="p">)</span>
-        <span class="k">return</span> <span class="n">Circulant</span><span class="p">(</span><span class="n">n</span><span class="o">=</span><span class="n">input_length</span><span class="p">,</span> <span class="n">m</span><span class="o">=</span><span class="n">output_length</span><span class="p">)</span></div></div>
+            <span class="nb">print</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s1">&#39;--- New Circulant Extractor Parameters ---</span><span class="se">\n</span><span class="s1">&#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Input Length 1 (n_1): </span><span class="si">{</span><span class="n">n_2_adjusted</span><span class="o">-</span><span class="mi">1</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Min Entropy of Input 1 (k_1): </span><span class="si">{</span><span class="n">k_1_adjusted</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Input Length 2 (n_2): </span><span class="si">{</span><span class="n">n_2_adjusted</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Min Entropy of Input 2 (k_2): </span><span class="si">{</span><span class="n">k_2_adjusted</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Output Length (m): </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">, &#39;</span>
+                <span class="sa">f</span><span class="s1">&#39;Extraction Error (log2_error): </span><span class="si">{</span><span class="n">log2_error</span><span class="si">}</span><span class="s1">. &#39;</span>
+            <span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Adjust the length of the input</span>
+<span class="s2">                  and (weak) seed accordingly.&quot;&quot;&quot;</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">Circulant</span><span class="p">(</span><span class="n">n_2_adjusted</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span></div></div>
 </pre></div>
 
            </div>
@@ -216,7 +240,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024 Quantinuum Limited.</p>
+    <p>&#169; Copyright 2025 Quantinuum Limited.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

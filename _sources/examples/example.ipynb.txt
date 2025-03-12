@@ -27,25 +27,25 @@
    "id": "4b899d5b",
    "metadata": {},
    "source": [
-    "## Generating an extractor\n",
+    "## Initializing an extractor\n",
     "\n",
-    "Using ``Cryptomite``, extractors can be generated directly by giving the input length (in bits) ``n`` and output length (in bits) ``m``, or for the Trevisan extractor, giving the input length ``n``, output length ``m`` and maximum error,``error``.\n",
-    "We generate all the extractors of ``Cryptomite`` below, for an example ``n``, ``m``, ``error``:\n"
+    "Using ``Cryptomite``, extractors can be initialized by giving the input length (in bits) ``n_1`` and output length (in bits) ``m``, or in the case of the Trevisan extractor, giving the input length ``n``, output length ``m`` and maximum acceptable extractor error,``error``.\n",
+    "We generate all the extractors of ``Cryptomite`` below, for an example ``n_1``, ``m``, ``error``:\n"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 1,
+   "execution_count": null,
    "id": "5f168725",
    "metadata": {},
    "outputs": [],
    "source": [
     "import cryptomite\n",
-    "n, m, error = 100, 90, 0.0001\n",
-    "circulant = cryptomite.Circulant(n, m)\n",
-    "dodis = cryptomite.Dodis(n, m)\n",
-    "toeplitz = cryptomite.Toeplitz(n, m)\n",
-    "trevisan = cryptomite.Trevisan(n, m, error)"
+    "n_1, m, error = 100, 90, 0.0001\n",
+    "circulant = cryptomite.Circulant(n_1, m)\n",
+    "dodis = cryptomite.Dodis(n_1, m)\n",
+    "toeplitz = cryptomite.Toeplitz(n_1, m)\n",
+    "trevisan = cryptomite.Trevisan(n_1, m, error)"
    ]
   },
   {
@@ -53,12 +53,12 @@
    "id": "23b75513",
    "metadata": {},
    "source": [
-    "## Extraction\n",
+    "## Performing extraction\n",
     "\n",
-    "Now the extractors have been generated, we show how to perform extraction. \n",
-    "The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits.\n",
-    "Note that each extractor of ``Cryptomite`` requires a different amount of seed bits, the calculation of this is left to the user (manually or using our ``from_params`` utility functions) and denoted ``seed_length`` in the following example code.\n",
-    "In this example, we generate both the input string and the (weak) seed using ``randint`` function from the ``random`` Python library - which a user would replace with their desired generation methods:"
+    "Now the extractors have been initialized, we demonstrate how to perform extraction. \n",
+    "The extractors take a list of input bits and a list of (weak) seed bits as input and output a new list of bits.\n",
+    "Each extractor of ``Cryptomite`` requires a different amount of (weak) seed bits and the calculation of this is left to the user (either manually or using our ``from_params`` utility functions). \n",
+    "In the following example, we generate both the input string and the (weak) seed using ``randint`` function from the ``random`` Python library, which users would replace with their desired generation methods, and use ``n_1`` and ``n_2`` to represent the input and (weak) seed lengths, respectively."
    ]
   },
   {
@@ -69,11 +69,11 @@
    "outputs": [],
    "source": [
     "from random import randint\n",
-    "input_bits = [randint(0, 1) for _ in range(n)]\n",
-    "circulant.extract(input_bits, [randint(0, 1) for _ in range(seed_length)])\n",
-    "dodis.extract(input_bits, [randint(0, 1) for _ in range(seed_length)])\n",
-    "toeplitz.extract(input_bits, [randint(0, 1) for _ in range(seed_length)])\n",
-    "trevisan.extract(input_bits, [randint(0, 1) for _ in range(seed_length)])"
+    "input_bits = [randint(0, 1) for _ in range(n_1)]\n",
+    "circulant.extract(input_bits, [randint(0, 1) for _ in range(n_2)])\n",
+    "dodis.extract(input_bits, [randint(0, 1) for _ in range(n_2)])\n",
+    "toeplitz.extract(input_bits, [randint(0, 1) for _ in range(n_2)])\n",
+    "trevisan.extract(input_bits, [randint(0, 1) for _ in range(n_2)])"
    ]
   },
   {
@@ -83,44 +83,30 @@
     "raw_mimetype": "text/restructuredtext"
    },
    "source": [
-    "## Using the from_params Utility functions\n",
+    "## Using the from_params utility functions\n",
     "\n",
-    "Alternatively, all ``Cryptomite`` extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the ``from_params`` utility functions. \n",
-    "This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example"
+    "Alternatively, all ``Cryptomite`` extractors (except Trevisan) can be generated without manually calculating the output or seed length, by using the ``from_params`` utility functions. \n",
+    "Simply provide the input length, input min-entropy, (weak) seed length, (weak) seed min-entropy, maximum acceptable extractor error and specify whether to calculate the quantum-proof output length or not. \n",
+    "For example:"
    ]
   },
   {
    "cell_type": "code",
-   "execution_count": 2,
+   "execution_count": null,
    "id": "19ba95c7",
    "metadata": {},
    "outputs": [],
    "source": [
     "import cryptomite\n",
     "from math import log2\n",
-    "input_length, seed_length = 100, 100\n",
-    "input_entropy, seed_entropy = 60, 80\n",
+    "n_1, k_1 = 100, 60\n",
+    "n_2, k_2 = 100, 80\n",
     "error = 0.00001\n",
-    "markov_q_proof = False\n",
+    "q_proof = False\n",
     "log2_error = log2(error)\n",
-    "circulant = cryptomite.circulant.from_params(input_entropy,\n",
-    "                                             seed_entropy,\n",
-    "                                             log2_error,\n",
-    "                                             input_length,\n",
-    "                                             seed_length,\n",
-    "                                             markov_q_proof)\n",
-    "dodis = cryptomite.dodis.from_params(input_entropy,\n",
-    "                                     seed_entropy,\n",
-    "                                     log2_error,\n",
-    "                                     input_length,\n",
-    "                                     seed_length,\n",
-    "                                     markov_q_proof)\n",
-    "toeplitz = cryptomite.Toeplitz.from_params(input_entropy,\n",
-    "                                           seed_entropy,\n",
-    "                                           log2_error,\n",
-    "                                           input_length,\n",
-    "                                           seed_length,\n",
-    "                                           markov_q_proof)"
+    "circulant = cryptomite.Circulant.from_params(n_1, k_1, n_2, k_2, log2_error, q_proof)\n",
+    "dodis = cryptomite.Dodis.from_params(n_1, k_1, n_2, k_2, log2_error, q_proof)\n",
+    "toeplitz = cryptomite.Toeplitz.from_params(n_1, k_1, n_2, k_2, log2_error, q_proof)"
    ]
   },
   {

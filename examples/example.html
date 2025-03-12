@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Basic Usage &mdash; cryptomite 0.2.2 documentation</title>
+  <title>Basic Usage &mdash; cryptomite 0.2.3 documentation</title>
       <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="../_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="../_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -55,9 +55,9 @@
 <li class="toctree-l1 current"><a class="reference internal" href="../notebooks.html">Example Usage</a><ul class="current">
 <li class="toctree-l2 current"><a class="current reference internal" href="#">Basic Usage</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#Quick-Start">Quick Start</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Generating-an-extractor">Generating an extractor</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Extraction">Extraction</a></li>
-<li class="toctree-l3"><a class="reference internal" href="#Using-the-from_params-Utility-functions">Using the from_params Utility functions</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Initializing-an-extractor">Initializing an extractor</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Performing-extraction">Performing extraction</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#Using-the-from_params-utility-functions">Using the from_params utility functions</a></li>
 </ul>
 </li>
 </ul>
@@ -368,75 +368,117 @@ div.rendered_html tbody tr:hover {
 <h2>Quick Start<a class="headerlink" href="#Quick-Start" title="Permalink to this headline"></a></h2>
 <p><code class="docutils literal notranslate"><span class="pre">pip</span> <span class="pre">install</span> <span class="pre">cryptomite</span></code></p>
 </section>
-<section id="Generating-an-extractor">
-<h2>Generating an extractor<a class="headerlink" href="#Generating-an-extractor" title="Permalink to this headline"></a></h2>
-<p>Using <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code>, extractors can be generated directly by giving the input length (in bits) <code class="docutils literal notranslate"><span class="pre">n</span></code> and output length (in bits) <code class="docutils literal notranslate"><span class="pre">m</span></code>, or for the Trevisan extractor, giving the input length <code class="docutils literal notranslate"><span class="pre">n</span></code>, output length <code class="docutils literal notranslate"><span class="pre">m</span></code> and maximum error,<code class="docutils literal notranslate"><span class="pre">error</span></code>. We generate all the extractors of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> below, for an example <code class="docutils literal notranslate"><span class="pre">n</span></code>, <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>:</p>
+<section id="Initializing-an-extractor">
+<h2>Initializing an extractor<a class="headerlink" href="#Initializing-an-extractor" title="Permalink to this headline"></a></h2>
+<p>Using <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code>, extractors can be initialized by giving the input length (in bits) <code class="docutils literal notranslate"><span class="pre">n_1</span></code> and output length (in bits) <code class="docutils literal notranslate"><span class="pre">m</span></code>, or in the case of the Trevisan extractor, giving the input length <code class="docutils literal notranslate"><span class="pre">n</span></code>, output length <code class="docutils literal notranslate"><span class="pre">m</span></code> and maximum acceptable extractor error,<code class="docutils literal notranslate"><span class="pre">error</span></code>. We generate all the extractors of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> below, for an example <code class="docutils literal notranslate"><span class="pre">n_1</span></code>, <code class="docutils literal notranslate"><span class="pre">m</span></code>, <code class="docutils literal notranslate"><span class="pre">error</span></code>:</p>
 <div class="nbinput nblast docutils container">
 <div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[1]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cryptomite</span>
-<span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mf">0.0001</span>
-<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Circulant</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
-<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
-<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
-<span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
+<span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">90</span><span class="p">,</span> <span class="mf">0.0001</span>
+<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Circulant</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+<span class="n">trevisan</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Trevisan</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">error</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>
 </section>
-<section id="Extraction">
-<h2>Extraction<a class="headerlink" href="#Extraction" title="Permalink to this headline"></a></h2>
-<p>Now the extractors have been generated, we show how to perform extraction. The extractors take as input a list of input bits and a list of (weak) seed bits, and outputs a new list of bits. Note that each extractor of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> requires a different amount of seed bits, the calculation of this is left to the user (manually or using our <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions) and denoted <code class="docutils literal notranslate"><span class="pre">seed_length</span></code> in the following example code. In this example, we generate both the input string and the (weak)
-seed using <code class="docutils literal notranslate"><span class="pre">randint</span></code> function from the <code class="docutils literal notranslate"><span class="pre">random</span></code> Python library - which a user would replace with their desired generation methods:</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[ ]:
+<section id="Performing-extraction">
+<h2>Performing extraction<a class="headerlink" href="#Performing-extraction" title="Permalink to this headline"></a></h2>
+<p>Now the extractors have been initialized, we demonstrate how to perform extraction. The extractors take a list of input bits and a list of (weak) seed bits as input and output a new list of bits. Each extractor of <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> requires a different amount of (weak) seed bits and the calculation of this is left to the user (either manually or using our <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions). In the following example, we generate both the input string and the (weak) seed using <code class="docutils literal notranslate"><span class="pre">randint</span></code> function
+from the <code class="docutils literal notranslate"><span class="pre">random</span></code> Python library, which users would replace with their desired generation methods, and use <code class="docutils literal notranslate"><span class="pre">n_1</span></code> and <code class="docutils literal notranslate"><span class="pre">n_2</span></code> to represent the input and (weak) seed lengths, respectively.</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">random</span><span class="w"> </span><span class="kn">import</span> <span class="n">randint</span>
-<span class="n">input_bits</span> <span class="o">=</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n</span><span class="p">)]</span>
-<span class="n">circulant</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
-<span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
-<span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
-<span class="n">trevisan</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">seed_length</span><span class="p">)])</span>
+<span class="n">input_bits</span> <span class="o">=</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_1</span><span class="p">)]</span>
+<span class="n">circulant</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2</span><span class="p">)])</span>
+<span class="n">dodis</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2</span><span class="p">)])</span>
+<span class="n">toeplitz</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2</span><span class="p">)])</span>
+<span class="n">trevisan</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span><span class="n">input_bits</span><span class="p">,</span> <span class="p">[</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_2</span><span class="p">)])</span>
 </pre></div>
 </div>
 </div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">NameError</span>                                 Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[2], line 3</span>
+<span class="ansi-green-intense-fg ansi-bold">      1</span> <span class="ansi-bold" style="color: rgb(0,135,0)">from</span><span style="color: rgb(188,188,188)"> </span><span class="ansi-bold" style="color: rgb(0,0,255)">random</span><span style="color: rgb(188,188,188)"> </span><span class="ansi-bold" style="color: rgb(0,135,0)">import</span> randint
+<span class="ansi-green-intense-fg ansi-bold">      2</span> input_bits <span style="color: rgb(98,98,98)">=</span> [randint(<span style="color: rgb(98,98,98)">0</span>, <span style="color: rgb(98,98,98)">1</span>) <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> _ <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">range</span>(n_1)]
+<span class="ansi-green-fg">----&gt; 3</span> circulant<span style="color: rgb(98,98,98)">.</span>extract(input_bits, [randint(<span style="color: rgb(98,98,98)">0</span>, <span style="color: rgb(98,98,98)">1</span>) <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> _ <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">range</span>(<span class="ansi-yellow-bg">n_2</span>)])
+<span class="ansi-green-intense-fg ansi-bold">      4</span> dodis<span style="color: rgb(98,98,98)">.</span>extract(input_bits, [randint(<span style="color: rgb(98,98,98)">0</span>, <span style="color: rgb(98,98,98)">1</span>) <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> _ <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">range</span>(n_2)])
+<span class="ansi-green-intense-fg ansi-bold">      5</span> toeplitz<span style="color: rgb(98,98,98)">.</span>extract(input_bits, [randint(<span style="color: rgb(98,98,98)">0</span>, <span style="color: rgb(98,98,98)">1</span>) <span class="ansi-bold" style="color: rgb(0,135,0)">for</span> _ <span class="ansi-bold" style="color: rgb(175,0,255)">in</span> <span style="color: rgb(0,135,0)">range</span>(n_2)])
+
+<span class="ansi-red-fg">NameError</span>: name &#39;n_2&#39; is not defined
+</pre></div></div>
+</div>
 </section>
-<section id="Using-the-from_params-Utility-functions">
-<h2>Using the from_params Utility functions<a class="headerlink" href="#Using-the-from_params-Utility-functions" title="Permalink to this headline"></a></h2>
-<p>Alternatively, all <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> extractors (except Trevisan) can be generated without needing to calculate the output length or required seed length yourself using the <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions. This is performed by providing the input min-entropy, seed min-entropy, log2 of the error, input length, seed length, and whether to calculate the output length in the (quantum-proof) Markov model, for example</p>
-<div class="nbinput nblast docutils container">
-<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[2]:
+<section id="Using-the-from_params-utility-functions">
+<h2>Using the from_params utility functions<a class="headerlink" href="#Using-the-from_params-utility-functions" title="Permalink to this headline"></a></h2>
+<p>Alternatively, all <code class="docutils literal notranslate"><span class="pre">Cryptomite</span></code> extractors (except Trevisan) can be generated without manually calculating the output or seed length, by using the <code class="docutils literal notranslate"><span class="pre">from_params</span></code> utility functions. Simply provide the input length, input min-entropy, (weak) seed length, (weak) seed min-entropy, maximum acceptable extractor error and specify whether to calculate the quantum-proof output length or not. For example:</p>
+<div class="nbinput docutils container">
+<div class="prompt highlight-none notranslate"><div class="highlight"><pre><span></span>[3]:
 </pre></div>
 </div>
 <div class="input_area highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">cryptomite</span>
 <span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">log2</span>
-<span class="n">input_length</span><span class="p">,</span> <span class="n">seed_length</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">100</span>
-<span class="n">input_entropy</span><span class="p">,</span> <span class="n">seed_entropy</span> <span class="o">=</span> <span class="mi">60</span><span class="p">,</span> <span class="mi">80</span>
+<span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">60</span>
+<span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span> <span class="o">=</span> <span class="mi">100</span><span class="p">,</span> <span class="mi">80</span>
 <span class="n">error</span> <span class="o">=</span> <span class="mf">0.00001</span>
-<span class="n">markov_q_proof</span> <span class="o">=</span> <span class="kc">False</span>
+<span class="n">q_proof</span> <span class="o">=</span> <span class="kc">False</span>
 <span class="n">log2_error</span> <span class="o">=</span> <span class="n">log2</span><span class="p">(</span><span class="n">error</span><span class="p">)</span>
-<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">circulant</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
-                                             <span class="n">seed_entropy</span><span class="p">,</span>
-                                             <span class="n">log2_error</span><span class="p">,</span>
-                                             <span class="n">input_length</span><span class="p">,</span>
-                                             <span class="n">seed_length</span><span class="p">,</span>
-                                             <span class="n">markov_q_proof</span><span class="p">)</span>
-<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
-                                     <span class="n">seed_entropy</span><span class="p">,</span>
-                                     <span class="n">log2_error</span><span class="p">,</span>
-                                     <span class="n">input_length</span><span class="p">,</span>
-                                     <span class="n">seed_length</span><span class="p">,</span>
-                                     <span class="n">markov_q_proof</span><span class="p">)</span>
-<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">input_entropy</span><span class="p">,</span>
-                                           <span class="n">seed_entropy</span><span class="p">,</span>
-                                           <span class="n">log2_error</span><span class="p">,</span>
-                                           <span class="n">input_length</span><span class="p">,</span>
-                                           <span class="n">seed_length</span><span class="p">,</span>
-                                           <span class="n">markov_q_proof</span><span class="p">)</span>
+<span class="n">circulant</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Circulant</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span> <span class="n">q_proof</span><span class="p">)</span>
+<span class="n">dodis</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Dodis</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span> <span class="n">q_proof</span><span class="p">)</span>
+<span class="n">toeplitz</span> <span class="o">=</span> <span class="n">cryptomite</span><span class="o">.</span><span class="n">Toeplitz</span><span class="o">.</span><span class="n">from_params</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span> <span class="n">q_proof</span><span class="p">)</span>
 </pre></div>
 </div>
+</div>
+<div class="nboutput docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+--- New Circulant Extractor Parameters ---
+Input Length 1 (n_1): 100, Min Entropy of Input 1 (k_1): 60, Input Length 2 (n_2): 101, Min Entropy of Input 2 (k_2): 80, Output Length (m): 5, Extraction Error (log2_error): -16.609640474436812.
+Adjust the length of the input
+                  and (weak) seed accordingly.
+--- New Dodis et al. Extractor Parameters ---
+Input Length 1 (n_1): 101, Min Entropy of Input 1 (k_1): 60, Input Length 2 (n_2): 101, Min Entropy of Input 2 (k_2): 80, Output Length (m): 6, Extraction Error (log2_error): -16.609640474436812.
+Adjust the length of the input
+                  and (weak) seed accordingly.
+</pre></div></div>
+</div>
+<div class="nboutput nblast docutils container">
+<div class="prompt empty docutils container">
+</div>
+<div class="output_area docutils container">
+<div class="highlight"><pre>
+<span class="ansi-red-fg">---------------------------------------------------------------------------</span>
+<span class="ansi-red-fg">ValueError</span>                                Traceback (most recent call last)
+Cell <span class="ansi-green-fg">In[3], line 10</span>
+<span class="ansi-green-intense-fg ansi-bold">      8</span> circulant <span style="color: rgb(98,98,98)">=</span> cryptomite<span style="color: rgb(98,98,98)">.</span>Circulant<span style="color: rgb(98,98,98)">.</span>from_params(n_1, k_1, n_2, k_2, log2_error, q_proof)
+<span class="ansi-green-intense-fg ansi-bold">      9</span> dodis <span style="color: rgb(98,98,98)">=</span> cryptomite<span style="color: rgb(98,98,98)">.</span>Dodis<span style="color: rgb(98,98,98)">.</span>from_params(n_1, k_1, n_2, k_2, log2_error, q_proof)
+<span class="ansi-green-fg">---&gt; 10</span> toeplitz <span style="color: rgb(98,98,98)">=</span> <span class="ansi-yellow-bg">cryptomite</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">Toeplitz</span><span class="ansi-yellow-bg" style="color: rgb(98,98,98)">.</span><span class="ansi-yellow-bg">from_params</span><span class="ansi-yellow-bg">(</span><span class="ansi-yellow-bg">n_1</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">k_1</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">n_2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">k_2</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">log2_error</span><span class="ansi-yellow-bg">,</span><span class="ansi-yellow-bg"> </span><span class="ansi-yellow-bg">q_proof</span><span class="ansi-yellow-bg">)</span>
+
+File <span class="ansi-green-fg">/opt/hostedtoolcache/Python/3.8.18/x64/lib/python3.8/site-packages/cryptomite/toeplitz.py:120</span>, in <span class="ansi-cyan-fg">Toeplitz.from_params</span><span class="ansi-blue-fg">(n_1, k_1, n_2, k_2, log2_error, q_proof, verbose)</span>
+<span class="ansi-green-intense-fg ansi-bold">    118</span> <span style="color: rgb(95,135,135)"># Ensure the second input is longer than the first.</span>
+<span class="ansi-green-intense-fg ansi-bold">    119</span> <span class="ansi-bold" style="color: rgb(0,135,0)">if</span> n_2 <span style="color: rgb(98,98,98)">&lt;</span><span style="color: rgb(98,98,98)">=</span> n_1:
+<span class="ansi-green-fg">--&gt; 120</span>     <span class="ansi-bold" style="color: rgb(0,135,0)">raise</span> <span class="ansi-bold" style="color: rgb(215,95,95)">ValueError</span>(
+<span class="ansi-green-intense-fg ansi-bold">    121</span>         <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">The second input must be longer than the first.</span><span style="color: rgb(175,0,0)">&#39;</span>
+<span class="ansi-green-intense-fg ansi-bold">    122</span>         <span style="color: rgb(175,0,0)">&#39;</span><span style="color: rgb(175,0,0)">Re-order the inputs or increase n_2.</span><span style="color: rgb(175,0,0)">&#39;</span>
+<span class="ansi-green-intense-fg ansi-bold">    123</span>     )
+<span class="ansi-green-intense-fg ansi-bold">    125</span> n_2_adjusted <span style="color: rgb(98,98,98)">=</span> n_2
+<span class="ansi-green-intense-fg ansi-bold">    126</span> k_2_adjusted <span style="color: rgb(98,98,98)">=</span> k_2
+
+<span class="ansi-red-fg">ValueError</span>: The second input must be longer than the first.Re-order the inputs or increase n_2.
+</pre></div></div>
 </div>
 <p>In this case, a <strong>valid</strong> extractor is generated from the specified parameters (i.e. one that adheres to the required input and seed length criteria for that extractor). Any changes to input length, seed length, input entropy and seed entropy printed.</p>
 </section>
@@ -453,7 +495,7 @@ seed using <code class="docutils literal notranslate"><span class="pre">randint<
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024 Quantinuum Limited.</p>
+    <p>&#169; Copyright 2025 Quantinuum Limited.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -4,7 +4,7 @@
   <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Selecting a Randomness Extractor &mdash; cryptomite 0.2.2 documentation</title>
+  <title>Selecting a Randomness Extractor &mdash; cryptomite 0.2.3 documentation</title>
       <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
       <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
       <link rel="stylesheet" href="_static/graphviz.css" type="text/css" />
@@ -36,7 +36,7 @@
             <img src="_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
           </a>
               <div class="version">
-                0.2.2
+                0.2.3
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -107,14 +107,15 @@
 </style>
 <section id="selecting-a-randomness-extractor">
 <h1>Selecting a Randomness Extractor<a class="headerlink" href="#selecting-a-randomness-extractor" title="Permalink to this headline"></a></h1>
-<p>In general, the choice of randomness extractor depends on the scenario in which it is to be used and, it is not always clear which extractor is best suited to a given scenario.
-In this section, we (informally) help solve this problem, based on the section ‘Overview of Extractor Library’ from Cryptomite’s accompanying paper (see <a class="reference internal" href="bibliography.html#for2024" id="id1"><span>[For2024]</span></a>).
-We use the notation <span class="math notranslate nohighlight">\(n_1, n_2\)</span> to denote the length and <span class="math notranslate nohighlight">\(k_1, k_2\)</span> to denote the <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> of any first or second input string respectively.
-Additionally, <span class="math notranslate nohighlight">\(m\)</span> denotes the length of an output string, <span class="math notranslate nohighlight">\(\epsilon\)</span> the extractor error and <span class="math notranslate nohighlight">\(O(.)\)</span> denotes asymptotic quantities.</p>
+<p>In general, the choice of randomness extractor depends on the scenario in which it is used, and it is not always clear which extractor is best suited to a given situation.
+Here, we informally summarize the information from the ‘Overview of Extractor Library’ in <a class="reference internal" href="bibliography.html#for2024" id="id1"><span>[For2024]</span></a>, which assists a user in selecting the best randomness extractor for their task.</p>
+<p>If a user begins with some extractor input of length <span class="math notranslate nohighlight">\(n_1\)</span> with <a class="reference internal" href="glossary.html#term-min-entropy"><span class="xref std std-term">min-entropy</span></a> <span class="math notranslate nohighlight">\(k_1\)</span>, the flowchart below provides a useful guide for selecting an appropriate extractor.</p>
 <a class="reference internal image-reference" href="_images/extractor_flow_chart.png"><img alt="_images/extractor_flow_chart.png" src="_images/extractor_flow_chart.png" style="width: 600px;" /></a>
-<p>Note: there may be a small gain to be made by analysing the extractors individually if sufficiently motivated, but this flow-chart gives a good, general, approach to follow.
-The individual extractor parameters are given in the following table:</p>
+<p>This flowchart gives a good general approach to follow, however, some improvements can be obtained by analyzing each extractor individually.
+The maximum output length for each extractor in different security models is detailed in the following table,
+where <span class="math notranslate nohighlight">\(n_2\)</span> and <span class="math notranslate nohighlight">\(k_2\)</span> denote the length and min-entropy of the (weak) seed, respectively and <span class="math notranslate nohighlight">\(\epsilon\)</span> the extractor error.</p>
 <a class="reference internal image-reference" href="_images/Table.png"><img alt="_images/Table.png" src="_images/Table.png" style="width: 600px;" /></a>
+<p>The derivation of these parameters and all relevant proofs can be found in <a class="reference internal" href="bibliography.html#for2024" id="id2"><span>[For2024]</span></a>.</p>
 </section>
 
 
@@ -128,7 +129,7 @@ The individual extractor parameters are given in the following table:</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2024 Quantinuum Limited.</p>
+    <p>&#169; Copyright 2025 Quantinuum Limited.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
