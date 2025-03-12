@@ -33,7 +33,7 @@ jobs:
         flake8 ${{ env.SRC_DIR }} --count --isolated --select=E9,F63,F7,F82 --show-source --statistics
     - name: Lint with flake8
       run:
-        flake8 ${{ env.SRC_DIR }} --max-doc-length=74
+        flake8 ${{ env.SRC_DIR }}
     - name: Check doc line lengths and complexity
       run:
         # exit-zero treats all errors as warnings
