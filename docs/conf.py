@@ -79,3 +79,5 @@ html_logo = '_static/images/cryptomite_logo_blur.png'
 html_favicon = '_static/images/favicon.png'
 
 numfig = True
+nbsphinx_allow_errors = True
+
