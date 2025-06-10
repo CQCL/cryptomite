@@ -366,8 +366,7 @@ def calc_raz_out(n_1: int,
                      min(floor(k_2) - m_init,
                          initial_tests), dtype=int)
     i = 0
-    STOP = 0
-    while STOP == 0:
+    while True:
         m = ms[i]
         if opt_error_raz(n_1, k_1, n_2, k_2, m,
                          max_tests_basic=max_tests_basic,
@@ -376,10 +375,10 @@ def calc_raz_out(n_1: int,
                          verbose=False) <= log2_error_tol:
             max_m = m
         else:
-            STOP = 1
+            break
         i += 1
         if i >= len(ms):
-            STOP = 1
+            break
     if detailed_opt:
         max_m += 1
         while opt_error_raz(n_1, k_1, n_2, k_2, max_m,
@@ -411,7 +410,7 @@ def from_params(
         k_2: float,
         log2_error: float,
         detailed_opt=False,
-        verbose: bool = True) -> Raz:
+        verbose: bool = False) -> Raz:
     """
     Generate a weak version of the efficient Raz
     extractor from [Fore2025]_ with valid

@@ -175,9 +175,9 @@ std::vector<uint32_t> NTT::conv_and_reduce(const std::vector<uint32_t> &a, const
 
 std::pair<std::vector<uint32_t>, std::vector<uint32_t>> NTT::raz_iteration(const std::vector<uint32_t> &product, const std::vector<uint32_t> &delta, uint32_t r, uint32_t s) {
     auto call_ntt = [this](const std::vector<uint32_t> &x, bool inverse, bool plusone = false){ return ntt(x, inverse, plusone); };
-    std::future<std::vector<uint32_t>> ntt_delta = std::async(std::launch::async, call_ntt, delta, false);
+    std::future<std::vector<uint32_t>> ntt_delta = std::async(std::launch::async, call_ntt, delta, false, false);
     std::future<std::vector<uint32_t>> ntt_delta_p1 = std::async(std::launch::async, call_ntt, delta, false, true);
-    std::future<std::vector<uint32_t>> ntt_product = std::async(std::launch::async, call_ntt, product, false);
+    std::future<std::vector<uint32_t>> ntt_product = std::async(std::launch::async, call_ntt, product, false, false);
 
 
     auto finish_and_reduce = [this](const std::vector<uint32_t> &x, const std::vector<uint32_t> &y, uint32_t r, uint32_t s){
