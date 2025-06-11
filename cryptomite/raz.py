@@ -234,43 +234,63 @@ def opt_error_raz(n_1: int,
         An upper bound on the logarithm base 2 of the
         extractor error.
     """
+    # Ensure input parameters meet required constraints.
     assert 0 < n_2 <= n_1 / 2
     assert 0 < k_1 < n_1 and 0 < k_2 < n_2
     assert 0 < m <= n_1 / 2
     assert n_1 % 2 == 0
     assert max_tests_basic > 0
     assert max_tests_detailed > 0
+
+    # Compute maximum possible l value based on input parameters.
     l_max = int(n_2 + floor(log2(n_1 / 2)))
-    max_pow_for_overflow = 35
-    if l_max - log2(m) - 1 < max_pow_for_overflow:
-        p_half_max = int(floor(2 ** (l_max - log2(m) - 1)))
-    else:
-        p_half_max = int(np.floor(2 ** max_pow_for_overflow))
+
+    # Cap exponent to avoid overflow in 2^x computations.
+    max_pow_for_overflow = 32
+
+    # Initialize variables to track the best (minimal)
+    # log2 error and corresponding parameters.
     min_log2_error, best_l, best_p = 0, 'Not found', 'Not found'
+
+    # Estimate a good initial value for l based on m and (n_1 - k_1).
     l_use = max(floor(log2(m * (n_1 - k_1))), 1)
+
+    # Define the range of l values to explore around l_use.
     max_plus = min(floor(l_max - l_use),
                    (max_tests_basic - 1) // 2)
     max_minus = min(floor(l_use - ceil(log2(m)) - 1),
                     (max_tests_basic - 1) // 2)
     ls = [i for i in range(l_use - max_minus, l_use + max_plus + 1)]
+
+    # Coarse search: iterate over candidate l values.
     for current_l in ls:
+        # Compute the maximum number of p values to try for the current l.
         p_half_max = int((2**(current_l - log2(m)))//2)
+        # Generate candidate p values: even integers starting from 2.
         p_values = [2 * phalf + 2 for phalf in range(p_half_max)]
         for current_p in p_values:
+            # Evaluate the log2 of the error for current parameters.
             eps = log2_error_raz(n_1, k_1, k_2, m, current_l, current_p)
+            # Update best found parameters if error improves.
             if eps < min_log2_error:
                 min_log2_error, best_l, best_p = eps, current_l, current_p
+
+    # If detailed optimisation is enabled, perform a more exhaustive search.
     if detailed_opt:
+        # Generate a list of l values to try with finer granularity.
         ls = np.linspace(ceil(log2(m)) + 1, l_max,
                          min(l_max, max_tests_detailed),
                          dtype=int)
         total = len(ls)
+        # Define progress milestones for verbose output.
         milestones = {int(total * p / 100) for p in range(10, 101, 10)}
         for i, current_l in enumerate(ls):
+            # Prevent overflow when computing p values.
             if current_l - log2(m) - 1 < max_pow_for_overflow:
                 p_half_max = int(2**(current_l - log2(m) - 1))
             else:
                 p_half_max = int(floor(2 ** max_pow_for_overflow))
+            # Sample p_half values uniformly for detailed testing.
             p_test_values = np.linspace(1,
                                         p_half_max,
                                         num=min(p_half_max,
@@ -279,21 +299,42 @@ def opt_error_raz(n_1: int,
             for current_phalf in p_test_values:
                 current_p = 2*current_phalf
                 eps = log2_error_raz(n_1, k_1, k_2, m, current_l, current_p)
+                # Update best found parameters if error improves.
                 if eps < min_log2_error:
                     min_log2_error, best_l, best_p = eps, current_l, current_p
+            # Print progress if enabled and at a milestone.
             if verbose and i in milestones:
                 percent = int((i / total) * 100)
                 print(f'[{percent}% Completed] ({i}/{total})')
+
+        if verbose:
+            print(f'[100% Completed] ({total}/{total})')
+            print('Performing final refinement...')
+
+        # Final refinement around best_l after detailed search.
         if best_l != 'Not found':
-            max_plus = min(floor(l_max - best_l),
-                           (max_tests_detailed - 1) // 2)
+            # Compute the range of l values to explore around best_l.
+            max_plus = min(floor(l_max - best_l), max_tests_detailed // 2)
             max_minus = min(floor(best_l - ceil(log2(m)) - 1),
-                            (max_tests_detailed - 1) // 2)
+                            max_tests_detailed // 2)
+            # Generate candidate l values around best_l.
             ls = [i for i in range(best_l - max_minus, best_l + max_plus + 1)]
+            # Iterate over candidate l values for final refinement.
             for current_l in ls:
-                p_half_max = int((2**(current_l - log2(m)))//2)
-                p_values = [2 * phalf + 2 for phalf in range(p_half_max)]
-                for current_p in p_values:
+                # Prevent overflow when computing p values.
+                if current_l - log2(m) - 1 < max_pow_for_overflow:
+                    p_half_max = int(2**(current_l - log2(m) - 1))
+                else:
+                    p_half_max = int(floor(2 ** max_pow_for_overflow))
+                # Sample p_half values uniformly for detailed testing.
+                p_values = np.linspace(1,
+                                       p_half_max,
+                                       num=min(p_half_max,
+                                               max_tests_detailed),
+                                       dtype=int)
+                # Iterate over candidate p values.
+                for current_phalf in p_values:
+                    current_p = 2*current_phalf
                     eps = log2_error_raz(n_1,
                                          k_1,
                                          k_2,
@@ -307,6 +348,7 @@ def opt_error_raz(n_1: int,
         print(f'log2 of minimum error found: {min_log2_error}')
         print(f'Corresponding l value (p prime = 2^l): {best_l}')
         print(f'Corresponding p value: {best_p}')
+    # Return the minimal log2 error found.
     return min_log2_error
 
 
