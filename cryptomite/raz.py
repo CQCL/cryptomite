@@ -292,10 +292,10 @@ def opt_error_raz(n_1: int,
                 p_half_max = int(floor(2 ** max_pow_for_overflow))
             # Sample p_half values uniformly for detailed testing.
             num_values = min(p_half_max, max_tests_detailed)
-            step_size = (p_half_max - 1) / (num_values - 1)
+            step_size = (p_half_max - 1) / num_values
             phalf_values = [
                 int(round(1 + i * step_size)
-                    ) for i in range(num_values)]
+                    ) for i in range(num_values + 1)]
 
             for current_phalf in phalf_values:
                 current_p = 2*current_phalf
@@ -329,10 +329,10 @@ def opt_error_raz(n_1: int,
                     p_half_max = int(floor(2 ** max_pow_for_overflow))
                 # Sample p_half values uniformly for detailed testing.
                 num_values = min(p_half_max, max_tests_detailed)
-                step_size = (p_half_max - 1) / (num_values - 1)
+                step_size = (p_half_max - 1) / num_values
                 phalf_values = [
                     int(round(1 + i * step_size)
-                        ) for i in range(num_values)]
+                        ) for i in range(num_values + 1)]
                 # Iterate over candidate p values.
                 for current_phalf in phalf_values:
                     current_p = 2*current_phalf
