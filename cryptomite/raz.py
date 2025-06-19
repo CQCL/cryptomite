@@ -4,8 +4,6 @@ from typing import cast
 from cryptomite._cryptomite import NTT
 from cryptomite.utils import BitsT, log_2
 
-import numpy as np
-
 __all__ = ['Raz']
 
 
@@ -185,7 +183,7 @@ def log2_error_raz(n_1: int,
         extractor error.
     """
     log_gamma_bound = (n_1 - k_1)/p + max((l - n_1/2 + 1)/p,
-                                          np.log2(p) - k_2/2) + 1
+                                          log2(p) - k_2/2) + 1
     return log_gamma_bound + m/2
 
 
@@ -278,9 +276,11 @@ def opt_error_raz(n_1: int,
     # If detailed optimisation is enabled, perform a more exhaustive search.
     if detailed_opt:
         # Generate a list of l values to try with finer granularity.
-        ls = np.linspace(ceil(log2(m)) + 1, l_max,
-                         min(l_max, max_tests_detailed),
-                         dtype=int)
+        num_values = min(l_max, max_tests_detailed)
+        step_size = (l_max - (ceil(log2(m)) + 1)) / (num_values - 1)
+        ls = [
+            int(round((ceil(log2(m)) + 1) + i * step_size)
+                ) for i in range(num_values)]
         total = len(ls)
         # Define progress milestones for verbose output.
         milestones = {int(total * p / 100) for p in range(10, 101, 10)}
@@ -291,12 +291,13 @@ def opt_error_raz(n_1: int,
             else:
                 p_half_max = int(floor(2 ** max_pow_for_overflow))
             # Sample p_half values uniformly for detailed testing.
-            p_test_values = np.linspace(1,
-                                        p_half_max,
-                                        num=min(p_half_max,
-                                                max_tests_detailed),
-                                        dtype=int)
-            for current_phalf in p_test_values:
+            num_values = min(p_half_max, max_tests_detailed)
+            step_size = (p_half_max - 1) / (num_values - 1)
+            phalf_values = [
+                int(round(1 + i * step_size)
+                    ) for i in range(num_values)]
+
+            for current_phalf in phalf_values:
                 current_p = 2*current_phalf
                 eps = log2_error_raz(n_1, k_1, k_2, m, current_l, current_p)
                 # Update best found parameters if error improves.
@@ -327,13 +328,13 @@ def opt_error_raz(n_1: int,
                 else:
                     p_half_max = int(floor(2 ** max_pow_for_overflow))
                 # Sample p_half values uniformly for detailed testing.
-                p_values = np.linspace(1,
-                                       p_half_max,
-                                       num=min(p_half_max,
-                                               max_tests_detailed),
-                                       dtype=int)
+                num_values = min(p_half_max, max_tests_detailed)
+                step_size = (p_half_max - 1) / (num_values - 1)
+                phalf_values = [
+                    int(round(1 + i * step_size)
+                        ) for i in range(num_values)]
                 # Iterate over candidate p values.
-                for current_phalf in p_values:
+                for current_phalf in phalf_values:
                     current_p = 2*current_phalf
                     eps = log2_error_raz(n_1,
                                          k_1,
@@ -404,9 +405,10 @@ def calc_raz_out(n_1: int,
     """
     max_m = 0
     initial_tests = 100
-    ms = np.linspace(m_init, floor(k_2),
-                     min(floor(k_2) - m_init,
-                         initial_tests), dtype=int)
+    steps = min(floor(k_2) - m_init, initial_tests)
+    step_size = (floor(k_2) - m_init) / steps
+    ms = [int(round(m_init + i * step_size)) for i in range(steps + 1)]
+
     i = 0
     while True:
         m = ms[i]
