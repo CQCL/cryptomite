@@ -142,7 +142,7 @@ class Raz:
             (product, cur_delta) = self.ntt.raz_iteration(product, cur_delta,
                                                           self.n, self.s)
         conv_output = self.gf_mul(product, x2)
-        return cast(BitsT, [conv_output[i] for i in range(self.n)])
+        return cast(BitsT, [conv_output[i] for i in range(self.m)])
 
 # ------- UTILITY FUNCTIONS -------
 
