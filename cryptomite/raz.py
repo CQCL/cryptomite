@@ -44,7 +44,7 @@ class Raz:
                    74207281: 9156813,  # t44a
                    }
 
-    def __init__(self, n1: int, m: int, poly=None):
+    def __init__(self, n1: int, m: int, trinomial=None):
         """
         Initialize a Raz extractor.
 
@@ -68,12 +68,12 @@ class Raz:
         self.m = m
         self.logp = log_2(self.n)+1
         self.pad_amount = (1 << self.logp) - self.n
-        if poly is None:
-            if self.m not in self.trinomial_s:
-                raise ValueError('GF(2^m) must have a known irreducible trinomial.')  # noqa: E501
+        if trinomial is None:
+            if self.n not in self.trinomial_s:
+                raise ValueError('GF(2^(n1/2)) must have a known irreducible trinomial.')  # noqa: E501
             self.s = self.trinomial_s[self.n]
         else:
-            self.s = poly
+            self.s = trinomial
         self.ntt = NTT(self.logp)
 
     def __poly_reduce(self, x: BitsT):
@@ -409,9 +409,7 @@ def calc_raz_out(n_1: int,
     step_size = (floor(k_2) - m_init) / steps
     ms = [int(round(m_init + i * step_size)) for i in range(steps + 1)]
 
-    i = 0
-    while True:
-        m = ms[i]
+    for m in ms:
         if opt_error_raz(n_1, k_1, n_2, k_2, m,
                          max_tests_basic=max_tests_basic,
                          max_tests_detailed=max_tests_detailed,
@@ -419,9 +417,6 @@ def calc_raz_out(n_1: int,
                          verbose=False) <= log2_error_tol:
             max_m = m
         else:
-            break
-        i += 1
-        if i >= len(ms):
             break
     if detailed_opt:
         max_m += 1
