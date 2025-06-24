@@ -30,8 +30,10 @@ class NTT {
   public:
     explicit NTT(unsigned l);
 
-    std::vector<uint32_t> ntt(const std::vector<uint32_t> &x, bool inverse);
+    std::vector<uint32_t> ntt(const std::vector<uint32_t> &x, bool inverse, bool plusone = false);
 
     std::vector<uint32_t> mul_vec(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b);
     std::vector<uint32_t> conv(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b);
+    std::vector<uint32_t> conv_and_reduce(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b, uint32_t r, uint32_t s);
+    std::pair<std::vector<uint32_t>, std::vector<uint32_t>> raz_iteration(const std::vector<uint32_t> &product, const std::vector<uint32_t> &delta, uint32_t r, uint32_t s);
 };

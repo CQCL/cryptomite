@@ -28,9 +28,11 @@ PYBIND11_MODULE(_cryptomite, m) {
 
     py::class_<NTT>(m, "NTT")
         .def(py::init<int>())
-        .def("ntt", &NTT::ntt)
+        .def("ntt", &NTT::ntt, py::arg("x"), py::arg("inverse"), py::arg("plusone") = false)
         .def("mul_vec", &NTT::mul_vec)
-        .def("conv", &NTT::conv);
+        .def("conv", &NTT::conv)
+        .def("conv_and_reduce", &NTT::conv_and_reduce)
+        .def("raz_iteration", &NTT::raz_iteration);
 
     py::class_<BigNTT>(m, "BigNTT")
         .def(py::init<int>())
