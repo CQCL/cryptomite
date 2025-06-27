@@ -20,6 +20,14 @@ cryptomite.dodis module
    :undoc-members:
    :show-inheritance:
 
+cryptomite.raz module
+-----------------------
+
+.. automodule:: cryptomite.raz
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 cryptomite.toeplitz module
 --------------------------
 

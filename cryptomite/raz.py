@@ -1,3 +1,12 @@
+"""
+The Raz extractor [Raz2005]_ takes two inputs of length
+'n_1, n_2', such that 'n_1/2 > n_2'. This implementation
+is based on the efficient construction described in [Fore2025]_,
+which requires a known irreducible trinomial for the field
+GF_2^{n_1/2}.
+"""
+from __future__ import annotations
+
 from math import ceil, floor, log2
 from typing import cast
 
@@ -9,11 +18,8 @@ __all__ = ['Raz']
 
 class Raz:
     """
-    The Raz extractor [Raz2005]_ takes two inputs of length
-    'n_1, n_2', such that 'n_1/2 > n_2'. This implementation
-    is based on the efficient construction described in [Fore2025]_,
-    which requires a known irreducible trinomial for the field
-    GF_2^{n_1/2}.
+    The Raz extractor [Raz2005]_ based on the efficient
+    construction described in [Fore2025]_.
     """
     trinomial_s = {3: 1,
                    7: 1,
