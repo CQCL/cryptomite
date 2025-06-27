@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>cryptomite.raz &mdash; cryptomite 0.3.0 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/graphviz.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/favicon.png"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script crossorigin="anonymous" integrity="sha256-Ae2Vz/4ePdIu6ZyI/5ZGsYnb+m0JlOmKPjt6XZ9JJkA=" src="https://cdnjs.cloudflare.com/ajax/libs/require.js/2.3.4/require.min.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> cryptomite
+            <img src="../../_static/cryptomite_logo_blur.png" class="logo" alt="Logo"/>
+          </a>
+              <div class="version">
+                0.3.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Toolkit</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../intro.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../gettingstarted.html">Selecting a Randomness Extractor</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../cryptomite.html">API Reference</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../performance.html">Performance</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../notebooks.html">Example Usage</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../glossary.html">Glossary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../bibliography.html">Bibliography</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">cryptomite</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../index.html">Module code</a> &raquo;</li>
+      <li>cryptomite.raz</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for cryptomite.raz</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">The Raz extractor [Raz2005]_ takes two inputs of length</span>
+<span class="sd">&#39;n_1, n_2&#39;, such that &#39;n_1/2 &gt; n_2&#39;. This implementation</span>
+<span class="sd">is based on the efficient construction described in [Fore2025]_,</span>
+<span class="sd">which requires a known irreducible trinomial for the field</span>
+<span class="sd">GF_2^{n_1/2}.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">math</span><span class="w"> </span><span class="kn">import</span> <span class="n">ceil</span><span class="p">,</span> <span class="n">floor</span><span class="p">,</span> <span class="n">log2</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">cast</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">cryptomite._cryptomite</span><span class="w"> </span><span class="kn">import</span> <span class="n">NTT</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">cryptomite.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">log_2</span>
+
+<span class="n">__all__</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;Raz&#39;</span><span class="p">]</span>
+
+
+<div class="viewcode-block" id="Raz"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.raz.Raz">[docs]</a><span class="k">class</span><span class="w"> </span><span class="nc">Raz</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    The Raz extractor [Raz2005]_ based on the efficient</span>
+<span class="sd">    construction described in [Fore2025]_.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">trinomial_s</span> <span class="o">=</span> <span class="p">{</span><span class="mi">3</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                   <span class="mi">7</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                   <span class="mi">15</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                   <span class="mi">31</span><span class="p">:</span> <span class="mi">3</span><span class="p">,</span>
+                   <span class="mi">63</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+                   <span class="mi">127</span><span class="p">:</span> <span class="mi">7</span><span class="p">,</span>
+                   <span class="mi">255</span><span class="p">:</span> <span class="mi">52</span><span class="p">,</span>
+                   <span class="mi">521</span><span class="p">:</span> <span class="mi">32</span><span class="p">,</span>
+                   <span class="mi">1279</span><span class="p">:</span> <span class="mi">216</span><span class="p">,</span>
+                   <span class="mi">2281</span><span class="p">:</span> <span class="mi">715</span><span class="p">,</span>
+                   <span class="mi">3217</span><span class="p">:</span> <span class="mi">67</span><span class="p">,</span>
+                   <span class="mi">4423</span><span class="p">:</span> <span class="mi">271</span><span class="p">,</span>
+                   <span class="mi">23209</span><span class="p">:</span> <span class="mi">1530</span><span class="p">,</span>
+                   <span class="mi">44497</span><span class="p">:</span> <span class="mi">8575</span><span class="p">,</span>
+                   <span class="mi">110503</span><span class="p">:</span> <span class="mi">25230</span><span class="p">,</span>
+                   <span class="mi">132049</span><span class="p">:</span> <span class="mi">7000</span><span class="p">,</span>
+                   <span class="mi">756839</span><span class="p">:</span> <span class="mi">279695</span><span class="p">,</span>
+                   <span class="mi">859433</span><span class="p">:</span> <span class="mi">170340</span><span class="p">,</span>
+                   <span class="mi">3021377</span><span class="p">:</span> <span class="mi">361604</span><span class="p">,</span>    <span class="c1"># Hodgkin</span>
+                   <span class="mi">6972593</span><span class="p">:</span> <span class="mi">3037958</span><span class="p">,</span>   <span class="c1"># Bibury</span>
+                   <span class="mi">24036583</span><span class="p">:</span> <span class="mi">8412642</span><span class="p">,</span>  <span class="c1"># Judy-anne</span>
+                   <span class="mi">25964951</span><span class="p">:</span> <span class="mi">880890</span><span class="p">,</span>   <span class="c1"># t25a</span>
+                   <span class="mi">30402457</span><span class="p">:</span> <span class="mi">2162059</span><span class="p">,</span>  <span class="c1"># Florence</span>
+                   <span class="mi">32582657</span><span class="p">:</span> <span class="mi">5110722</span><span class="p">,</span>  <span class="c1"># Priscilla</span>
+                   <span class="mi">42643801</span><span class="p">:</span> <span class="mi">55981</span><span class="p">,</span>    <span class="c1"># t42a</span>
+                   <span class="mi">43112609</span><span class="p">:</span> <span class="mi">3569337</span><span class="p">,</span>  <span class="c1"># t43a</span>
+                   <span class="mi">74207281</span><span class="p">:</span> <span class="mi">9156813</span><span class="p">,</span>  <span class="c1"># t44a</span>
+                   <span class="p">}</span>
+
+<div class="viewcode-block" id="Raz.__init__"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.raz.Raz.__init__">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">n1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">trinomial</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initialize a Raz extractor.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        n1: int</span>
+<span class="sd">            The length of the first input (in bits).</span>
+<span class="sd">            **Note:** GF_2^{n1/2} must have a known irreducible trinomial.</span>
+<span class="sd">        m : int</span>
+<span class="sd">            The length of the extractor output (in bits).</span>
+<span class="sd">        trinomial : int</span>
+<span class="sd">            An optional parameter which defines an irreducible trinomial over</span>
+<span class="sd">            GF_2^{n1/2}, i.e., x^{n1/2} + x^{trinomial} + 1 is an irreducible</span>
+<span class="sd">            trinomial. **Note:** This does not test whether the trinomial is</span>
+<span class="sd">            irreducible, because it is computationally expensive to do so.</span>
+<span class="sd">            Please ensure if you provide a value that it is correct, or use</span>
+<span class="sd">            one of the known values.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="p">(</span><span class="n">m</span> <span class="o">&lt;=</span> <span class="n">n1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n1</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">logp</span> <span class="o">=</span> <span class="n">log_2</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span><span class="o">+</span><span class="mi">1</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pad_amount</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span> <span class="o">&lt;&lt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">logp</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">if</span> <span class="n">trinomial</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">trinomial_s</span><span class="p">:</span>
+                <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;GF(2^(n1/2)) must have a known irreducible trinomial.&#39;</span><span class="p">)</span>  <span class="c1"># noqa: E501</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">trinomial_s</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">s</span> <span class="o">=</span> <span class="n">trinomial</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">ntt</span> <span class="o">=</span> <span class="n">NTT</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">logp</span><span class="p">)</span></div>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__poly_reduce</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">):</span>
+        <span class="n">r</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="n">s</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">):</span>
+            <span class="n">red</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">r</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">s</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">s</span><span class="o">+</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="n">red</span>
+            <span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">x</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">%</span> <span class="mi">2</span><span class="p">)</span> <span class="o">^</span> <span class="n">red</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__gf_add</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
+        <span class="k">return</span> <span class="nb">map</span><span class="p">(</span><span class="k">lambda</span> <span class="n">b1</span><span class="p">,</span> <span class="n">b2</span><span class="p">:</span> <span class="n">b1</span> <span class="o">^</span> <span class="n">b2</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">__gf_add_one</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="nb">input</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
+        <span class="n">x</span> <span class="o">=</span> <span class="nb">input</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">x</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">^</span> <span class="mi">1</span>
+        <span class="k">return</span> <span class="n">x</span>
+
+<div class="viewcode-block" id="Raz.gf_mul"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.raz.Raz.gf_mul">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">gf_mul</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">x</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">y</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
+        <span class="n">conv_output</span> <span class="o">=</span> <span class="n">cast</span><span class="p">(</span><span class="n">BitsT</span><span class="p">,</span> <span class="p">[</span><span class="n">e</span> <span class="o">%</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">e</span> <span class="ow">in</span>
+                                   <span class="bp">self</span><span class="o">.</span><span class="n">ntt</span><span class="o">.</span><span class="n">conv_and_reduce</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+                                                            <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)])</span>
+        <span class="k">return</span> <span class="n">conv_output</span></div>
+
+<div class="viewcode-block" id="Raz.extract"><a class="viewcode-back" href="../../cryptomite.html#cryptomite.raz.Raz.extract">[docs]</a>    <span class="k">def</span><span class="w"> </span><span class="nf">extract</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">input1</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">,</span> <span class="n">input2</span><span class="p">:</span> <span class="n">BitsT</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">BitsT</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Perform randomness extraction.</span>
+
+<span class="sd">        Parameters</span>
+<span class="sd">        ----------</span>
+<span class="sd">        input1 : list of bits (0s and 1s)</span>
+<span class="sd">            The first input, consisting of n_1 bits.</span>
+<span class="sd">        input2 : list of bits (0s and 1s)</span>
+<span class="sd">            The second input, consisting of n_2 &lt; n_1/2 bits.</span>
+
+<span class="sd">        Returns</span>
+<span class="sd">        -------</span>
+<span class="sd">        list of bits (0s and 1s)</span>
+<span class="sd">            The extractor output bits, of length m.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">input1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">2</span><span class="o">*</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+        <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="nb">len</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span>
+
+        <span class="n">x1</span><span class="p">,</span> <span class="n">x2</span> <span class="o">=</span> <span class="n">input1</span><span class="p">[</span><span class="mi">0</span><span class="p">:</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">],</span> <span class="n">input1</span><span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">:]</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">input2</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">input2</span><span class="p">)</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">)</span>
+
+        <span class="n">pad_amount</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">pad_amount</span>
+        <span class="n">x1</span> <span class="o">=</span> <span class="n">x1</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pad_amount</span>
+        <span class="n">x2</span> <span class="o">=</span> <span class="n">x2</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pad_amount</span>
+        <span class="n">y</span> <span class="o">=</span> <span class="n">y</span> <span class="o">+</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">*</span><span class="n">pad_amount</span>
+
+        <span class="n">cur_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gf_mul</span><span class="p">(</span><span class="n">y</span><span class="p">,</span> <span class="n">x1</span><span class="p">)</span>
+        <span class="n">product</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">__gf_add_one</span><span class="p">(</span><span class="n">cur_delta</span><span class="p">)</span>  <span class="c1"># GF 1 times lambda_0</span>
+        <span class="n">cur_delta</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gf_mul</span><span class="p">(</span><span class="n">cur_delta</span><span class="p">,</span> <span class="n">cur_delta</span><span class="p">)</span>  <span class="c1"># delta^2</span>
+
+        <span class="c1"># First loop is starting from product = product * lambda_1,</span>
+        <span class="c1"># i.e. (delta^(2^1) + 1)), followed by cur_delta = delta^4</span>
+        <span class="c1"># up to product * (lambda_{logp-1}, i.e. delta^{2^(logp-1))</span>
+        <span class="c1"># and cur_delta = delta^(2^logp)</span>
+        <span class="c1"># Note: we could unwrap the final multiplication at self.logp-1</span>
+        <span class="c1"># to save the unnecessary calculation of delta^(2^logp),</span>
+        <span class="c1"># but it happens in parallel anyway and makes the code harder to read.</span>
+        <span class="k">for</span> <span class="n">_i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">logp</span><span class="p">):</span>
+            <span class="c1"># product times lambda_1 ... lambda_{l-1}</span>
+            <span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cur_delta</span><span class="p">)</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">ntt</span><span class="o">.</span><span class="n">raz_iteration</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">cur_delta</span><span class="p">,</span>
+                                                          <span class="bp">self</span><span class="o">.</span><span class="n">n</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">s</span><span class="p">)</span>
+        <span class="n">conv_output</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">gf_mul</span><span class="p">(</span><span class="n">product</span><span class="p">,</span> <span class="n">x2</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">cast</span><span class="p">(</span><span class="n">BitsT</span><span class="p">,</span> <span class="p">[</span><span class="n">conv_output</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">m</span><span class="p">)])</span></div></div>
+
+<span class="c1"># ------- UTILITY FUNCTIONS -------</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">log2_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                   <span class="n">k_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                   <span class="n">k_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                   <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                   <span class="n">l</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                   <span class="n">p</span><span class="p">:</span> <span class="nb">int</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute an upper bound on the logarithm base 2</span>
+<span class="sd">    of the error for the efficient weak version of</span>
+<span class="sd">    Raz&#39;s extractor presented in [Fore2025]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_1 : int</span>
+<span class="sd">        The length of the first input (in bits).</span>
+<span class="sd">    k_1 : float</span>
+<span class="sd">        The min-entropy of the first input.</span>
+<span class="sd">    k_2 : float</span>
+<span class="sd">        The min-entropy of the second input.</span>
+<span class="sd">    m : int</span>
+<span class="sd">        The length of the extractor output (in bits).</span>
+<span class="sd">    l : int</span>
+<span class="sd">        The logarithm base 2 of p&#39;.</span>
+<span class="sd">        **Note:** the efficient construction requires p&#39;</span>
+<span class="sd">        to be a power of 2, i.e. l is an integer.</span>
+<span class="sd">    p : int</span>
+<span class="sd">        A free parameter that is an even integer that</span>
+<span class="sd">        satisfies p &lt;= 2^l / m.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float :</span>
+<span class="sd">        An upper bound on the logarithm base 2 of the</span>
+<span class="sd">        extractor error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">log_gamma_bound</span> <span class="o">=</span> <span class="p">(</span><span class="n">n_1</span> <span class="o">-</span> <span class="n">k_1</span><span class="p">)</span><span class="o">/</span><span class="n">p</span> <span class="o">+</span> <span class="nb">max</span><span class="p">((</span><span class="n">l</span> <span class="o">-</span> <span class="n">n_1</span><span class="o">/</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">p</span><span class="p">,</span>
+                                          <span class="n">log2</span><span class="p">(</span><span class="n">p</span><span class="p">)</span> <span class="o">-</span> <span class="n">k_2</span><span class="o">/</span><span class="mi">2</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>
+    <span class="k">return</span> <span class="n">log_gamma_bound</span> <span class="o">+</span> <span class="n">m</span><span class="o">/</span><span class="mi">2</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">opt_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">k_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                  <span class="n">n_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">k_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                  <span class="n">m</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                  <span class="n">max_tests_basic</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                  <span class="n">max_tests_detailed</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                  <span class="n">detailed_opt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute an upper bound on the logarithm base 2</span>
+<span class="sd">    of the error for the efficient weak version of</span>
+<span class="sd">    Raz&#39;s extractor presented in [Fore2025]_.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_1 : int</span>
+<span class="sd">        The length of the first input (in bits).</span>
+<span class="sd">    k_1 : float</span>
+<span class="sd">        The min-entropy of the first input.</span>
+<span class="sd">    n_2 : int</span>
+<span class="sd">        The length of the second input (in bits).</span>
+<span class="sd">    k_2 : float</span>
+<span class="sd">        The min-entropy of the second input.</span>
+<span class="sd">    m : int</span>
+<span class="sd">        The length of the extractor output (in bits).</span>
+<span class="sd">    max_tests_basic : int</span>
+<span class="sd">        The maximum number of interations for the</span>
+<span class="sd">        basic parameter optimisation method, i.e. when</span>
+<span class="sd">        detailed_opt is set to False (default: 0).</span>
+<span class="sd">    max_tests_detailed : int</span>
+<span class="sd">        The maximum number of interations for the</span>
+<span class="sd">        intense parameter optimisation method, i.e.</span>
+<span class="sd">        when detailed_opt is set to True (default: 1000).</span>
+<span class="sd">    detailed_opt : bool</span>
+<span class="sd">        Flag to indicate the intensity of the</span>
+<span class="sd">        optimisation performed (default: False).</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If True, prints all parameters found (default: False).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    float :</span>
+<span class="sd">        An upper bound on the logarithm base 2 of the</span>
+<span class="sd">        extractor error.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="c1"># Ensure input parameters meet required constraints.</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">n_2</span> <span class="o">&lt;=</span> <span class="n">n_1</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">k_1</span> <span class="o">&lt;</span> <span class="n">n_1</span> <span class="ow">and</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">k_2</span> <span class="o">&lt;</span> <span class="n">n_2</span>
+    <span class="k">assert</span> <span class="mi">0</span> <span class="o">&lt;</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="n">n_1</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">assert</span> <span class="n">n_1</span> <span class="o">%</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">max_tests_basic</span> <span class="o">&gt;</span> <span class="mi">0</span>
+    <span class="k">assert</span> <span class="n">max_tests_detailed</span> <span class="o">&gt;</span> <span class="mi">0</span>
+
+    <span class="c1"># Compute maximum possible l value based on input parameters.</span>
+    <span class="n">l_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">n_2</span> <span class="o">+</span> <span class="n">floor</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">n_1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)))</span>
+
+    <span class="c1"># Cap exponent to avoid overflow in 2^x computations.</span>
+    <span class="n">max_pow_for_overflow</span> <span class="o">=</span> <span class="mi">32</span>
+
+    <span class="c1"># Initialize variables to track the best (minimal)</span>
+    <span class="c1"># log2 error and corresponding parameters.</span>
+    <span class="n">min_log2_error</span><span class="p">,</span> <span class="n">best_l</span><span class="p">,</span> <span class="n">best_p</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;Not found&#39;</span><span class="p">,</span> <span class="s1">&#39;Not found&#39;</span>
+
+    <span class="c1"># Estimate a good initial value for l based on m and (n_1 - k_1).</span>
+    <span class="n">l_use</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">m</span> <span class="o">*</span> <span class="p">(</span><span class="n">n_1</span> <span class="o">-</span> <span class="n">k_1</span><span class="p">))),</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Define the range of l values to explore around l_use.</span>
+    <span class="n">max_plus</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">l_max</span> <span class="o">-</span> <span class="n">l_use</span><span class="p">),</span>
+                   <span class="p">(</span><span class="n">max_tests_basic</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">max_minus</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">l_use</span> <span class="o">-</span> <span class="n">ceil</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                    <span class="p">(</span><span class="n">max_tests_basic</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+    <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">l_use</span> <span class="o">-</span> <span class="n">max_minus</span><span class="p">,</span> <span class="n">l_use</span> <span class="o">+</span> <span class="n">max_plus</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="c1"># Coarse search: iterate over candidate l values.</span>
+    <span class="k">for</span> <span class="n">current_l</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
+        <span class="c1"># Compute the maximum number of p values to try for the current l.</span>
+        <span class="n">p_half_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">current_l</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">)))</span><span class="o">//</span><span class="mi">2</span><span class="p">)</span>
+        <span class="c1"># Generate candidate p values: even integers starting from 2.</span>
+        <span class="n">p_values</span> <span class="o">=</span> <span class="p">[</span><span class="mi">2</span> <span class="o">*</span> <span class="n">phalf</span> <span class="o">+</span> <span class="mi">2</span> <span class="k">for</span> <span class="n">phalf</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">p_half_max</span><span class="p">)]</span>
+        <span class="k">for</span> <span class="n">current_p</span> <span class="ow">in</span> <span class="n">p_values</span><span class="p">:</span>
+            <span class="c1"># Evaluate the log2 of the error for current parameters.</span>
+            <span class="n">eps</span> <span class="o">=</span> <span class="n">log2_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">current_l</span><span class="p">,</span> <span class="n">current_p</span><span class="p">)</span>
+            <span class="c1"># Update best found parameters if error improves.</span>
+            <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="n">min_log2_error</span><span class="p">:</span>
+                <span class="n">min_log2_error</span><span class="p">,</span> <span class="n">best_l</span><span class="p">,</span> <span class="n">best_p</span> <span class="o">=</span> <span class="n">eps</span><span class="p">,</span> <span class="n">current_l</span><span class="p">,</span> <span class="n">current_p</span>
+
+    <span class="c1"># If detailed optimisation is enabled, perform a more exhaustive search.</span>
+    <span class="k">if</span> <span class="n">detailed_opt</span><span class="p">:</span>
+        <span class="c1"># Generate a list of l values to try with finer granularity.</span>
+        <span class="n">num_values</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">l_max</span><span class="p">,</span> <span class="n">max_tests_detailed</span><span class="p">)</span>
+        <span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">l_max</span> <span class="o">-</span> <span class="p">(</span><span class="n">ceil</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">))</span> <span class="o">/</span> <span class="p">(</span><span class="n">num_values</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">((</span><span class="n">ceil</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">)</span>
+                <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_values</span><span class="p">)]</span>
+        <span class="n">total</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">ls</span><span class="p">)</span>
+        <span class="c1"># Define progress milestones for verbose output.</span>
+        <span class="n">milestones</span> <span class="o">=</span> <span class="p">{</span><span class="nb">int</span><span class="p">(</span><span class="n">total</span> <span class="o">*</span> <span class="n">p</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="k">for</span> <span class="n">p</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span> <span class="mi">101</span><span class="p">,</span> <span class="mi">10</span><span class="p">)}</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">current_l</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ls</span><span class="p">):</span>
+            <span class="c1"># Prevent overflow when computing p values.</span>
+            <span class="k">if</span> <span class="n">current_l</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">max_pow_for_overflow</span><span class="p">:</span>
+                <span class="n">p_half_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">current_l</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">p_half_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">max_pow_for_overflow</span><span class="p">))</span>
+            <span class="c1"># Sample p_half values uniformly for detailed testing.</span>
+            <span class="n">num_values</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">p_half_max</span><span class="p">,</span> <span class="n">max_tests_detailed</span><span class="p">)</span>
+            <span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_half_max</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_values</span>
+            <span class="n">phalf_values</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">)</span>
+                    <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_values</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+            <span class="k">for</span> <span class="n">current_phalf</span> <span class="ow">in</span> <span class="n">phalf_values</span><span class="p">:</span>
+                <span class="n">current_p</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">current_phalf</span>
+                <span class="n">eps</span> <span class="o">=</span> <span class="n">log2_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">current_l</span><span class="p">,</span> <span class="n">current_p</span><span class="p">)</span>
+                <span class="c1"># Update best found parameters if error improves.</span>
+                <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="n">min_log2_error</span><span class="p">:</span>
+                    <span class="n">min_log2_error</span><span class="p">,</span> <span class="n">best_l</span><span class="p">,</span> <span class="n">best_p</span> <span class="o">=</span> <span class="n">eps</span><span class="p">,</span> <span class="n">current_l</span><span class="p">,</span> <span class="n">current_p</span>
+            <span class="c1"># Print progress if enabled and at a milestone.</span>
+            <span class="k">if</span> <span class="n">verbose</span> <span class="ow">and</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">milestones</span><span class="p">:</span>
+                <span class="n">percent</span> <span class="o">=</span> <span class="nb">int</span><span class="p">((</span><span class="n">i</span> <span class="o">/</span> <span class="n">total</span><span class="p">)</span> <span class="o">*</span> <span class="mi">100</span><span class="p">)</span>
+                <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[</span><span class="si">{</span><span class="n">percent</span><span class="si">}</span><span class="s1">% Completed] (</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+            <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;[100% Completed] (</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s1">/</span><span class="si">{</span><span class="n">total</span><span class="si">}</span><span class="s1">)&#39;</span><span class="p">)</span>
+            <span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Performing final refinement...&#39;</span><span class="p">)</span>
+
+        <span class="c1"># Final refinement around best_l after detailed search.</span>
+        <span class="k">if</span> <span class="n">best_l</span> <span class="o">!=</span> <span class="s1">&#39;Not found&#39;</span><span class="p">:</span>
+            <span class="c1"># Compute the range of l values to explore around best_l.</span>
+            <span class="n">max_plus</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">l_max</span> <span class="o">-</span> <span class="n">best_l</span><span class="p">),</span> <span class="n">max_tests_detailed</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="n">max_minus</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">best_l</span> <span class="o">-</span> <span class="n">ceil</span><span class="p">(</span><span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">))</span> <span class="o">-</span> <span class="mi">1</span><span class="p">),</span>
+                            <span class="n">max_tests_detailed</span> <span class="o">//</span> <span class="mi">2</span><span class="p">)</span>
+            <span class="c1"># Generate candidate l values around best_l.</span>
+            <span class="n">ls</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">best_l</span> <span class="o">-</span> <span class="n">max_minus</span><span class="p">,</span> <span class="n">best_l</span> <span class="o">+</span> <span class="n">max_plus</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+            <span class="c1"># Iterate over candidate l values for final refinement.</span>
+            <span class="k">for</span> <span class="n">current_l</span> <span class="ow">in</span> <span class="n">ls</span><span class="p">:</span>
+                <span class="c1"># Prevent overflow when computing p values.</span>
+                <span class="k">if</span> <span class="n">current_l</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">max_pow_for_overflow</span><span class="p">:</span>
+                    <span class="n">p_half_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="mi">2</span><span class="o">**</span><span class="p">(</span><span class="n">current_l</span> <span class="o">-</span> <span class="n">log2</span><span class="p">(</span><span class="n">m</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">))</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">p_half_max</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="mi">2</span> <span class="o">**</span> <span class="n">max_pow_for_overflow</span><span class="p">))</span>
+                <span class="c1"># Sample p_half values uniformly for detailed testing.</span>
+                <span class="n">num_values</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">p_half_max</span><span class="p">,</span> <span class="n">max_tests_detailed</span><span class="p">)</span>
+                <span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">p_half_max</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">/</span> <span class="n">num_values</span>
+                <span class="n">phalf_values</span> <span class="o">=</span> <span class="p">[</span>
+                    <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">)</span>
+                        <span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">num_values</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+                <span class="c1"># Iterate over candidate p values.</span>
+                <span class="k">for</span> <span class="n">current_phalf</span> <span class="ow">in</span> <span class="n">phalf_values</span><span class="p">:</span>
+                    <span class="n">current_p</span> <span class="o">=</span> <span class="mi">2</span><span class="o">*</span><span class="n">current_phalf</span>
+                    <span class="n">eps</span> <span class="o">=</span> <span class="n">log2_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span>
+                                         <span class="n">k_1</span><span class="p">,</span>
+                                         <span class="n">k_2</span><span class="p">,</span>
+                                         <span class="n">m</span><span class="p">,</span>
+                                         <span class="n">current_l</span><span class="p">,</span>
+                                         <span class="n">current_p</span><span class="p">)</span>
+                    <span class="k">if</span> <span class="n">eps</span> <span class="o">&lt;</span> <span class="n">min_log2_error</span><span class="p">:</span>
+                        <span class="n">min_log2_error</span> <span class="o">=</span> <span class="n">eps</span>
+                        <span class="n">best_l</span><span class="p">,</span> <span class="n">best_p</span> <span class="o">=</span> <span class="n">current_l</span><span class="p">,</span> <span class="n">current_p</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;log2 of minimum error found: </span><span class="si">{</span><span class="n">min_log2_error</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Corresponding l value (p prime = 2^l): </span><span class="si">{</span><span class="n">best_l</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Corresponding p value: </span><span class="si">{</span><span class="n">best_p</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+    <span class="c1"># Return the minimal log2 error found.</span>
+    <span class="k">return</span> <span class="n">min_log2_error</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_raz_out</span><span class="p">(</span><span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">k_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">n_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+                 <span class="n">k_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">log2_error_tol</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+                 <span class="n">m_init</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">max_tests_basic</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+                 <span class="n">max_tests_detailed</span><span class="o">=</span><span class="mi">1000</span><span class="p">,</span>
+                 <span class="n">detailed_opt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+                 <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Compute the maximum output length for the efficient</span>
+<span class="sd">    weak version of Raz&#39;s extractor presented in</span>
+<span class="sd">    [Fore2025]_ that satisfies a given error tolerance.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_1 : int</span>
+<span class="sd">        The length of the first input (in bits).</span>
+<span class="sd">    k_1 : float</span>
+<span class="sd">        The min-entropy of the first input.</span>
+<span class="sd">    n_2 : int</span>
+<span class="sd">        The length of the second input (in bits).</span>
+<span class="sd">    k_2 : float</span>
+<span class="sd">        The min-entropy of the second input.</span>
+<span class="sd">    log2_error_tol : float</span>
+<span class="sd">        The logarithm base 2 of the acceptable extractor error.</span>
+<span class="sd">        Must be negative, as the extractor error is 2^log2_error.</span>
+<span class="sd">    m_init : int</span>
+<span class="sd">        The initial value for the output length (default: 1).</span>
+<span class="sd">    max_tests_basic : int</span>
+<span class="sd">        The maximum number of interations for the</span>
+<span class="sd">        basic parameter optimisation method, i.e. when</span>
+<span class="sd">        detailed_opt is set to False (default: 0).</span>
+<span class="sd">    max_tests_detailed : int</span>
+<span class="sd">        The maximum number of interations for the</span>
+<span class="sd">        intense parameter optimisation method, i.e.</span>
+<span class="sd">        when detailed_opt is set to True (default: 1000).</span>
+<span class="sd">    detailed_opt : bool</span>
+<span class="sd">        Flag to indicate the intensity of the</span>
+<span class="sd">        optimisation performed (default: False).</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If True, prints all parameters found (default: False).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    int :</span>
+<span class="sd">        The maximum output length that satisfies the</span>
+<span class="sd">        error tolerance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">max_m</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">initial_tests</span> <span class="o">=</span> <span class="mi">100</span>
+    <span class="n">steps</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">k_2</span><span class="p">)</span> <span class="o">-</span> <span class="n">m_init</span><span class="p">,</span> <span class="n">initial_tests</span><span class="p">)</span>
+    <span class="n">step_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">floor</span><span class="p">(</span><span class="n">k_2</span><span class="p">)</span> <span class="o">-</span> <span class="n">m_init</span><span class="p">)</span> <span class="o">/</span> <span class="n">steps</span>
+    <span class="n">ms</span> <span class="o">=</span> <span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">m_init</span> <span class="o">+</span> <span class="n">i</span> <span class="o">*</span> <span class="n">step_size</span><span class="p">))</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">steps</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)]</span>
+
+    <span class="k">for</span> <span class="n">m</span> <span class="ow">in</span> <span class="n">ms</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">opt_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span>
+                         <span class="n">max_tests_basic</span><span class="o">=</span><span class="n">max_tests_basic</span><span class="p">,</span>
+                         <span class="n">max_tests_detailed</span><span class="o">=</span><span class="n">max_tests_detailed</span><span class="p">,</span>
+                         <span class="n">detailed_opt</span><span class="o">=</span><span class="n">detailed_opt</span><span class="p">,</span>
+                         <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">log2_error_tol</span><span class="p">:</span>
+            <span class="n">max_m</span> <span class="o">=</span> <span class="n">m</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">break</span>
+    <span class="k">if</span> <span class="n">detailed_opt</span><span class="p">:</span>
+        <span class="n">max_m</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">while</span> <span class="n">opt_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">max_m</span><span class="p">,</span>
+                            <span class="n">max_tests_basic</span><span class="o">=</span><span class="n">max_tests_basic</span><span class="p">,</span>
+                            <span class="n">max_tests_detailed</span><span class="o">=</span><span class="n">max_tests_detailed</span><span class="p">,</span>
+                            <span class="n">detailed_opt</span><span class="o">=</span><span class="n">detailed_opt</span><span class="p">,</span>
+                            <span class="n">verbose</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="n">log2_error_tol</span><span class="p">:</span>
+            <span class="n">max_m</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="n">max_m</span> <span class="o">-=</span> <span class="mi">1</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Maximum output length found: </span><span class="si">{</span><span class="n">max_m</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
+        <span class="n">opt_error_raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">max_m</span><span class="p">,</span>
+                      <span class="n">max_tests_basic</span><span class="o">=</span><span class="n">max_tests_basic</span><span class="p">,</span>
+                      <span class="n">max_tests_detailed</span><span class="o">=</span><span class="n">max_tests_detailed</span><span class="p">,</span>
+                      <span class="n">detailed_opt</span><span class="o">=</span><span class="n">detailed_opt</span><span class="p">,</span>
+                      <span class="n">verbose</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_m</span> <span class="o">&gt;</span> <span class="n">n_1</span> <span class="o">/</span> <span class="mi">2</span><span class="p">:</span>
+        <span class="n">max_m</span> <span class="o">=</span> <span class="n">n_1</span> <span class="o">/</span> <span class="mi">2</span>
+    <span class="k">return</span> <span class="n">max_m</span>
+
+<span class="c1"># ------ MAIN FUNCTION -------</span>
+
+
+<span class="nd">@staticmethod</span>
+<span class="k">def</span><span class="w"> </span><span class="nf">from_params</span><span class="p">(</span>
+        <span class="n">n_1</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">k_1</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">n_2</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+        <span class="n">k_2</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">log2_error</span><span class="p">:</span> <span class="nb">float</span><span class="p">,</span>
+        <span class="n">detailed_opt</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">verbose</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Raz</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Generate a weak version of the efficient Raz</span>
+<span class="sd">    extractor from [Fore2025]_ with valid</span>
+<span class="sd">    parameters based on input constraints.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    n_1 : int</span>
+<span class="sd">        The length of the first input (in bits).</span>
+<span class="sd">    k_1 : float</span>
+<span class="sd">        The min-entropy of the first input.</span>
+<span class="sd">    n_2 : int</span>
+<span class="sd">        The length of the second input (in bits).</span>
+<span class="sd">    k_2 : float</span>
+<span class="sd">        The min-entropy of the second input.</span>
+<span class="sd">    log2_error : float</span>
+<span class="sd">        The logarithm (base 2) of the acceptable extractor error.</span>
+<span class="sd">        Must be negative, as the extractor error is 2^log2_error.</span>
+<span class="sd">    detailed_opt : bool</span>
+<span class="sd">        Flag to indicate the intensity of the optimisation</span>
+<span class="sd">        performed (default: False).</span>
+<span class="sd">    verbose : bool</span>
+<span class="sd">        If True, prints the parameters used for</span>
+<span class="sd">        extraction (default: True).</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Raz</span>
+<span class="sd">        A configured Raz extractor.</span>
+
+<span class="sd">    Raises</span>
+<span class="sd">    ------</span>
+<span class="sd">    ValueError</span>
+<span class="sd">        If the output length is non-positive.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">m</span> <span class="o">=</span> <span class="n">calc_raz_out</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">k_1</span><span class="p">,</span> <span class="n">n_2</span><span class="p">,</span> <span class="n">k_2</span><span class="p">,</span> <span class="n">log2_error</span><span class="p">,</span>
+                     <span class="n">detailed_opt</span><span class="o">=</span><span class="n">detailed_opt</span><span class="p">,</span> <span class="n">verbose</span><span class="o">=</span><span class="n">verbose</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">m</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Output length must be positive.&#39;</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">verbose</span><span class="p">:</span>
+        <span class="nb">print</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s1">&#39;--- New Raz Extractor Parameters ---</span><span class="se">\n</span><span class="s1">&#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Input Length 1 (n_1): </span><span class="si">{</span><span class="n">n_1</span><span class="si">}</span><span class="s1">, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Min Entropy of Input 1 (k_1): </span><span class="si">{</span><span class="n">k_1</span><span class="si">}</span><span class="s1">, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Input Length 2 (n_2): </span><span class="si">{</span><span class="n">n_2</span><span class="si">}</span><span class="s1">, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Min Entropy of Input 2 (k_2): </span><span class="si">{</span><span class="n">k_2</span><span class="si">}</span><span class="s1">, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Output Length (m): </span><span class="si">{</span><span class="n">m</span><span class="si">}</span><span class="s1">, &#39;</span>
+            <span class="sa">f</span><span class="s1">&#39;Extraction Error (log2_error): </span><span class="si">{</span><span class="n">log2_error</span><span class="si">}</span><span class="s1">. &#39;</span>
+        <span class="p">)</span>
+        <span class="nb">print</span><span class="p">(</span><span class="s2">&quot;&quot;&quot;Adjust the length of the input</span>
+<span class="s2">                and (weak) seed accordingly.&quot;&quot;&quot;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">Raz</span><span class="p">(</span><span class="n">n_1</span><span class="p">,</span> <span class="n">m</span><span class="p">)</span>
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2025 Quantinuum Limited.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

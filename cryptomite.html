@@ -52,6 +52,7 @@
 <li class="toctree-l2"><a class="reference internal" href="#submodules">Submodules</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.circulant">cryptomite.circulant module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.dodis">cryptomite.dodis module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.raz">cryptomite.raz module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.toeplitz">cryptomite.toeplitz module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.trevisan">cryptomite.trevisan module</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-cryptomite.utils">cryptomite.utils module</a></li>
@@ -319,18 +320,90 @@ adjusts the other parameters accordingly.</p></li>
 </dd></dl>
 
 </section>
+<section id="module-cryptomite.raz">
+<span id="cryptomite-raz-module"></span><h2>cryptomite.raz module<a class="headerlink" href="#module-cryptomite.raz" title="Permalink to this headline"></a></h2>
+<p>The Raz extractor <a class="reference internal" href="bibliography.html#raz2005" id="id17"><span>[Raz2005]</span></a> takes two inputs of length
+‘n_1, n_2’, such that ‘n_1/2 &gt; n_2’. This implementation
+is based on the efficient construction described in <a class="reference internal" href="bibliography.html#fore2025" id="id18"><span>[Fore2025]</span></a>,
+which requires a known irreducible trinomial for the field
+GF_2^{n_1/2}.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.raz.Raz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.raz.</span></span><span class="sig-name descname"><span class="pre">Raz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trinomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.raz.Raz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Raz extractor <a class="reference internal" href="bibliography.html#raz2005" id="id19"><span>[Raz2005]</span></a> based on the efficient
+construction described in <a class="reference internal" href="bibliography.html#fore2025" id="id20"><span>[Fore2025]</span></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.raz.Raz.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trinomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.raz.Raz.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a Raz extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n1: int</strong></dt><dd><p>The length of the first input (in bits).
+<strong>Note:</strong> GF_2^{n1/2} must have a known irreducible trinomial.</p>
+</dd>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the extractor output (in bits).</p>
+</dd>
+<dt><strong>trinomial</strong><span class="classifier">int</span></dt><dd><p>An optional parameter which defines an irreducible trinomial over
+GF_2^{n1/2}, i.e., x^{n1/2} + x^{trinomial} + 1 is an irreducible
+trinomial. <strong>Note:</strong> This does not test whether the trinomial is
+irreducible, because it is computationally expensive to do so.
+Please ensure if you provide a value that it is correct, or use
+one of the known values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.raz.Raz.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.raz.Raz.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Perform randomness extraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input1</strong><span class="classifier">list of bits (0s and 1s)</span></dt><dd><p>The first input, consisting of n_1 bits.</p>
+</dd>
+<dt><strong>input2</strong><span class="classifier">list of bits (0s and 1s)</span></dt><dd><p>The second input, consisting of n_2 &lt; n_1/2 bits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bits (0s and 1s)</dt><dd><p>The extractor output bits, of length m.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.raz.Raz.gf_mul">
+<span class="sig-name descname"><span class="pre">gf_mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.gf_mul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.raz.Raz.gf_mul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cryptomite.raz.Raz.trinomial_s">
+<span class="sig-name descname"><span class="pre">trinomial_s</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{3:</span> <span class="pre">1,</span> <span class="pre">7:</span> <span class="pre">1,</span> <span class="pre">15:</span> <span class="pre">1,</span> <span class="pre">31:</span> <span class="pre">3,</span> <span class="pre">63:</span> <span class="pre">1,</span> <span class="pre">127:</span> <span class="pre">7,</span> <span class="pre">255:</span> <span class="pre">52,</span> <span class="pre">521:</span> <span class="pre">32,</span> <span class="pre">1279:</span> <span class="pre">216,</span> <span class="pre">2281:</span> <span class="pre">715,</span> <span class="pre">3217:</span> <span class="pre">67,</span> <span class="pre">4423:</span> <span class="pre">271,</span> <span class="pre">23209:</span> <span class="pre">1530,</span> <span class="pre">44497:</span> <span class="pre">8575,</span> <span class="pre">110503:</span> <span class="pre">25230,</span> <span class="pre">132049:</span> <span class="pre">7000,</span> <span class="pre">756839:</span> <span class="pre">279695,</span> <span class="pre">859433:</span> <span class="pre">170340,</span> <span class="pre">3021377:</span> <span class="pre">361604,</span> <span class="pre">6972593:</span> <span class="pre">3037958,</span> <span class="pre">24036583:</span> <span class="pre">8412642,</span> <span class="pre">25964951:</span> <span class="pre">880890,</span> <span class="pre">30402457:</span> <span class="pre">2162059,</span> <span class="pre">32582657:</span> <span class="pre">5110722,</span> <span class="pre">42643801:</span> <span class="pre">55981,</span> <span class="pre">43112609:</span> <span class="pre">3569337,</span> <span class="pre">74207281:</span> <span class="pre">9156813}</span></em><a class="headerlink" href="#cryptomite.raz.Raz.trinomial_s" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
 <section id="module-cryptomite.toeplitz">
 <span id="cryptomite-toeplitz-module"></span><h2>cryptomite.toeplitz module<a class="headerlink" href="#module-cryptomite.toeplitz" title="Permalink to this headline"></a></h2>
-<p>The Toeplitz extractor takes an input of <a href="#id17"><span class="problematic" id="id18">`</span></a>n_1’ bits and
-a (weak) seed of <a href="#id19"><span class="problematic" id="id20">`</span></a>n_2 = n_1 + m - 1’ bits, where <a href="#id21"><span class="problematic" id="id22">`</span></a>m’ is output length.
+<p>The Toeplitz extractor takes an input of <a href="#id21"><span class="problematic" id="id22">`</span></a>n_1’ bits and
+a (weak) seed of <a href="#id23"><span class="problematic" id="id24">`</span></a>n_2 = n_1 + m - 1’ bits, where <a href="#id25"><span class="problematic" id="id26">`</span></a>m’ is output length.
 This implementation is based on the efficient implementation
-presented in <a class="reference internal" href="bibliography.html#for2024" id="id23"><span>[For2024]</span></a>.</p>
+presented in <a class="reference internal" href="bibliography.html#for2024" id="id27"><span>[For2024]</span></a>.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.toeplitz.</span></span><span class="sig-name descname"><span class="pre">Toeplitz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Toeplitz extractor with implementation
-based on <a class="reference internal" href="bibliography.html#for2024" id="id24"><span>[For2024]</span></a>.</p>
+based on <a class="reference internal" href="bibliography.html#for2024" id="id28"><span>[For2024]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.toeplitz.Toeplitz.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.toeplitz.Toeplitz.__init__" title="Permalink to this definition"></a></dt>
@@ -390,7 +463,7 @@ based on input constraints.</p>
 Must be negative, as the extractor error is 2^log2_error.</p>
 </dd>
 <dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>If True, adjusts parameters to ensure quantum-proof extraction
-in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id25"><span>[For2024]</span></a>).</p>
+in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id29"><span>[For2024]</span></a>).</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>If True, prints the parameters used for extraction (default: True).</p>
 </dd>
@@ -416,7 +489,7 @@ that of the second.</p>
 <ul class="simple">
 <li><p>For this extractor, the output length remains the same when it is
 classical-proof, quantum-proof in the product sources model, and
-quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id26"><span>[For2024]</span></a>).</p></li>
+quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id30"><span>[For2024]</span></a>).</p></li>
 </ul>
 </dd></dl>
 
@@ -425,16 +498,16 @@ quantum-proof in the Markov model (see <a class="reference internal" href="bibli
 </section>
 <section id="module-cryptomite.trevisan">
 <span id="cryptomite-trevisan-module"></span><h2>cryptomite.trevisan module<a class="headerlink" href="#module-cryptomite.trevisan" title="Permalink to this headline"></a></h2>
-<p>The Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id27"><span>[Trev2001]</span></a> takes an input of <a href="#id28"><span class="problematic" id="id29">`</span></a>n_1’ bits and
-a seed of <a href="#id30"><span class="problematic" id="id31">`</span></a>n_2 = O(log n_1)’ bits.
-This implementation is based on the implementation in <a class="reference internal" href="bibliography.html#mauer2012" id="id32"><span>[Mauer2012]</span></a>
-and <a class="reference internal" href="bibliography.html#for2024" id="id33"><span>[For2024]</span></a>.</p>
+<p>The Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id31"><span>[Trev2001]</span></a> takes an input of <a href="#id32"><span class="problematic" id="id33">`</span></a>n_1’ bits and
+a seed of <a href="#id34"><span class="problematic" id="id35">`</span></a>n_2 = O(log n_1)’ bits.
+This implementation is based on the implementation in <a class="reference internal" href="bibliography.html#mauer2012" id="id36"><span>[Mauer2012]</span></a>
+and <a class="reference internal" href="bibliography.html#for2024" id="id37"><span>[For2024]</span></a>.</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.trevisan.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id34"><span>[Trev2001]</span></a> with implementation
-based on <a class="reference internal" href="bibliography.html#mauer2012" id="id35"><span>[Mauer2012]</span></a> and <a class="reference internal" href="bibliography.html#for2024" id="id36"><span>[For2024]</span></a>.</p>
+<p>Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id38"><span>[Trev2001]</span></a> with implementation
+based on <a class="reference internal" href="bibliography.html#mauer2012" id="id39"><span>[Mauer2012]</span></a> and <a class="reference internal" href="bibliography.html#for2024" id="id40"><span>[For2024]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.trevisan.Trevisan.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.trevisan.Trevisan.__init__" title="Permalink to this definition"></a></dt>
@@ -686,7 +759,7 @@ extraction.</p>
 <dt class="sig sig-object py" id="cryptomite.Circulant">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Circulant</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Circulant" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Circulant extractor based on <a class="reference internal" href="bibliography.html#for2024" id="id37"><span>[For2024]</span></a>.</p>
+<p>Circulant extractor based on <a class="reference internal" href="bibliography.html#for2024" id="id41"><span>[For2024]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Circulant.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/circulant.html#Circulant.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Circulant.__init__" title="Permalink to this definition"></a></dt>
@@ -747,7 +820,7 @@ based on input constraints.</p>
 Must be negative, as the extractor error is 2^log2_error.</p>
 </dd>
 <dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>If True, adjusts parameters to ensure quantum-proof extraction
-in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id38"><span>[For2024]</span></a>).</p>
+in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id42"><span>[For2024]</span></a>).</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>If True, prints the parameters used for extraction (default: True).</p>
 </dd>
@@ -772,7 +845,7 @@ in the Markov and product sources models (see <a class="reference internal" href
 adjusts the other parameters accordingly.</p></li>
 <li><p>For this extractor, the output length remains the same when it is
 classical-proof, quantum-proof in the product sources model, and
-quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id39"><span>[For2024]</span></a>).</p></li>
+quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id43"><span>[For2024]</span></a>).</p></li>
 </ul>
 </dd></dl>
 
@@ -782,7 +855,7 @@ quantum-proof in the Markov model (see <a class="reference internal" href="bibli
 <dt class="sig sig-object py" id="cryptomite.Dodis">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Dodis</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/dodis.html#Dodis"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Dodis" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Dodis et al. extractor <a class="reference internal" href="bibliography.html#dodis2004" id="id40"><span>[Dodis2004]</span></a>, with implementation
+<p>Dodis et al. extractor <a class="reference internal" href="bibliography.html#dodis2004" id="id44"><span>[Dodis2004]</span></a>, with implementation
 based on [For2020, For2024]_.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Dodis.__init__">
@@ -843,7 +916,7 @@ based on input constraints.</p>
 Must be negative, as the extractor error is 2^log2_error.</p>
 </dd>
 <dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>If True, adjusts parameters to ensure quantum-proof extraction
-in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id41"><span>[For2024]</span></a>).</p>
+in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id45"><span>[For2024]</span></a>).</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>If True, prints the parameters used for extraction (default: True).</p>
 </dd>
@@ -873,11 +946,75 @@ adjusts the other parameters accordingly.</p></li>
 </dd></dl>
 
 <dl class="py class">
+<dt class="sig sig-object py" id="cryptomite.Raz">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Raz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trinomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Raz" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>The Raz extractor <a class="reference internal" href="bibliography.html#raz2005" id="id46"><span>[Raz2005]</span></a> based on the efficient
+construction described in <a class="reference internal" href="bibliography.html#fore2025" id="id47"><span>[Fore2025]</span></a>.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.Raz.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">trinomial</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Raz.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>Initialize a Raz extractor.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>n1: int</strong></dt><dd><p>The length of the first input (in bits).
+<strong>Note:</strong> GF_2^{n1/2} must have a known irreducible trinomial.</p>
+</dd>
+<dt><strong>m</strong><span class="classifier">int</span></dt><dd><p>The length of the extractor output (in bits).</p>
+</dd>
+<dt><strong>trinomial</strong><span class="classifier">int</span></dt><dd><p>An optional parameter which defines an irreducible trinomial over
+GF_2^{n1/2}, i.e., x^{n1/2} + x^{trinomial} + 1 is an irreducible
+trinomial. <strong>Note:</strong> This does not test whether the trinomial is
+irreducible, because it is computationally expensive to do so.
+Please ensure if you provide a value that it is correct, or use
+one of the known values.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.Raz.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">input1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">input2</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Raz.extract" title="Permalink to this definition"></a></dt>
+<dd><p>Perform randomness extraction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>input1</strong><span class="classifier">list of bits (0s and 1s)</span></dt><dd><p>The first input, consisting of n_1 bits.</p>
+</dd>
+<dt><strong>input2</strong><span class="classifier">list of bits (0s and 1s)</span></dt><dd><p>The second input, consisting of n_2 &lt; n_1/2 bits.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>list of bits (0s and 1s)</dt><dd><p>The extractor output bits, of length m.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="cryptomite.Raz.gf_mul">
+<span class="sig-name descname"><span class="pre">gf_mul</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Sequence</span><span class="p"><span class="pre">[</span></span><span class="pre">Literal</span><span class="p"><span class="pre">[</span></span><span class="m"><span class="pre">0</span></span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="m"><span class="pre">1</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="reference internal" href="_modules/cryptomite/raz.html#Raz.gf_mul"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Raz.gf_mul" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="cryptomite.Raz.trinomial_s">
+<span class="sig-name descname"><span class="pre">trinomial_s</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{3:</span> <span class="pre">1,</span> <span class="pre">7:</span> <span class="pre">1,</span> <span class="pre">15:</span> <span class="pre">1,</span> <span class="pre">31:</span> <span class="pre">3,</span> <span class="pre">63:</span> <span class="pre">1,</span> <span class="pre">127:</span> <span class="pre">7,</span> <span class="pre">255:</span> <span class="pre">52,</span> <span class="pre">521:</span> <span class="pre">32,</span> <span class="pre">1279:</span> <span class="pre">216,</span> <span class="pre">2281:</span> <span class="pre">715,</span> <span class="pre">3217:</span> <span class="pre">67,</span> <span class="pre">4423:</span> <span class="pre">271,</span> <span class="pre">23209:</span> <span class="pre">1530,</span> <span class="pre">44497:</span> <span class="pre">8575,</span> <span class="pre">110503:</span> <span class="pre">25230,</span> <span class="pre">132049:</span> <span class="pre">7000,</span> <span class="pre">756839:</span> <span class="pre">279695,</span> <span class="pre">859433:</span> <span class="pre">170340,</span> <span class="pre">3021377:</span> <span class="pre">361604,</span> <span class="pre">6972593:</span> <span class="pre">3037958,</span> <span class="pre">24036583:</span> <span class="pre">8412642,</span> <span class="pre">25964951:</span> <span class="pre">880890,</span> <span class="pre">30402457:</span> <span class="pre">2162059,</span> <span class="pre">32582657:</span> <span class="pre">5110722,</span> <span class="pre">42643801:</span> <span class="pre">55981,</span> <span class="pre">43112609:</span> <span class="pre">3569337,</span> <span class="pre">74207281:</span> <span class="pre">9156813}</span></em><a class="headerlink" href="#cryptomite.Raz.trinomial_s" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
 <dt class="sig sig-object py" id="cryptomite.Toeplitz">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Toeplitz</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Toeplitz" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Toeplitz extractor with implementation
-based on <a class="reference internal" href="bibliography.html#for2024" id="id42"><span>[For2024]</span></a>.</p>
+based on <a class="reference internal" href="bibliography.html#for2024" id="id48"><span>[For2024]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Toeplitz.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_1</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">m</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/toeplitz.html#Toeplitz.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Toeplitz.__init__" title="Permalink to this definition"></a></dt>
@@ -937,7 +1074,7 @@ based on input constraints.</p>
 Must be negative, as the extractor error is 2^log2_error.</p>
 </dd>
 <dt><strong>q_proof</strong><span class="classifier">bool</span></dt><dd><p>If True, adjusts parameters to ensure quantum-proof extraction
-in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id43"><span>[For2024]</span></a>).</p>
+in the Markov and product sources models (see <a class="reference internal" href="bibliography.html#for2024" id="id49"><span>[For2024]</span></a>).</p>
 </dd>
 <dt><strong>verbose</strong><span class="classifier">bool</span></dt><dd><p>If True, prints the parameters used for extraction (default: True).</p>
 </dd>
@@ -963,7 +1100,7 @@ that of the second.</p>
 <ul class="simple">
 <li><p>For this extractor, the output length remains the same when it is
 classical-proof, quantum-proof in the product sources model, and
-quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id44"><span>[For2024]</span></a>).</p></li>
+quantum-proof in the Markov model (see <a class="reference internal" href="bibliography.html#for2024" id="id50"><span>[For2024]</span></a>).</p></li>
 </ul>
 </dd></dl>
 
@@ -973,8 +1110,8 @@ quantum-proof in the Markov model (see <a class="reference internal" href="bibli
 <dt class="sig sig-object py" id="cryptomite.Trevisan">
 <em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">cryptomite.</span></span><span class="sig-name descname"><span class="pre">Trevisan</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
-<p>Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id45"><span>[Trev2001]</span></a> with implementation
-based on <a class="reference internal" href="bibliography.html#mauer2012" id="id46"><span>[Mauer2012]</span></a> and <a class="reference internal" href="bibliography.html#for2024" id="id47"><span>[For2024]</span></a>.</p>
+<p>Trevisan extractor <a class="reference internal" href="bibliography.html#trev2001" id="id51"><span>[Trev2001]</span></a> with implementation
+based on <a class="reference internal" href="bibliography.html#mauer2012" id="id52"><span>[Mauer2012]</span></a> and <a class="reference internal" href="bibliography.html#for2024" id="id53"><span>[For2024]</span></a>.</p>
 <dl class="py method">
 <dt class="sig sig-object py" id="cryptomite.Trevisan.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">k</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">error</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/cryptomite/trevisan.html#Trevisan.__init__"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#cryptomite.Trevisan.__init__" title="Permalink to this definition"></a></dt>
