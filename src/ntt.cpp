@@ -2,6 +2,7 @@
 
 #include <stdexcept>
 #include <vector>
+#include <future>
 
 #define P ((3u<<30) + 1)
 #define G 5 // primitive root mod P
@@ -103,13 +104,13 @@ NTT::NTT(unsigned l) : L(1<<l) {
 
 }
 
-std::vector<uint32_t> NTT::ntt(const std::vector<uint32_t> &x, bool inverse) {
+std::vector<uint32_t> NTT::ntt(const std::vector<uint32_t> &x, bool inverse, bool plusone) {
     const std::vector<uint32_t>& U = inverse ? Rinv : R;
-
     std::vector<uint32_t> y(L, 0);
 
     // Bit inversion
-    for (uint32_t i = 0; i < L; i++) {
+    y[0] = x[0] ^ plusone;
+    for (uint32_t i = 1; i < L; i++) {
         y[revbits[i]] = x[i];
     }
 
@@ -151,4 +152,48 @@ std::vector<uint32_t> NTT::mul_vec(const std::vector<uint32_t> &a, const std::ve
 std::vector<uint32_t> NTT::conv(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b) {
     std::vector<uint32_t> c = mul_vec(ntt(a, false), ntt(b, false));
     return ntt(c, true);
+}
+
+std::vector<uint32_t> NTT::conv_and_reduce(const std::vector<uint32_t> &a, const std::vector<uint32_t> &b, uint32_t r, uint32_t s) {
+    auto call_ntt = [this](const std::vector<uint32_t> &x, bool inverse){ return ntt(x, inverse); };
+    std::future<std::vector<uint32_t>> ntt_a = std::async(std::launch::async, call_ntt, a, false);
+    std::future<std::vector<uint32_t>> ntt_b = std::async(std::launch::async, call_ntt, b, false);
+    auto finish_and_reduce = [this](const std::vector<uint32_t> &x, const std::vector<uint32_t> &y, uint32_t r, uint32_t s){
+        auto out = ntt(mul_vec(x, y), true);
+        for(int32_t i = r-1; i >= 0; --i) {
+            auto red = out[r+i] % 2;
+            out[i] = (out[i] % 2) ^ red;
+            out[s+i] = (out[s+i] % 2) ^ red;
+            out[r+i] = 0;
+        }
+        return out;
+    };
+
+    std::future<std::vector<uint32_t>> conv = std::async(std::launch::async, finish_and_reduce, ntt_a.get(), ntt_b.get(), r, s);
+    return conv.get();
+}
+
+std::pair<std::vector<uint32_t>, std::vector<uint32_t>> NTT::raz_iteration(const std::vector<uint32_t> &product, const std::vector<uint32_t> &delta, uint32_t r, uint32_t s) {
+    auto call_ntt = [this](const std::vector<uint32_t> &x, bool inverse, bool plusone = false){ return ntt(x, inverse, plusone); };
+    std::future<std::vector<uint32_t>> ntt_delta = std::async(std::launch::async, call_ntt, delta, false, false);
+    std::future<std::vector<uint32_t>> ntt_delta_p1 = std::async(std::launch::async, call_ntt, delta, false, true);
+    std::future<std::vector<uint32_t>> ntt_product = std::async(std::launch::async, call_ntt, product, false, false);
+
+
+    auto finish_and_reduce = [this](const std::vector<uint32_t> &x, const std::vector<uint32_t> &y, uint32_t r, uint32_t s){
+        auto out = ntt(mul_vec(x, y), true);
+        for(int32_t i = r-1; i >= 0; --i) {
+            auto red = out[r+i] % 2;
+            out[i] = (out[i] % 2) ^ red;
+            out[s+i] = (out[s+i] % 2) ^ red;
+            out[r+i] = 0;
+        }
+        return out;
+    };
+    std::future<std::vector<uint32_t>> new_product = std::async(std::launch::async, finish_and_reduce, ntt_product.get(), ntt_delta_p1.get(), r, s);
+
+    auto ndelta = ntt_delta.get();
+    std::future<std::vector<uint32_t>> new_delta = std::async(std::launch::async, finish_and_reduce, ndelta, ndelta, r, s);
+
+    return {new_product.get(), new_delta.get()};
 }

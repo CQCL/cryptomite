@@ -86,3 +86,14 @@ If you use `cryptomite` in your research, please cite the accompanying [paper](h
   year = {2025}
 }
 ```
+
+If you make use of our improved Raz extractor, please also cite the following [paper](https://arxiv.org/abs/2506.15547):
+
+```
+@article{foreman2025efficient,
+  title={An efficient construction of Raz's two-source randomness extractor with improved parameters},
+  author={Foreman, Cameron and Wooltorton, Lewis and Milner, Kevin and Curchod, Florian J},
+  journal={arXiv preprint arXiv:2506.15547},
+  year={2025}
+}
+```
