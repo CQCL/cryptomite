@@ -411,7 +411,7 @@ def calc_raz_out(n_1: int,
     """
     max_m = 0
     initial_tests = 100
-    steps = min(floor(k_2) - m_init, initial_tests)
+    steps = min(floor(k_2) - m_init, initial_tests - 1)
     step_size = (floor(k_2) - m_init) / steps
     ms = [int(round(m_init + i * step_size)) for i in range(steps + 1)]
 
