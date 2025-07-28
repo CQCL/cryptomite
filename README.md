@@ -56,6 +56,8 @@ make clean
 make html
 ```
 
+Note that the docs are built with Python 3.8, and it may not immediately work with other versions.
+
 ## Testing
 
 Install `pytest`, then run `pytest test`.
